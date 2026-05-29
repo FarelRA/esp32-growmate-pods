@@ -1,0 +1,27 @@
+idf_component_register(
+    SRCS
+        "main.c"
+        "app_config.c"
+        "board_profile.c"
+        "network_manager.c"
+        "onboarding.c"
+        "sensors.c"
+        "camera_service.c"
+        "api_client.c"
+        "actuators.c"
+    INCLUDE_DIRS "."
+    REQUIRES
+        DHT22
+        driver
+        esp_event
+        esp_http_client
+        esp_http_server
+        esp_netif
+        esp_psram
+        esp_timer
+        esp_wifi
+        esp32-camera
+        json
+        mbedtls
+        nvs_flash
+)
