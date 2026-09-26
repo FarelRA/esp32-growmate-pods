@@ -37,7 +37,7 @@ portal instead of wedging.
 | `api_client.{h,c}` | sensor JSON POST + command parse (`pump durationMs`, `light enabled`), JPEG POST with `X-Device-Id`. |
 | `app_config.{h,c}` | NVS `growmate/settings` v4: WiFi SSID/pass + provisioned flag only. |
 | `network_manager.{h,c}` | STA connect/scan + onboarding AP + stop. |
-| `onboarding.{h,c}` | blocking portal `GrowMate-IAET01` / `growmate` at 192.168.4.1: `GET /`, `GET /api/config`, `POST /api/config{ssid,pass}`, `GET /api/networks`. |
+| `onboarding.{h,c}` | blocking portal `GrowMate-IAET01` / `growmate` at 192.168.4.1: `GET /`, `GET /api/config`, `POST /api/config{wifiSsid,wifiPassword}`, `GET /api/networks`. |
 | `camera_service.{h,c}` | PWDN pulse, init/deinit, capture. |
 | `app_build_config.h` | device ID, firmware version, API URLs, intervals, calibration endpoints. Per-device values: edit + reflash. |
 

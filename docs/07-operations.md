@@ -23,15 +23,16 @@ Remove the IO0–GND link and reset to boot normally. `upload_port` is
 Single 5V source while flashing: the adapter powers the module, so
 disconnect the pack/boost 5V feed first — never drive the +5V rail from
 two supplies at once.
-First boot captures a camera frame immediately — use it as the install
-photo check.
+First provisioned boot captures a camera frame immediately (a fresh
+device blocks in the portal first) — use it as the install photo check.
 
 ## Onboard
 
 1. Join AP `GrowMate-IAET01` (password `growmate`). The name derives as
    `GrowMate-` + the last 6 chars of `APP_DEVICE_ID` (full ID if ≤6 chars).
 2. Open `http://192.168.4.1`, submit home WiFi SSID/pass.
-3. Device reboots into station mode and starts the 15 s cycle.
+3. Device continues with the new settings (no reboot) into station mode
+   and starts the 15 s cycle.
 4. After 5 straight failures the portal reopens by itself.
 
 ## Calibrate (per probe, per install)
