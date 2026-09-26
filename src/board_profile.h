@@ -22,6 +22,11 @@ typedef struct {
     gpio_num_t soil_moisture_gpio;
     gpio_num_t light_sensor_gpio;
     gpio_num_t dht_gpio;
+    // Switched 3V3 supply for the resistive water probe (GPIO-driven
+    // through 100R). Driven HIGH ~60ms before an ADC read, LOW after.
+    // Solder one wire to the GPIO33 test point (red-LED pad). If left
+    // unconnected the probe must be tied to 3V3 and will corrode faster.
+    gpio_num_t water_power_gpio;
     adc_unit_t analog_unit;
     adc_channel_t water_level_channel;
     adc_channel_t soil_moisture_channel;

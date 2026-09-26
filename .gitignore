@@ -27,3 +27,6 @@ __pycache__/
 # Temporary files
 *.tmp
 *.temp
+
+# ESP-IDF managed deps (re-downloaded by the component manager on build)
+managed_components/

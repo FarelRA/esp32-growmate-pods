@@ -1,6 +1,7 @@
 #include "actuators.h"
 
 #include <stdbool.h>
+#include <stdlib.h>
 
 #include "driver/gpio.h"
 #include "esp_log.h"
@@ -24,9 +25,21 @@ static void apply_outputs(const board_profile_t *profile)
 
 static void configure_output_pins(const board_profile_t *profile)
 {
+    // Camera-bus overlap would silently kill the camera: abort early.
+    if (board_profile_gpio_conflicts_with_camera(profile, profile->pump_gpio) ||
+        board_profile_gpio_conflicts_with_camera(profile, profile->grow_light_gpio)) {
+        ESP_LOGE(TAG, "actuator GPIO conflicts with fixed camera bus, aborting");
+        abort();
+    }
+    // External 100k pulldown + 220R gate series holds MOSFETs OFF through
+    // the ~3ms strapping window (GPIO2/4 reset state is weak pulldown).
+    // No internal pull here: the external network owns the boot level.
     gpio_config_t output_config = {
         .pin_bit_mask = (1ULL << profile->pump_gpio) | (1ULL << profile->grow_light_gpio),
         .mode = GPIO_MODE_OUTPUT,
+        .pull_up_en = GPIO_PULLUP_DISABLE,
+        .pull_down_en = GPIO_PULLDOWN_DISABLE,
+        .intr_type = GPIO_INTR_DISABLE,
     };
     ESP_ERROR_CHECK(gpio_config(&output_config));
 }

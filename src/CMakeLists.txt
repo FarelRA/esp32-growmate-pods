@@ -11,7 +11,7 @@ idf_component_register(
         "actuators.c"
     INCLUDE_DIRS "."
     REQUIRES
-        DHT22
+        dht
         driver
         esp_event
         esp_http_client
