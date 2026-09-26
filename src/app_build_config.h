@@ -8,6 +8,8 @@
 #define APP_CAMERA_API_URL "https://avid-mammoth-766.convex.site/api/v1/camera"
 #define APP_API_TOKEN ""
 #define APP_MAX_PUMP_DURATION_MS 30000
+#define APP_MAX_LIGHT_ON_MS (24ULL * 3600ULL * 1000ULL)
+#define APP_OTA_ENABLED 1
 
 #define APP_BOARD_PROFILE 0
 #define APP_CAMERA_ENABLED 1

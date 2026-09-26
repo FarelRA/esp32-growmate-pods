@@ -22,8 +22,9 @@ pio run --target upload    # IO0-GND at power-on, /dev/ttyACM0, 115200
 pio device monitor
 ```
 
-Adapter: GND→GND, 5V→5V, TX→U0R, RX→U0T. Remove IO0–GND, reset, join AP
-`GrowMate-IAET01` (pw `growmate`) → `http://192.168.4.1` → home WiFi.
+Adapter: GND→GND, 5V→5V, TX→U0R, RX→U0T. Remove IO0–GND, reset, join the
+per-device AP (`GrowMate-<last6 of ID>`, password `GrowMate-<last6 of MAC>`
+from the boot log) → `http://192.168.4.1` → home WiFi.
 Details: [docs/07-operations](docs/07-operations.md).
 
 ## Docs

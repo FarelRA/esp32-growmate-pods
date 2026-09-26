@@ -6,12 +6,13 @@
 #include "driver/gpio.h"
 #include "esp_err.h"
 
-#define APP_CONFIG_VERSION 5
+#define APP_CONFIG_VERSION 6
 #define APP_CONFIG_NAMESPACE "growmate"
 #define APP_CONFIG_STORAGE_KEY "settings"
 
 #define APP_CONFIG_MAX_WIFI_SSID_LEN 32
 #define APP_CONFIG_MAX_WIFI_PASSWORD_LEN 64
+#define APP_CONFIG_MAX_DEVICE_ID_LEN 31
 
 typedef struct
 {
@@ -19,6 +20,9 @@ typedef struct
     bool provisioned;
     char wifi_ssid[APP_CONFIG_MAX_WIFI_SSID_LEN + 1];
     char wifi_password[APP_CONFIG_MAX_WIFI_PASSWORD_LEN + 1];
+    // Assigned pod identity from the server claim flow. Empty = unclaimed,
+    // in which case the hardware MAC doubles as the birth identity.
+    char device_id[APP_CONFIG_MAX_DEVICE_ID_LEN + 1];
     uint32_t boot_count;
     uint32_t report_interval_sec;
     uint32_t applied_config_rev;

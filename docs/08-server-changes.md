@@ -8,10 +8,11 @@ the server must implement, store, and enforce.
 
 - Require `Authorization: Bearer <token>` on `POST /api/v1/sensors`
   and `POST /api/v1/camera` once per-device tokens ship. Tokens are
-  build-time constants on the device; provisioning/rotation is
-  reflash-based until a claim flow exists (§8).
+  build-time constants on the device; rotation is reflash-based (or OTA,
+  §10) until a token-claim channel exists.
 - Until then, gate on an explicit `deviceId` allowlist. Unknown IDs
-  get `401`, never silent ingestion.
+  get `401`, never silent ingestion. Unclaimed birth IDs (`hardwareId`
+  with default `deviceId`) should land in a review queue, not the void.
 - `401` semantics: unknown, expired, or missing token. The device does
   NOT retry a 401 and does NOT reopen its onboarding portal over it —
   it keeps sensing and waits for the operator. Alert on repeated 401s
@@ -126,15 +127,24 @@ dhtFails, adcFails}` on every POST. Suggested alerts:
 Dashboard per device: last `snapshotId`, `appliedConfigRev` vs sent
 `rev` (drift = config not landing), pending unacked command ids.
 
-## 10. Claim / OTA-reserved futures
+## 10. Claim flow (live) + OTA (live)
 
-- Claiming: `deviceId`/`firmwareVersion` are compile-time constants
-  today. Until a per-device claim flow exists, onboarding a new pod =
-  adding its ID (and token, once issued) to the allowlist.
-- OTA-reserved response fields `minFirmware` / `firmwareUrl`: the
-  device ignores them today (single-app partition, no OTA). The server
-  MAY start sending them for fleet bookkeeping, but must not gate
-  telemetry ingestion on firmware version until OTA ships.
-- Per-device onboarding-AP password is future: today every pod's
-  setup AP shares one password over plaintext HTTP (see 07-operations
-  threat note). Commission pods in a trusted location.
+- Claiming: every unit is born with its WiFi MAC as `hardwareId`
+  (uppercase hex, always sent). A unit with no assigned ID reports
+  `deviceId` = build default and is ingested as *unclaimed*.
+- To claim/rename: answer any sensor POST with
+  `claim: {deviceId: "<pod-id>"}` (`[A-Za-z0-9_-]`, ≤31 chars). The
+  device validates, persists (NVS), and reports the new `deviceId` from
+  the next POST. Re-sending the same ID is a no-op. Onboarding AP name
+  follows the effective ID, so it changes once at claim time.
+- Unclaim = erase NVS (`pio run --target erase`); the unit returns to
+  its birth identity and must be re-claimed.
+- OTA is live: send `minFirmware: "x.y.z"` + `firmwareUrl: "https://…"`
+  to offer an update. The device upgrades only when the offered version
+  is newer than its own, never mid pump-dose, then restarts. Rules:
+  host a complete signed-by-TLS `.bin` built from this repo (same
+  partition scheme — ota slots are 1.5 MB, images must fit); keep old
+  binaries for rollback-by-reoffer; do NOT gate telemetry on version.
+- Onboarding AP password is per-device (`GrowMate-<last6 of MAC>`,
+  WPA2). There is no shared password anymore; the portal itself is still
+  plaintext HTTP — commission in a trusted location (see 07-operations).

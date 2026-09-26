@@ -21,6 +21,7 @@ for re-provisioning.
 ```json
 {
   "deviceId": "IAET01",
+  "hardwareId": "7C87CE1A2B3C",
   "firmwareVersion": "2.0.0",
   "snapshotId": "B12-345",
   "ageMs": 1800,
@@ -42,7 +43,8 @@ for re-provisioning.
 
 | Field | Type | Bounds / notes |
 |---|---|---|
-| `deviceId` | string | build-time identity, also the allowlist key |
+| `deviceId` | string | effective identity: server-assigned pod ID after claiming, else build default; also the allowlist key |
+| `hardwareId` | string | birth identity: uppercase WiFi-MAC hex, always sent, never changes; claim/review key for unclaimed units |
 | `firmwareVersion` | string | semver, e.g. `"2.0.0"` |
 | `snapshotId` | string | `"B<bootCount>-<seq>"`, unique per sample; server dedup key |
 | `ageMs` | int | `>= 0`, sampling-to-POST latency; server reconstructs sample time as `receivedAt - ageMs` |
@@ -84,7 +86,7 @@ values are ignored.
 ### Config push
 
 `config.rev` is an int, strictly increasing. `config.reportIntervalSec`
-is 10–3600 s. The device persists rev + interval (NVS v5), applies the
+is 10–3600 s. The device persists rev + interval (NVS v6), applies the
 interval to the sensor cycle, and echoes `appliedConfigRev` on the next
 POST. Stale revs (`rev <= appliedConfigRev`) and out-of-range intervals
 are ignored. The camera period stays build-time (900 s).
@@ -116,11 +118,18 @@ a failed frame retries at the next due slot.
 - `currentState` + `acceptedCommandIds` together let the server
   distinguish "command lost" from "command applied, ack lost".
 
-## Reserved OTA fields (future, ignored by the device today)
+## Claim + OTA (live)
 
-`minFirmware` (string) and `firmwareUrl` (string) are reserved response
-fields for a future OTA flow. The device logs and ignores them. There
-is no OTA in firmware v2.0.0 (single-app partition, no rollback slot).
+- Claim: answer any sensor POST with `claim: {deviceId: "<pod-id>"}`
+  (`[A-Za-z0-9_-]`, ≤31 chars). The device validates, persists (NVS),
+  and reports the new `deviceId` from the next POST; the onboarding AP
+  name follows it. Repeat sends are no-ops. See `08-server-changes` §10.
+- OTA: offer with `minFirmware: "x.y.z"` + `firmwareUrl: "https://…"`.
+  The device upgrades only when the offer is newer than its own build,
+  never mid pump-dose, then restarts into the new image (dual OTA slots,
+  1.5 MB each — images must fit). No rollback slot: keep the previous
+  binary to re-offer on regression. A latched grow light goes dark
+  across the reboot; the server should refresh the latch afterwards.
 
 ## Test against a stub
 
@@ -139,25 +148,18 @@ curl -X POST "$CAM_URL" -H 'Content-Type: image/jpeg' \
   --data-binary @test.jpg
 ```
 
-## Firmware v2.0.0 implementation notes (verified in `src/`)
+## Implementation notes (verified in `src/`, current firmware)
 
-- Posts to the compiled unversioned paths `/api/sensors` and
-  `/api/camera` (`APP_SENSOR_API_URL`, `APP_CAMERA_API_URL`); no
-  `Authorization` header is sent. Until token auth is flashed in, the
-  server must accept the `deviceId` allowlist and serve both the
-  unversioned and the `/api/v1` path styles.
-- Analog entries carry both `value` (on-device percent from
-  `APP_*_RAW_*`, `lround`) and `raw`; temperature `value` is rounded
-  to int. The server treats `raw` as authoritative and ignores `value`.
-- The envelope carries only `deviceId`, `firmwareVersion`, `sensors`,
-  `currentState`. No `snapshotId` / `ageMs` / `appliedConfigRev` /
-  `acceptedCommandIds` / `health`, no Bearer token, no config-push
-  handling (NVS v4, WiFi-only). Intervals are fixed at build time:
-  sensors 15 s, camera 900 s.
-- Command parse accepts a pump command for any numeric
-  `durationMs > 0` (no 30 s clamp, no water-readability check) and a
-  light command only for strict JSON bool. Unknown kinds ignored.
-  No ids are echoed.
-- Every non-2xx is retried twice (1.5 s apart) and counts toward the
-  5-consecutive-failure portal reopen — including 4xx. `Retry-After`
-  is not honored.
+- Posts to the compiled `/api/v1/sensors` and `/api/v1/camera`
+  (`APP_SENSOR_API_URL`, `APP_CAMERA_API_URL`); `Authorization` sent only
+  when a token is compiled in, otherwise allowlist on `deviceId`.
+- Analog entries carry `raw` only (no device percent math, no endpoints
+  in firmware); DHT entries carry native floats. Unavailable omitted.
+- Envelope carries `deviceId` (+`hardwareId`), `snapshotId`, `ageMs`,
+  `appliedConfigRev`, `acceptedCommandIds`, `health` (NVS v6).
+  Report interval is server-pushed (rev discipline); camera stays 900 s.
+- Pump needs `0 < durationMs <= 30000` plus a readable water channel;
+  light takes bool or number; accepted ids echo next POST.
+- 2xx ok; 429 honored; other 4xx fatal-no-count; 5xx/transport counted.
+  Retries: 2 tries 1.5 s apart per cycle.
+- OTA + claim as above; light auto-offs after 24 h without a refresh.

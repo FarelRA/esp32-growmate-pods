@@ -7,6 +7,7 @@
 #include "app_config.h"
 #include "board_profile.h"
 #include "camera_service.h"
+#include "device_identity.h"
 #include "esp_check.h"
 #include "esp_log.h"
 #include "esp_timer.h"
@@ -15,6 +16,7 @@
 #include "network_manager.h"
 #include "nvs_flash.h"
 #include "onboarding.h"
+#include "ota_service.h"
 #include "sensors.h"
 
 #define WIFI_CONNECT_TIMEOUT_MS 12000
@@ -37,7 +39,8 @@ static void delay_with_housekeeping(const board_profile_t *profile, uint32_t tot
 
 static esp_err_t upload_sensor_snapshot(const app_config_t *config,
                                         const sensor_snapshot_t *snapshot,
-                                        const board_profile_t *profile)
+                                        const board_profile_t *profile,
+                                        ota_update_t *ota)
 {
     device_commands_t commands = {0};
     ESP_LOGI(TAG, "Starting sensor cycle");
@@ -48,7 +51,8 @@ static esp_err_t upload_sensor_snapshot(const app_config_t *config,
                                             snapshot,
                                             actuators_is_pump_enabled(),
                                             actuators_is_light_enabled(),
-                                            &commands);
+                                            &commands,
+                                            ota);
         if (err == ESP_OK) {
             break;
         }
@@ -117,7 +121,7 @@ void app_main(void)
     }
 
     const board_profile_t *profile = board_profile_get((board_profile_id_t) APP_BOARD_PROFILE);
-    ESP_LOGI(TAG, "Starting %s for board %s", APP_DEVICE_ID, profile->display_name);
+    ESP_LOGI(TAG, "Starting %s for board %s", device_effective_id(&config), profile->display_name);
 
     ESP_ERROR_CHECK(network_manager_init());
     actuators_init(profile);
@@ -147,6 +151,8 @@ void app_main(void)
         sensor_snapshot_t snapshot = {0};
         bool camera_due = false;
         bool station_started = false;
+        ota_update_t ota;
+        ota_update_clear(&ota);
 
         snapshot.seq = seq++;
         snapshot.age_ms = (uint32_t) (esp_timer_get_time() / 1000);
@@ -181,7 +187,7 @@ void app_main(void)
             } else {
                 station_started = true;
 
-                err = upload_sensor_snapshot(&config, &snapshot, profile);
+                err = upload_sensor_snapshot(&config, &snapshot, profile, &ota);
                 if (err == ESP_OK) {
                     consecutive_failures = 0;
                 } else {
@@ -207,6 +213,9 @@ void app_main(void)
         }
 
         if (station_started) {
+            // OTA runs on the station link before it goes down. A success
+            // restarts the device; anything else continues the cycle.
+            ota_service_run_if_needed(&ota);
             network_manager_stop();
         }
 

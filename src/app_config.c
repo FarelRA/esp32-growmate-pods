@@ -3,6 +3,7 @@
 #include <ctype.h>
 #include <string.h>
 
+#include "app_build_config.h"
 #include "nvs.h"
 #include "nvs_flash.h"
 
@@ -10,6 +11,7 @@ static void ensure_terminated(app_config_t *config)
 {
     config->wifi_ssid[APP_CONFIG_MAX_WIFI_SSID_LEN] = '\0';
     config->wifi_password[APP_CONFIG_MAX_WIFI_PASSWORD_LEN] = '\0';
+    config->device_id[APP_CONFIG_MAX_DEVICE_ID_LEN] = '\0';
 }
 
 static void trim_ascii(char *value)
@@ -35,12 +37,18 @@ void app_config_set_defaults(app_config_t *config)
 {
     memset(config, 0, sizeof(*config));
     config->version = APP_CONFIG_VERSION;
+    strlcpy(config->device_id, APP_DEVICE_ID, sizeof(config->device_id));
 }
 
 void app_config_sanitize(app_config_t *config)
 {
     ensure_terminated(config);
     trim_ascii(config->wifi_ssid);
+    trim_ascii(config->device_id);
+
+    if (config->device_id[0] == '\0') {
+        strlcpy(config->device_id, APP_DEVICE_ID, sizeof(config->device_id));
+    }
     trim_ascii(config->wifi_password);
 
     if (config->version != APP_CONFIG_VERSION) {

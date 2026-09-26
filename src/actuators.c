@@ -14,6 +14,7 @@ static bool s_light_enabled;
 static int64_t s_pump_deadline_us;
 static esp_timer_handle_t s_pump_timer = NULL;
 static const board_profile_t *s_profile = NULL;
+static esp_timer_handle_t s_light_timer = NULL;
 
 static void set_output_level(gpio_num_t gpio, int active_level, bool enabled)
 {
@@ -62,6 +63,19 @@ static void pump_safety_timer_callback(void *arg)
     ESP_LOGI(TAG, "Pump safety timer expired, pump OFF");
 }
 
+static void light_failsafe_timer_callback(void *arg)
+{
+    (void)arg;
+    if (s_profile == NULL) {
+        s_light_enabled = false;
+        ESP_LOGI(TAG, "Light failsafe timer expired, light OFF");
+        return;
+    }
+    gpio_set_level(s_profile->grow_light_gpio, !s_profile->light_active_level);
+    s_light_enabled = false;
+    ESP_LOGI(TAG, "Light failsafe timer expired, light OFF");
+}
+
 void actuators_init(const board_profile_t *profile)
 {
     configure_output_pins(profile);
@@ -80,15 +94,35 @@ void actuators_init(const board_profile_t *profile)
     } else {
         (void)esp_timer_stop(s_pump_timer);
     }
+    if (s_light_timer == NULL) {
+        esp_timer_create_args_t light_args = {
+            .callback = light_failsafe_timer_callback,
+            .arg = NULL,
+            .dispatch_method = ESP_TIMER_TASK,
+            .name = "light_failsafe",
+        };
+        ESP_ERROR_CHECK(esp_timer_create(&light_args, &s_light_timer));
+    } else {
+        (void)esp_timer_stop(s_light_timer);
+    }
     apply_outputs(profile);
 }
 
 void actuators_apply_commands(const board_profile_t *profile, const device_commands_t *commands)
 {
-    if (commands->has_light_command && commands->light_enabled != s_light_enabled) {
-        s_light_enabled = commands->light_enabled;
-        set_output_level(profile->grow_light_gpio, profile->light_active_level, s_light_enabled);
-        ESP_LOGI(TAG, "Grow light %s", s_light_enabled ? "enabled" : "disabled");
+    if (commands->has_light_command) {
+        // Failsafe: a lost "off" must not leave the strip on forever.
+        // Re-sent "on" commands refresh the window; expiry only fires
+        // after a full day of server silence.
+        (void)esp_timer_stop(s_light_timer);
+        if (commands->light_enabled) {
+            ESP_ERROR_CHECK(esp_timer_start_once(s_light_timer, APP_MAX_LIGHT_ON_MS * 1000ULL));
+        }
+        if (commands->light_enabled != s_light_enabled) {
+            s_light_enabled = commands->light_enabled;
+            set_output_level(profile->grow_light_gpio, profile->light_active_level, s_light_enabled);
+            ESP_LOGI(TAG, "Grow light %s", s_light_enabled ? "enabled" : "disabled");
+        }
     }
 
     if (!commands->has_pump_command) {

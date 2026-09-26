@@ -8,6 +8,7 @@
 #include "app_config.h"
 #include "app_build_config.h"
 #include "cJSON.h"
+#include "device_identity.h"
 #include "esp_check.h"
 #include "esp_http_server.h"
 #include "esp_log.h"
@@ -15,7 +16,6 @@
 #include "freertos/event_groups.h"
 #include "network_manager.h"
 
-#define ONBOARDING_AP_PASSWORD "growmate"
 #define ONBOARDING_FORM_BUFFER_SIZE 2048
 #define ONBOARDING_COMPLETE_BIT BIT0
 
@@ -115,8 +115,11 @@ static esp_err_t handle_get_config(httpd_req_t *req)
         return ESP_ERR_NO_MEM;
     }
 
-    cJSON_AddStringToObject(root, "deviceId", APP_DEVICE_ID);
+    cJSON_AddStringToObject(root, "deviceId", device_effective_id(context->config));
     cJSON_AddStringToObject(root, "wifiSsid", context->config->wifi_ssid);
+    char hwid[13];
+    device_identity_hwid(hwid);
+    cJSON_AddStringToObject(root, "hardwareId", hwid);
 
     esp_err_t err = send_json(req, root);
     cJSON_Delete(root);
@@ -244,8 +247,9 @@ esp_err_t onboarding_run(app_config_t *config)
         return ESP_ERR_NO_MEM;
     }
 
-    char ap_name[33];
-    snprintf(ap_name, sizeof(ap_name), "GrowMate-%s", APP_DEVICE_ID + (strlen(APP_DEVICE_ID) > 6 ? strlen(APP_DEVICE_ID) - 6 : 0));
+    char ap_ssid[33];
+    char ap_password[64];
+    device_onboarding_ap_credentials(config, ap_ssid, ap_password);
 
     onboarding_context_t context = {
         .config = config,
@@ -253,8 +257,8 @@ esp_err_t onboarding_run(app_config_t *config)
         .server = NULL,
     };
 
-    ESP_LOGW(TAG, "Starting onboarding access point %s", ap_name);
-    esp_err_t err = network_manager_start_onboarding_ap(ap_name, ONBOARDING_AP_PASSWORD);
+    ESP_LOGW(TAG, "Onboarding AP %s, password %s", ap_ssid, ap_password);
+    esp_err_t err = network_manager_start_onboarding_ap(ap_ssid, ap_password);
     if (err != ESP_OK) {
         vEventGroupDelete(event_group);
         return err;

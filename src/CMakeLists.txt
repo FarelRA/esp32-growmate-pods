@@ -9,13 +9,17 @@ idf_component_register(
         "camera_service.c"
         "api_client.c"
         "actuators.c"
+        "device_identity.c"
+        "ota_service.c"
     INCLUDE_DIRS "."
     REQUIRES
+        app_update
         dht
         driver
         esp_event
         esp_http_client
         esp_http_server
+        esp_https_ota
         esp_netif
         esp_psram
         esp_timer

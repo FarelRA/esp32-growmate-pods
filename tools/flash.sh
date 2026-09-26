@@ -5,6 +5,9 @@
 # touch DTR/RTS (`no_reset`) and cannot use its stub loader (`no-stub`).
 # Hold IO0-GND (SW1) at power-on for download mode, release + reset after.
 #
+# Layout note: the app lives in the OTA scheme, so the factory image is
+# written to the ota_0 slot (0x20000). Later updates arrive over HTTPS.
+#
 # Invoked by PlatformIO (`upload_command` in platformio.ini) or by hand:
 #   tools/flash.sh /dev/ttyACM0 115200 .pio/build/growmate-pods <packages-dir>
 set -euo pipefail
@@ -24,4 +27,4 @@ python "$ESPTOOL" --chip esp32 --port "$PORT" --baud "$BAUD" \
     --flash_mode dio --flash_freq 80m --flash_size 4MB \
     0x1000 "$BUILD_DIR/bootloader.bin" \
     0x8000 "$BUILD_DIR/partitions.bin" \
-    0x10000 "$BUILD_DIR/firmware.bin"
+    0x20000 "$BUILD_DIR/firmware.bin"

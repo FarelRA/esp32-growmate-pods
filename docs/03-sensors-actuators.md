@@ -28,10 +28,8 @@ probe or changing its supply invalidates its ends — recalibrate from
 scratch. Storage and mapping rules are a server-team contract, detailed
 in [08-server-changes](08-server-changes.md).
 
-Firmware note: v2.0.0 still computes a transitional on-device percent
-(`read_percent_measurement` in `src/sensors.c` from the `APP_*_RAW_*`
-placeholders in `src/app_build_config.h`) and ships it as `value`. The
-server ignores `value` and maps from `raw`.
+Firmware sends raw ADC codes only; percent mapping is server-side
+(see the calibration section above).
 
 ## DHT22 (U2)
 

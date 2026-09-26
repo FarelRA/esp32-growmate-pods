@@ -28,8 +28,9 @@ device blocks in the portal first) — use it as the install photo check.
 
 ## Onboard
 
-1. Join AP `GrowMate-IAET01` (password `growmate`). The name derives as
-   `GrowMate-` + the last 6 chars of `APP_DEVICE_ID` (full ID if ≤6 chars).
+1. Join AP `GrowMate-<last6 of device ID>` (default `GrowMate-IAET01`).
+   Password is per-device: `GrowMate-<last6 of WiFi MAC>`, printed in
+   the boot log as `Onboarding AP …`. (No more shared password.)
 2. Open `http://192.168.4.1`, submit home WiFi SSID/pass.
 3. Device continues with the new settings (no reboot) into station mode
    and starts the 15 s cycle.
@@ -37,10 +38,10 @@ device blocks in the portal first) — use it as the install photo check.
    and 5xx errors; 4xx responses are fatal-for-request and never force
    the portal — see [06-api](06-api.md)).
 
-Portal notes: the AP password is shared across all pods and the portal
-is plaintext HTTP — anyone in range can join and sniff the home WiFi
-credentials you type. Commission in a trusted location. Per-device AP
-passwords are future work. Remote diagnosis beyond the `health` block
+Portal notes: the AP password is per-device (derived from the MAC, see
+above) but the portal itself is plaintext HTTP — anyone in range can
+sniff the home WiFi credentials you type. Commission in a trusted
+location. Remote diagnosis beyond the `health` block
 in telemetry is serial-only (`pio device monitor`, 115200).
 
 ## Calibrate (per probe, per install — server-side)
@@ -57,9 +58,8 @@ rules in [08-server-changes](08-server-changes.md)):
 - light: covered module (DARK) vs grow light at canopy (BRIGHT).
   Scale is inverted (dark ≈ 4095).
 
-The device holds no calibration endpoints (`APP_*_RAW_*` build
-constants are legacy placeholders the server ignores — `raw` is
-authoritative). Moving a probe invalidates its stored ends.
+The device holds no calibration endpoints — `raw` is authoritative and
+the server owns the mapping. Moving a probe invalidates its stored ends.
 
 ## Soak test (before install)
 
@@ -79,7 +79,7 @@ sent config rev.
 | Won't boot after wiring | GPIO12 (MTDI) must float LOW — confirm U1-6 is unconnected. Then IO0–GND link left on. |
 | Boot loop / brownout reset | 5V rail under load; cable, pack charge, C2 solder. |
 | Camera init fails | ribbon seating; PSRAM enabled; no wire on camera pins (firmware aborts tell you which). |
-| ADC reads 0/4095 stuck | wrong `APP_*_RAW_*` ends; sensor on 5V instead of 3V3; R6/C1 solder. |
+| ADC reads 0/4095 stuck | wrong server-side ends; sensor on 5V instead of 3V3; R6/C1 solder. |
 | DHT NaN | 4.7k R1 present? 3V3 power? leads < 1 m? pump EMI — reroute. |
 | Pump never runs | gate node 0/3.3V on command? flyback orientation (D1 K→+5V)? separate pump supply ground shared? |
 | Light never latches | GPIO4 gate drive? strip polarity (+5V common)? server actually sending `light` command? |
@@ -88,9 +88,12 @@ sent config rev.
 
 ## Limits
 
-- No OTA: updates are reflash-over-USB only. `minFirmware` /
-  `firmwareUrl` are reserved future fields, ignored by the device.
+- OTA offers (`minFirmware` + `firmwareUrl`) upgrade the inactive slot
+  and restart; no rollback slot, so keep the previous binary server-side
+  for re-offer. The light latch does not survive a reboot.
 - Pump doses cap at 30 s by contract; the server also clamps.
+- Erasing NVS also clears the assigned device ID and boot count — the
+  unit returns unclaimed and must be re-claimed by the server.
 - Beyond the `health` telemetry block, diagnosis is serial-only.
 
 ## Erase / recover

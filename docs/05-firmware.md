@@ -7,14 +7,15 @@ ESP-IDF 5.5, PlatformIO, C17. Entry `app_main` in `src/main.c`.
 ```
 sensors_read_all()          # ADC burst + DHT, WiFi still STOPPED
 network_manager_start_station()   # connect, 12 s timeout
-upload_sensor_snapshot()    # POST sensors, 2 tries, apply commands + config
+upload_sensor_snapshot()    # POST sensors, 2 tries, apply commands + config + claim
 upload_camera_image()       # if due (build-time 900 s)
+ota_service_run_if_needed() # upgrade + restart when server offers newer build
 network_manager_stop()      # WiFi fully stopped again
 delay_with_housekeeping()   # 250 ms ticks service the pump timer
 ```
 
 The sensor interval is the server-pushed `reportIntervalSec`
-(10–3600 s, persisted in NVS v5, echoed as `appliedConfigRev`) when
+(10–3600 s, persisted in NVS v6, echoed as `appliedConfigRev`) when
 one has been received, else the build default
 `APP_SENSOR_INTERVAL_SEC` (15 s). The camera period stays build-time
 (`APP_CAMERA_INTERVAL_SEC`, 900 s) and is not server-configurable.
@@ -39,11 +40,13 @@ portal instead of wedging.
 |---|---|
 | `board_profile.{h,c}` | THE pin map (must match 01-pinout). Camera bus + conflict check. |
 | `sensors.{h,c}` | 8-sample ADC average (ADC2 soil/light, ADC1 water), raw capture + transitional percent, DHT poll, continuous-3V3 water probe, camera-bus abort guard. |
-| `actuators.{h,c}` | GPIO2/4 init (no internal pull — external network owns boot level), one-shot timed pump (30 s contract cap), latched light, conflict abort guard. |
+| `actuators.{h,c}` | GPIO2/4 init (no internal pull — external network owns boot level), one-shot timed pump (30 s contract cap), latched light with 24 h failsafe auto-off, conflict abort guard. |
 | `api_client.{h,c}` | sensor JSON POST (raw envelope + `health` + `acceptedCommandIds`, Bearer token when configured) with command/config parse (`pump durationMs` ≤ 30 s with water check, `light` bool-or-number), JPEG POST with `X-Device-Id` + token. |
-| `app_config.{h,c}` | NVS `growmate/settings` v5: WiFi SSID/pass + provisioned flag + applied config rev + report interval. |
+| `app_config.{h,c}` | NVS `growmate/settings` v6: WiFi SSID/pass + provisioned flag + assigned device ID + boot count + applied config rev + report interval. |
+| `device_identity.{h,c}` | MAC birth ID, effective ID, derived onboarding AP credentials. |
+| `ota_service.{h,c}` | semver compare + HTTPS OTA + restart. |
 | `network_manager.{h,c}` | STA connect/scan + onboarding AP + stop. |
-| `onboarding.{h,c}` | blocking portal `GrowMate-IAET01` / `growmate` at 192.168.4.1: `GET /`, `GET /api/config`, `POST /api/config{wifiSsid,wifiPassword}`, `GET /api/networks`. Plaintext HTTP, shared password — commission in a trusted location (see 07-operations). |
+| `onboarding.{h,c}` | blocking portal at 192.168.4.1: `GET /`, `GET /api/config`, `POST /api/config{wifiSsid,wifiPassword}`, `GET /api/networks`. AP name `GrowMate-<last6 of device ID>`, WPA2 password `GrowMate-<last6 of MAC>` (per-device; read it from the boot log). Plaintext HTTP — commission in a trusted location (see 07-operations). |
 | `camera_service.{h,c}` | PWDN pulse, init/deinit, capture. |
 | `app_build_config.h` | device ID, firmware version, API URLs, token, sensor/camera intervals. Per-device values: edit + reflash. |
 
@@ -51,8 +54,9 @@ portal instead of wedging.
 
 - **Build time** (`app_build_config.h`): identity, token, URLs,
   intervals — reflash to change.
-- **Runtime**: WiFi credentials via portal (NVS); report interval +
-  config rev via server push (NVS v5, echoed as `appliedConfigRev`).
+- **Runtime**: WiFi credentials via portal (NVS); assigned device ID via
+  server claim (NVS v6, effective immediately); report interval +
+  config rev via server push (NVS v6, echoed as `appliedConfigRev`).
   The old docs claimed portal-editable device IDs/URLs/calibration —
   that was never implemented and is removed from this doc set.
   Calibration lives server-side ([03-sensors-actuators](03-sensors-actuators.md)).
@@ -66,10 +70,14 @@ portal instead of wedging.
 - Status handling: 2xx ok; 429 honors `Retry-After`; other 4xx are
   fatal-for-request (no retry, NO portal reopen); 5xx/transport errors
   retry with backoff.
-- `deviceId`/`firmwareVersion` are compile-time constants, not per-flash
-  provisioned. Per-device claiming is a server-side TODO.
-- No OTA (single-app partition, no rollback slot). `minFirmware` /
-  `firmwareUrl` are reserved response fields and are ignored.
+- `deviceId`/`firmwareVersion` are compile-time defaults; the server
+  assigns the pod ID via the claim flow (`claim: {deviceId}`, persisted
+  NVS v6, effective immediately). Birth identity is always the WiFi MAC
+  (`hardwareId`).
+- OTA is live: dual 1.5 MB slots, server offers `minFirmware` +
+  `firmwareUrl`, device upgrades when newer (never mid pump-dose) and
+  restarts. No rollback slot — keep the previous binary to re-offer.
+  A latched light goes dark across the reboot; the server refreshes it.
 - Remote diagnosis beyond the `health` block is serial-only
   (`pio device monitor`, 115200).
 - Portal `httpd` worker task runs with an 8 KB stack (set in code at

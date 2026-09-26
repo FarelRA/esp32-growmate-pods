@@ -7,8 +7,11 @@
 #include <string.h>
 #include <strings.h>
 
+#include <ctype.h>
+
 #include "app_build_config.h"
 #include "cJSON.h"
+#include "device_identity.h"
 #include "esp_crt_bundle.h"
 #include "esp_http_client.h"
 #include "esp_log.h"
@@ -17,6 +20,7 @@
 #include "esp_wifi.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
+#include "ota_service.h"
 
 #define HTTP_RESPONSE_BUFFER_SIZE 3072
 #define SENSOR_POST_TIMEOUT_MS 12000
@@ -463,12 +467,74 @@ static void apply_config_push(const cJSON *root, app_config_t *config)
     }
 }
 
+static void apply_claim(const cJSON *root, app_config_t *config)
+{
+    cJSON *claim = cJSON_GetObjectItemCaseSensitive(root, "claim");
+    if (!cJSON_IsObject(claim))
+    {
+        return;
+    }
+
+    cJSON *id = cJSON_GetObjectItemCaseSensitive(claim, "deviceId");
+    if (!cJSON_IsString(id) || id->valuestring == NULL || id->valuestring[0] == '\0')
+    {
+        return;
+    }
+    if (strcmp(device_effective_id(config), id->valuestring) == 0)
+    {
+        return;
+    }
+
+    bool sane = strlen(id->valuestring) <= APP_CONFIG_MAX_DEVICE_ID_LEN;
+    for (const char *p = id->valuestring; sane && *p != '\0'; ++p)
+    {
+        sane = isalnum((unsigned char) *p) || *p == '-' || *p == '_';
+    }
+    if (!sane)
+    {
+        ESP_LOGW(TAG, "Claim with bad deviceId ignored");
+        return;
+    }
+
+    char previous[APP_CONFIG_MAX_DEVICE_ID_LEN + 1];
+    snprintf(previous, sizeof(previous), "%s", device_effective_id(config));
+    snprintf(config->device_id, sizeof(config->device_id), "%s", id->valuestring);
+    if (app_config_save(config) != ESP_OK)
+    {
+        ESP_LOGW(TAG, "Claimed as %s but NVS save failed", config->device_id);
+        return;
+    }
+    ESP_LOGW(TAG, "Claimed: %s -> %s", previous, config->device_id);
+}
+
+static void parse_firmware_offer(const cJSON *root, ota_update_t *ota)
+{
+    if (ota == NULL)
+    {
+        return;
+    }
+
+    cJSON *version = cJSON_GetObjectItemCaseSensitive(root, "minFirmware");
+    cJSON *url = cJSON_GetObjectItemCaseSensitive(root, "firmwareUrl");
+    if (!cJSON_IsString(version) || version->valuestring == NULL || version->valuestring[0] == '\0' ||
+        !cJSON_IsString(url) || url->valuestring == NULL || url->valuestring[0] == '\0')
+    {
+        return;
+    }
+
+    snprintf(ota->version, sizeof(ota->version), "%s", version->valuestring);
+    snprintf(ota->url, sizeof(ota->url), "%s", url->valuestring);
+    ota->available = true;
+}
+
 static void parse_response(const char *response_json,
                            const sensor_snapshot_t *snapshot,
                            device_commands_t *commands,
-                           app_config_t *config)
+                           app_config_t *config,
+                           ota_update_t *ota)
 {
     memset(commands, 0, sizeof(*commands));
+    ota_update_clear(ota);
     if (response_json == NULL || response_json[0] == '\0')
     {
         return;
@@ -483,6 +549,8 @@ static void parse_response(const char *response_json,
 
     parse_commands(root, snapshot, commands);
     apply_config_push(root, config);
+    apply_claim(root, config);
+    parse_firmware_offer(root, ota);
 
     cJSON_Delete(root);
 }
@@ -491,7 +559,8 @@ esp_err_t api_client_upload_sensor_data(const app_config_t *config,
                                         const sensor_snapshot_t *snapshot,
                                         bool pump_enabled,
                                         bool light_enabled,
-                                        device_commands_t *commands)
+                                        device_commands_t *commands,
+                                        ota_update_t *ota)
 {
     if (config == NULL || snapshot == NULL || commands == NULL)
     {
@@ -519,7 +588,11 @@ esp_err_t api_client_upload_sensor_data(const app_config_t *config,
     snprintf(snapshot_id, sizeof(snapshot_id), "B%u-%u",
              (unsigned int) config->boot_count, (unsigned int) snapshot->seq);
 
-    cJSON_AddStringToObject(root, "deviceId", APP_DEVICE_ID);
+    char hwid[13];
+    device_identity_hwid(hwid);
+
+    cJSON_AddStringToObject(root, "deviceId", device_effective_id(config));
+    cJSON_AddStringToObject(root, "hardwareId", hwid);
     cJSON_AddStringToObject(root, "firmwareVersion", APP_FIRMWARE_VERSION);
     cJSON_AddStringToObject(root, "snapshotId", snapshot_id);
     cJSON_AddNumberToObject(root, "ageMs", snapshot->age_ms);
@@ -595,7 +668,7 @@ esp_err_t api_client_upload_sensor_data(const app_config_t *config,
     }
 
     accepted_ids_clear();
-    parse_response(response_buffer, snapshot, commands, (app_config_t *) config);
+    parse_response(response_buffer, snapshot, commands, (app_config_t *) config, ota);
 
     return ESP_OK;
 }
@@ -604,8 +677,7 @@ esp_err_t api_client_upload_image_bytes(const app_config_t *config,
                                         const uint8_t *image_data,
                                         size_t image_len)
 {
-    (void) config;
-    if (image_data == NULL || image_len == 0)
+    if (config == NULL || image_data == NULL || image_len == 0)
     {
         return ESP_ERR_INVALID_ARG;
     }
@@ -616,6 +688,6 @@ esp_err_t api_client_upload_image_bytes(const app_config_t *config,
                                image_data,
                                image_len,
                                "image/jpeg",
-                               APP_DEVICE_ID,
+                               device_effective_id(config),
                                IMAGE_POST_TIMEOUT_MS);
 }
