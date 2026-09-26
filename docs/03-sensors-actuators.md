@@ -52,10 +52,11 @@ and humidity unavailable (`NaN`) rather than blocking the cycle.
 | Protection | D1 1N5819 flyback, cathode +5V, anode PUMP_LO | strip modules are LED+resistor; no flyback needed |
 
 Behavior (`src/actuators.c`): pump command `{durationMs}` turns the FET on
-and auto-offs via an `esp_timer` deadline (serviced every 250 ms in
-`delay_with_housekeeping`); the contract caps doses at 30 s
-(`0 < durationMs <= 30000`, water channel must read — see
-[06-api](06-api.md)). Light command latches on/off. Both report back
+and auto-offs via an authoritative `esp_timer` one-shot (plus a 250 ms
+`actuators_tick` backup in `delay_with_housekeeping`); the contract caps
+doses at 30 s (`0 < durationMs <= 30000`, water channel must read — see
+[06-api](06-api.md)). Light command latches on/off with a 24 h failsafe
+auto-off refreshed by re-sent "on". Both report back
 in `currentState`, and command ids are echoed in `acceptedCommandIds`.
 
 GPIO4 also drives the onboard flash LED (voltage-divider fed, glows dimly

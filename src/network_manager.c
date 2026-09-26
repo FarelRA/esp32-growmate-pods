@@ -112,6 +112,9 @@ esp_err_t network_manager_stop(void)
 
 esp_err_t network_manager_start_station(const app_config_t *config, uint32_t timeout_ms)
 {
+    if (config == NULL) {
+        return ESP_ERR_INVALID_ARG;
+    }
     ESP_RETURN_ON_ERROR(network_manager_stop_checked(), TAG, "failed to stop wifi before station start");
 
     wifi_config_t wifi_config = {0};
@@ -151,6 +154,9 @@ esp_err_t network_manager_start_station(const app_config_t *config, uint32_t tim
 
 esp_err_t network_manager_start_onboarding_ap(const char *ap_name, const char *ap_password)
 {
+    if (ap_name == NULL || ap_name[0] == '\0') {
+        return ESP_ERR_INVALID_ARG;
+    }
     ESP_RETURN_ON_ERROR(network_manager_stop_checked(), TAG, "failed to stop wifi before onboarding ap");
 
     wifi_config_t ap_config = {0};
@@ -179,6 +185,12 @@ esp_err_t network_manager_start_onboarding_ap(const char *ap_name, const char *a
 
 esp_err_t network_manager_scan(network_scan_result_t *results, size_t max_results, size_t *result_count)
 {
+    if (results == NULL || result_count == NULL || max_results == 0) {
+        return ESP_ERR_INVALID_ARG;
+    }
+    if (max_results > NETWORK_MANAGER_MAX_SCAN_RESULTS) {
+        max_results = NETWORK_MANAGER_MAX_SCAN_RESULTS;
+    }
     wifi_scan_config_t scan_config = {
         .show_hidden = false,
         .scan_type = WIFI_SCAN_TYPE_ACTIVE,

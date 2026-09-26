@@ -84,7 +84,7 @@ sent config rev.
 | Pump never runs | gate node 0/3.3V on command? flyback orientation (D1 K→+5V)? separate pump supply ground shared? |
 | Light never latches | GPIO4 gate drive? strip polarity (+5V common)? server actually sending `light` command? |
 | Portal never opens | configured AP already provisioned — erase flash to force (`pio run --target erase`). |
-| Upload 4xx/5xx | URL/token constants, server allowlist for the compile-time `deviceId`; 4xx needs operator action (device will not portal-loop on it). |
+| Upload 4xx/5xx | URL/token constants, server allowlist for the effective `deviceId` (claimed pod ID, else build default); 4xx needs operator action (device will not portal-loop on it). |
 
 ## Limits
 

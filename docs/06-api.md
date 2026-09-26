@@ -1,7 +1,9 @@
 # Server contract (Pods)
 
-Two endpoints, canonical versioned paths. Base URL, device ID, firmware
-version, and token are build-time constants (`src/app_build_config.h`).
+Two endpoints, canonical versioned paths. Base URL, firmware
+version, and token are build-time constants (`src/app_build_config.h`);
+`deviceId` is the effective identity (server-claimed pod ID persisted in
+NVS, else the build default) plus the immutable MAC `hardwareId`.
 
 | Channel | Method + path | Body |
 |---|---|---|
@@ -136,7 +138,7 @@ a failed frame retries at the next due slot.
 ```bash
 curl -X POST "$SENSOR_URL" -H 'Content-Type: application/json' \
   -H 'Authorization: Bearer TEST-TOKEN' -d \
-  '{"deviceId":"TEST01","firmwareVersion":"2.0.0","snapshotId":"B1-1", \
+  '{"deviceId":"TEST01","hardwareId":"7C87CE1A2B3C","firmwareVersion":"2.0.0","snapshotId":"B1-1", \
     "ageMs":100,"appliedConfigRev":0, \
     "sensors":[{"kind":"soil","unit":"%","raw":2048}], \
     "acceptedCommandIds":[], \

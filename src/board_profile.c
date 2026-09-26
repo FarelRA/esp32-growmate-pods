@@ -113,6 +113,9 @@ bool board_profile_gpio_conflicts_with_camera(const board_profile_t *profile, gp
     };
 
     for (size_t i = 0; i < sizeof(camera_pins) / sizeof(camera_pins[0]); ++i) {
+        if (camera_pins[i] == GPIO_NUM_NC) {
+            continue;
+        }
         if (camera_pins[i] == gpio) {
             return true;
         }

@@ -76,9 +76,9 @@ Storage API needs:
 - Linear interpolation between the stored ends, clamped to 0–100%.
   Moving a probe or changing its supply invalidates its ends —
   require recalibration, do not silently keep stale ends.
-- Ignore the transitional device-side `value` field where present;
-  `raw` is authoritative. DHT entries (`temperature` °C,
-  `air` %RH) arrive native and need no mapping.
+- Analog entries carry `raw` only (no device-side percent field).
+  DHT entries (`temperature` °C, `air` %RH) arrive native and need
+  no mapping.
 
 ## 6. Config push schema + rev discipline
 
@@ -122,7 +122,7 @@ dhtFails, adcFails}` on every POST. Suggested alerts:
 | `rssi` | `< -75 dBm` sustained — AP placement |
 | `heapFree` | trending down across boots — leak, capture a report |
 | `dhtFails` / `adcFails` | rising — sensor wiring/EMI (see 07-operations) |
-| `resetReason` | anything except `power-on` / `watchdog` baseline — investigate |
+| `resetReason` | anything except the `power-on` baseline — investigate (`sw` after OTA is normal; `panic`/`brownout`/`power-glitch`/`wdt`/`task-wdt`/`int-wdt`/`cpu-lockup` always are) |
 
 Dashboard per device: last `snapshotId`, `appliedConfigRev` vs sent
 `rev` (drift = config not landing), pending unacked command ids.

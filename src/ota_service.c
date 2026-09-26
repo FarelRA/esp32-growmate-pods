@@ -24,7 +24,19 @@ void ota_update_clear(ota_update_t *update)
 static bool parse_version(const char *text, int parts[3])
 {
     parts[0] = parts[1] = parts[2] = 0;
-    if (text == NULL || text[0] == '\0') {
+    if (text == NULL || text[0] == '\0' || strlen(text) >= 32) {
+        return false;
+    }
+    // Strict semver-ish: digits and dots only, at least one digit.
+    bool has_digit = false;
+    for (const char *p = text; *p != '\0'; ++p) {
+        if (*p >= '0' && *p <= '9') {
+            has_digit = true;
+        } else if (*p != '.') {
+            return false;
+        }
+    }
+    if (!has_digit) {
         return false;
     }
     int matched = sscanf(text, "%d.%d.%d", &parts[0], &parts[1], &parts[2]);
@@ -55,6 +67,10 @@ void ota_service_run_if_needed(const ota_update_t *update)
         return;
     }
     if (!version_is_newer(APP_FIRMWARE_VERSION, update->version)) {
+        return;
+    }
+    if (strncmp(update->url, "https://", 8) != 0) {
+        ESP_LOGW(TAG, "OTA refused: URL must be https");
         return;
     }
     // Never reboot mid-dose: the restart would cut the pump timer short

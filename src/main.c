@@ -56,7 +56,8 @@ static esp_err_t upload_sensor_snapshot(const app_config_t *config,
         if (err == ESP_OK) {
             break;
         }
-        vTaskDelay(pdMS_TO_TICKS(1500));
+        // Keep the pump safety net serviced even while backing off.
+        delay_with_housekeeping(profile, 1500);
     }
 
     if (err == ESP_OK) {
@@ -95,6 +96,7 @@ static esp_err_t upload_camera_image(const board_profile_t *profile, const app_c
         if (err == ESP_OK) {
             break;
         }
+        actuators_tick(profile);
         vTaskDelay(pdMS_TO_TICKS(1500));
     }
 
@@ -155,7 +157,10 @@ void app_main(void)
         ota_update_clear(&ota);
 
         snapshot.seq = seq++;
-        snapshot.age_ms = (uint32_t) (esp_timer_get_time() / 1000);
+        // ageMs = sampling-to-POST latency. Stamp the sample time BEFORE
+        // the (slow) ADC+DHT read; the value is filled in right before
+        // the POST so sampleTime = receivedAt - ageMs holds server-side.
+        int64_t sample_t_us = esp_timer_get_time();
 
         err = sensors_read_all(profile, &snapshot);
         if (err != ESP_OK) {
@@ -187,6 +192,10 @@ void app_main(void)
             } else {
                 station_started = true;
 
+                int64_t now_us = esp_timer_get_time();
+                snapshot.age_ms = now_us >= sample_t_us
+                    ? (uint32_t) ((now_us - sample_t_us) / 1000LL)
+                    : 0;
                 err = upload_sensor_snapshot(&config, &snapshot, profile, &ota);
                 if (err == ESP_OK) {
                     consecutive_failures = 0;

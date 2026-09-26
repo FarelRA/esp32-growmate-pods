@@ -21,7 +21,8 @@ typedef struct
     char wifi_ssid[APP_CONFIG_MAX_WIFI_SSID_LEN + 1];
     char wifi_password[APP_CONFIG_MAX_WIFI_PASSWORD_LEN + 1];
     // Assigned pod identity from the server claim flow. Empty = unclaimed,
-    // in which case the hardware MAC doubles as the birth identity.
+    // in which case telemetry carries the build default in deviceId and
+    // the WiFi MAC separately in hardwareId (see device_identity.h).
     char device_id[APP_CONFIG_MAX_DEVICE_ID_LEN + 1];
     uint32_t boot_count;
     uint32_t report_interval_sec;

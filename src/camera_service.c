@@ -22,9 +22,11 @@ esp_err_t camera_service_init(const board_profile_t *profile)
     }
 
     camera_config_t config = board_profile_build_camera_config(profile);
-    config.frame_size = esp_psram_is_initialized() ? FRAMESIZE_SVGA : FRAMESIZE_VGA;
+    bool psram = esp_psram_is_initialized();
+    config.frame_size = psram ? FRAMESIZE_SVGA : FRAMESIZE_VGA;
     config.fb_count = 1;
-    config.jpeg_quality = esp_psram_is_initialized() ? 12 : 14;
+    config.jpeg_quality = psram ? 12 : 14;
+    config.fb_location = psram ? CAMERA_FB_IN_PSRAM : CAMERA_FB_IN_DRAM;
 
     if (config.pin_pwdn != GPIO_NUM_NC) {
         gpio_config_t pwdn_config = {

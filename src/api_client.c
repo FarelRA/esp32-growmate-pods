@@ -522,9 +522,40 @@ static void parse_firmware_offer(const cJSON *root, ota_update_t *ota)
         return;
     }
 
+    // Reject overlong offers instead of truncating into a corrupt URL.
+    if (strlen(version->valuestring) >= sizeof(ota->version) ||
+        strlen(url->valuestring) >= sizeof(ota->url))
+    {
+        ESP_LOGW(TAG, "Firmware offer overlong, ignored");
+        return;
+    }
+
     snprintf(ota->version, sizeof(ota->version), "%s", version->valuestring);
     snprintf(ota->url, sizeof(ota->url), "%s", url->valuestring);
     ota->available = true;
+}
+
+static const char *reset_reason_str(esp_reset_reason_t reason)
+{
+    switch (reason) {
+        case ESP_RST_POWERON: return "power-on";
+        case ESP_RST_EXT: return "ext";
+        case ESP_RST_SW: return "sw";
+        case ESP_RST_PANIC: return "panic";
+        case ESP_RST_INT_WDT: return "int-wdt";
+        case ESP_RST_TASK_WDT: return "task-wdt";
+        case ESP_RST_WDT: return "wdt";
+        case ESP_RST_DEEPSLEEP: return "deep-sleep";
+        case ESP_RST_BROWNOUT: return "brownout";
+        case ESP_RST_SDIO: return "sdio";
+        case ESP_RST_USB: return "usb";
+        case ESP_RST_JTAG: return "jtag";
+        case ESP_RST_EFUSE: return "efuse";
+        case ESP_RST_PWR_GLITCH: return "power-glitch";
+        case ESP_RST_CPU_LOCKUP: return "cpu-lockup";
+        case ESP_RST_UNKNOWN:
+        default: return "unknown";
+    }
 }
 
 static void parse_response(const char *response_json,
@@ -638,7 +669,7 @@ esp_err_t api_client_upload_sensor_data(const app_config_t *config,
     cJSON_AddNumberToObject(health, "rssi", rssi);
     cJSON_AddNumberToObject(health, "uptimeS", (double) (esp_timer_get_time() / 1000000LL));
     cJSON_AddNumberToObject(health, "bootCount", config->boot_count);
-    cJSON_AddNumberToObject(health, "resetReason", (int) esp_reset_reason());
+    cJSON_AddStringToObject(health, "resetReason", reset_reason_str(esp_reset_reason()));
     cJSON_AddNumberToObject(health, "dhtFails", dht_fails);
     cJSON_AddNumberToObject(health, "adcFails", adc_fails);
 

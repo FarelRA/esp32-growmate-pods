@@ -39,7 +39,7 @@ portal instead of wedging.
 | File | Owns |
 |---|---|
 | `board_profile.{h,c}` | THE pin map (must match 01-pinout). Camera bus + conflict check. |
-| `sensors.{h,c}` | 8-sample ADC average (ADC2 soil/light, ADC1 water), raw capture + transitional percent, DHT poll, continuous-3V3 water probe, camera-bus abort guard. |
+| `sensors.{h,c}` | 8-sample ADC average (ADC2 soil/light, ADC1 water), raw-only capture, DHT poll, continuous-3V3 water probe, camera-bus abort guard. |
 | `actuators.{h,c}` | GPIO2/4 init (no internal pull — external network owns boot level), one-shot timed pump (30 s contract cap), latched light with 24 h failsafe auto-off, conflict abort guard. |
 | `api_client.{h,c}` | sensor JSON POST (raw envelope + `health` + `acceptedCommandIds`, Bearer token when configured) with command/config parse (`pump durationMs` ≤ 30 s with water check, `light` bool-or-number), JPEG POST with `X-Device-Id` + token. |
 | `app_config.{h,c}` | NVS `growmate/settings` v6: WiFi SSID/pass + provisioned flag + assigned device ID + boot count + applied config rev + report interval. |

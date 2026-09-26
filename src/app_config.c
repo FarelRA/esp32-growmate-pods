@@ -7,6 +7,19 @@
 #include "nvs.h"
 #include "nvs_flash.h"
 
+// NVS v5 layout (pre-claim): identical to app_config_t minus device_id.
+// Kept only for OTA migration; new writes are always v6.
+typedef struct
+{
+    uint16_t version;
+    bool provisioned;
+    char wifi_ssid[APP_CONFIG_MAX_WIFI_SSID_LEN + 1];
+    char wifi_password[APP_CONFIG_MAX_WIFI_PASSWORD_LEN + 1];
+    uint32_t boot_count;
+    uint32_t report_interval_sec;
+    uint32_t applied_config_rev;
+} app_config_v5_t;
+
 static void ensure_terminated(app_config_t *config)
 {
     config->wifi_ssid[APP_CONFIG_MAX_WIFI_SSID_LEN] = '\0';
@@ -49,7 +62,10 @@ void app_config_sanitize(app_config_t *config)
     if (config->device_id[0] == '\0') {
         strlcpy(config->device_id, APP_DEVICE_ID, sizeof(config->device_id));
     }
-    trim_ascii(config->wifi_password);
+    // NOTE: wifi_password is intentionally NOT trimmed. Leading/trailing
+    // spaces are legal in WPA2 passphrases; stripping them breaks auth
+    // with a misleading "portal doesn't work" symptom.
+    ensure_terminated(config);
 
     if (config->version != APP_CONFIG_VERSION) {
         config->version = APP_CONFIG_VERSION;
@@ -76,15 +92,46 @@ esp_err_t app_config_load(app_config_t *config)
 
     size_t required_size = sizeof(*config);
     err = nvs_get_blob(handle, APP_CONFIG_STORAGE_KEY, config, &required_size);
-    nvs_close(handle);
-
     if (err != ESP_OK) {
+        nvs_close(handle);
         app_config_set_defaults(config);
         return err;
     }
 
-    if (required_size != sizeof(*config) || config->version != APP_CONFIG_VERSION) {
+    // Migrate a v5 blob (same layout minus device_id) instead of wiping
+    // provisioning on OTA. Size mismatch otherwise means corruption.
+    if (required_size != sizeof(*config)) {
+        esp_err_t migrate_err = ESP_ERR_INVALID_SIZE;
+        if (required_size == sizeof(app_config_v5_t)) {
+            app_config_v5_t legacy = {0};
+            size_t legacy_size = sizeof(legacy);
+            if (nvs_get_blob(handle, APP_CONFIG_STORAGE_KEY, &legacy, &legacy_size) == ESP_OK &&
+                legacy_size == sizeof(legacy)) {
+                nvs_close(handle);
+                memset(config, 0, sizeof(*config));
+                config->version = APP_CONFIG_VERSION;
+                config->provisioned = legacy.provisioned;
+                memcpy(config->wifi_ssid, legacy.wifi_ssid, sizeof(config->wifi_ssid));
+                memcpy(config->wifi_password, legacy.wifi_password, sizeof(config->wifi_password));
+                config->boot_count = legacy.boot_count;
+                config->report_interval_sec = legacy.report_interval_sec;
+                config->applied_config_rev = legacy.applied_config_rev;
+                strlcpy(config->device_id, APP_DEVICE_ID, sizeof(config->device_id));
+                app_config_sanitize(config);
+                (void) app_config_save(config);
+                return ESP_OK;
+            }
+        }
+        nvs_close(handle);
         app_config_set_defaults(config);
+        return migrate_err;
+    }
+    nvs_close(handle);
+
+    // Same-size blob from an older version: preserve credentials, bump.
+    if (config->version != APP_CONFIG_VERSION) {
+        app_config_sanitize(config);
+        (void) app_config_save(config);
         return ESP_ERR_INVALID_VERSION;
     }
 
