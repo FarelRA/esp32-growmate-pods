@@ -37,7 +37,7 @@ portal instead of wedging.
 | `api_client.{h,c}` | sensor JSON POST + command parse (`pump durationMs`, `light enabled`), JPEG POST with `X-Device-Id`. |
 | `app_config.{h,c}` | NVS `growmate/settings` v4: WiFi SSID/pass + provisioned flag only. |
 | `network_manager.{h,c}` | STA connect/scan + onboarding AP + stop. |
-| `onboarding.{h,c}` | blocking portal `GrowMate-IAET01` / `growmate` at 192.168.4.1: `GET /`, `/api/networks`, `POST /api/config{ssid,pass}`. |
+| `onboarding.{h,c}` | blocking portal `GrowMate-IAET01` / `growmate` at 192.168.4.1: `GET /`, `GET /api/config`, `POST /api/config{ssid,pass}`, `GET /api/networks`. |
 | `camera_service.{h,c}` | PWDN pulse, init/deinit, capture. |
 | `app_build_config.h` | device ID, firmware version, API URLs, intervals, calibration endpoints. Per-device values: edit + reflash. |
 
@@ -49,16 +49,18 @@ portal instead of wedging.
   claimed portal-editable device IDs/URLs/calibration — that was never
   implemented and is removed from this doc set.
 
-## Known firmware limits (honest list)
+## Known firmware limits
 
-- No auth header yet (`X-Device-Id` only). Server must allowlist device IDs
+- No auth on either endpoint. Sensor POSTs carry `deviceId` in the JSON
+  body only (no header); camera POSTs add an `X-Device-Id` header. Both
+  are identifiers, not credentials — server must allowlist device IDs
   until auth lands.
 - `deviceId`/`firmwareVersion` are compile-time constants, not per-flash
   provisioned. Per-device claiming is a server-side TODO.
 - No deep sleep: ~60 mA idle on USB/pack. Battery runtime ≈ pack/average
   draw; size accordingly.
 
-## Dependencies (all managed, nothing vendored)
+## Dependencies
 
 - `src/idf_component.yml` declares `esp-idf-lib/dht ^1.2.0` (DHT22 reads —
   stateless, no ISR service) and `espressif/esp32-camera ^2.1.8`. The

@@ -2,8 +2,9 @@
 
 Verified against: ESP32 datasheet (boot configs), ESP Hardware Design
 Guidelines (strapping + ADC tables), AI-Thinker fixed camera/SD/PSRAM map.
-No eFuse burn, no SD card, PSRAM kept for the camera, no soldering for the
-core build.
+No eFuse burn, no SD card, PSRAM kept for the camera. No soldering on
+the module itself (header-only, no test-point taps); the carrier's
+passives, headers, and SW1 solder as normal.
 
 ## Carrier map (U1 = Conn_02x08_Odd_Even, odd = left col, even = right col)
 
@@ -18,7 +19,6 @@ core build.
 | 13, 15 | GND | GND | — | |
 | 2 | PUMP_GATE | GPIO2 | ADC2_CH2 | output. Weak pulldown at reset + ext 100k (R3) = MOSFET OFF through the ~3 ms strapping window. GPIO2 strapping wants LOW/float: satisfied. |
 | 4 | LIGHT_GATE | GPIO4 | ADC2_CH0 | output. Weak pulldown at reset + ext 100k (R5) = OFF at boot. GPIO4 is **not** a strapping pin (official list: 0, 2, 5, 12/MTDI, 15/MTDO). Shares the onboard flash LED: documented, kept as camera flash. |
-| 6 | UNUSED | GPIO12 | ADC2_CH5 | **leave unconnected.** MTDI must read LOW at boot for 3V3 flash; floating + internal weak pulldown guarantees that with nothing to get wrong. Keep it off the probe, off any rail. |
 | 8 | SOIL_AO | GPIO13 | ADC2_CH4 | input. No strapping, no boot-PWM: the safest analog pin on the header. |
 | 10 | LIGHT_AO | GPIO14 | ADC2_CH6 | input. Not a strapping pin. GPIO14 can drive boot-PWM, so the module AO comes through a 1k series (R6) + 100n to GND (C1): no contention, filtered ADC. |
 | 12 | DHT_DATA | GPIO15 | ADC2_CH3 | digital. MTDO needs HIGH at boot: DHT idles HIGH and R1 (4.7k PU) holds it there. DHT is digital so the ADC2/WiFi conflict does not apply. |
@@ -33,5 +33,5 @@ core build.
 | 1, 3 | UART0 flash/logs. Reclaim only if you give up serial flashing. |
 | 6–11 | internal SPI flash. |
 | 16, 17 | PSRAM (camera needs it; GPIO16 use = boot loops). |
-| 12 as output / pull-up | MTDI must read LOW or the flash drops to 1.8 V and the board bricks until power-cycle with GPIO12 LOW. Hence GPIO12 is left unconnected (float + weak pulldown = LOW, nothing to get wrong) and the probe lives on strapping-free GPIO33. |
+| 12 as output / pull-up | MTDI must read LOW or the flash drops to 1.8 V and the board bricks until power-cycle with GPIO12 LOW. |
 | SD slot (2, 4, 12, 13, 14, 15 in SD_MMC mode) | firmware never inits SD. All six are carrier GPIO instead. |

@@ -37,8 +37,8 @@ Notation: `U1-5` = carrier header U1 pin 5. `Q1-G/D/S` = gate/drain/source.
 | Net | Nodes |
 |---|---|
 | +5V | MT3608 5V out → U1-1, U1-16, J4-4, M1-1, D1-K, D2-A, C2-1, C3-1 |
-| +3V3 | U1-11 (module AMS1117 out) → J1-1, J2-1, J3-1, U2-VDD, R1-1, R8-1 |
-| GND | star → U1-3, U1-13, U1-15, J4-3, J1-3, J2-3, J3-3, U2-GND, Q1-S, Q2-S, R3-2, R5-2, R9-2, SW1-2, C1-2, C2-2, C3-2 |
+| +3V3 | U1-11 (module AMS1117 out) → J1-1, J2-1, J3-1, U2-VDD, C4-1 (at U2), R1-1, R8-1 |
+| GND | star → U1-3, U1-13, U1-15, J4-3, J1-3, J2-3, J3-3, U2-GND, C4-2 (at U2), Q1-S, Q2-S, R3-2, R5-2, R9-2, SW1-2, C1-2, C2-2, C3-2 |
 | U0RXD | U1-5 ↔ J4-1 (adapter TX) |
 | U0TXD | U1-7 ↔ J4-2 (adapter RX) |
 | BOOT_IO0 | U1-9 ↔ R8-2; U1-9 ↔ SW1-1 (SW1-2 → GND). R8-1 → +3V3 (10k PU = SPI boot HIGH) |
@@ -57,7 +57,7 @@ Notation: `U1-5` = carrier header U1 pin 5. `Q1-G/D/S` = gate/drain/source.
 
 U2 pin 3: No-Connect, left open.
 
-## Parts list (23 refs)
+## Parts list (24 refs)
 
 | Ref | Value | Footprint | Function |
 |---|---|---|---|
@@ -79,11 +79,15 @@ U2 pin 3: No-Connect, left open.
 | R8 | 10k | R_0603 | BOOT pull-up (SPI boot) |
 | R9 | 10k | R_0603 | water-AO pulldown (open probe reads ~0 = EMPTY) |
 | C1 | 100n | C_0603 | light-AO filter |
+| C4 | 100n | C_0603 | DHT VCC decoupling, at U2 |
 | C2 | 1000u | CP_Radial_D8_P3.5 | 5V bulk at module entry |
 | C3 | 100n | C_0603 | 5V ceramic at module entry |
 
 Color code: red 5V, orange 3V3, black GND, yellow analog, green digital,
 blue gate drive.
+
+`storage` (SPIFFS) in `partitions.csv` is spare — the firmware persists
+only to NVS (`nvs` partition) and never mounts SPIFFS.
 
 ## Bring-up order (do not skip)
 

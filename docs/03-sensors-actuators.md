@@ -8,7 +8,7 @@ Reference designators match the parts list in [04-wiring](04-wiring.md).
 |---|---|---|---|
 | SOIL_AO (J2-2) | GPIO13 ADC2_CH4 | continuous 3V3 | capacitive v1.2, 3V3-safe. Calibrate dry/wet raw. |
 | LIGHT_AO (J3-2) | GPIO14 ADC2_CH6 | continuous 3V3 | photodiode module AO → R6 1k → GPIO, C1 100 n to GND. Inverted scale (dark ≈ 4095). |
-| WATER_AO (J1-2) | GPIO33 ADC1_CH5 | continuous 3V3 on J1-1, probe AO straight into the pin. | resistive probe. R9 10k PD to GND (open probe reads ~0 = EMPTY). ADC1 is WiFi-safe. Continuous DC corrodes the probe faster than switched drive did — treat the probe as a consumable. Strapping-safe at any water level by construction (GPIO12 unused). |
+| WATER_AO (J1-2) | GPIO33 ADC1_CH5 | continuous 3V3 | resistive probe. R9 10k PD to GND (open probe reads ~0 = EMPTY). ADC1 is WiFi-safe. Continuous DC corrodes the probe — treat it as a consumable. Strapping-safe at any water level by construction (GPIO12 unused). |
 
 Firmware mapping raw→percent lives in `src/sensors.c`
 (`read_percent_measurement`) with endpoints from `src/app_build_config.h`

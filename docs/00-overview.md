@@ -6,7 +6,7 @@ channels, two command channels.
 
 | Direction | Channel | Sensor / actuator |
 |---|---|---|
-| sense | water level in tank (analog) | resistive probe, continuous 3V3 |
+| sense | water level in tank (analog) | resistive probe |
 | sense | light (analog) | photodiode module |
 | sense | soil moisture (analog) | capacitive v1.2 |
 | sense | humidity | DHT22 |
@@ -31,9 +31,6 @@ Server loop (`POST sensors` → `{commands: [{pump durationMs}, {light enabled}]
 | [07-operations](07-operations.md) | flash, onboard, calibrate, troubleshoot |
 
 ## Hardware source of truth
-
-There are no CAD files in this repo — wiring is specified entirely in
-text, and the firmware enforces the critical parts of it at boot:
 
 - [04-wiring](04-wiring.md) — the complete net list (every net, every
   node), parts list, wire table, bring-up order.
