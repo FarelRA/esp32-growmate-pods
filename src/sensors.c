@@ -12,6 +12,7 @@
 #include "esp_adc/adc_oneshot.h"
 #include "esp_check.h"
 #include "esp_log.h"
+#include "esp_task_wdt.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
@@ -41,6 +42,7 @@ static int read_adc_average(adc_oneshot_unit_handle_t unit, adc_channel_t channe
             total += raw;
             success_count++;
         }
+        esp_task_wdt_reset();
         vTaskDelay(pdMS_TO_TICKS(10));
     }
 
@@ -91,6 +93,7 @@ static bool read_dht_if_enabled(const board_profile_t *profile, sensor_snapshot_
             read_ok = true;
             break;
         }
+        esp_task_wdt_reset();
         vTaskDelay(pdMS_TO_TICKS(2000));
     }
 

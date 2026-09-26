@@ -16,6 +16,7 @@
 #include "esp_http_client.h"
 #include "esp_log.h"
 #include "esp_system.h"
+#include "esp_task_wdt.h"
 #include "esp_timer.h"
 #include "esp_wifi.h"
 #include "freertos/FreeRTOS.h"
@@ -133,6 +134,9 @@ static esp_err_t classify_status(const char *url, int status_code, http_response
 static esp_err_t http_event_handler(esp_http_client_event_t *event)
 {
     http_response_buffer_t *response = (http_response_buffer_t *) event->user_data;
+    // This handler runs on the caller's task during perform(): feed the
+    // watchdog so slow-but-alive transfers don't trip it.
+    esp_task_wdt_reset();
     if (response == NULL)
     {
         return ESP_OK;
@@ -341,15 +345,20 @@ static void sensor_array_add_dht(cJSON *array,
     cJSON_AddItemToArray(array, entry);
 }
 
-static void copy_command_id(char out[ACCEPTED_ID_LEN], const cJSON *command)
+// Command ids are mandatory: an id-less command would be applied but
+// never ackable, leaving server and device permanently disagreed.
+static bool copy_command_id(char out[ACCEPTED_ID_LEN], const cJSON *command)
 {
     out[0] = '\0';
 
     cJSON *id = cJSON_GetObjectItemCaseSensitive(command, "id");
-    if (cJSON_IsString(id) && id->valuestring != NULL && id->valuestring[0] != '\0')
+    if (!cJSON_IsString(id) || id->valuestring == NULL || id->valuestring[0] == '\0' ||
+        strlen(id->valuestring) >= ACCEPTED_ID_LEN)
     {
-        snprintf(out, ACCEPTED_ID_LEN, "%s", id->valuestring);
+        return false;
     }
+    snprintf(out, ACCEPTED_ID_LEN, "%s", id->valuestring);
+    return true;
 }
 
 static void parse_commands(const cJSON *root, const sensor_snapshot_t *snapshot, device_commands_t *commands)
@@ -373,6 +382,7 @@ static void parse_commands(const cJSON *root, const sensor_snapshot_t *snapshot,
         {
             cJSON *duration_ms = cJSON_GetObjectItemCaseSensitive(command, "durationMs");
             if (!cJSON_IsNumber(duration_ms) ||
+                !isfinite(duration_ms->valuedouble) ||
                 duration_ms->valuedouble <= 0.0 ||
                 duration_ms->valuedouble > (double) APP_MAX_PUMP_DURATION_MS)
             {
@@ -384,7 +394,11 @@ static void parse_commands(const cJSON *root, const sensor_snapshot_t *snapshot,
                 continue;
             }
             char id[ACCEPTED_ID_LEN] = {0};
-            copy_command_id(id, command);
+            if (!copy_command_id(id, command))
+            {
+                ESP_LOGW(TAG, "Pump command ignored: missing or overlong id");
+                continue;
+            }
             commands->has_pump_command = true;
             commands->pump_duration_ms = (int) duration_ms->valuedouble;
             snprintf(commands->pump_id, sizeof(commands->pump_id), "%s", id);
@@ -398,7 +412,7 @@ static void parse_commands(const cJSON *root, const sensor_snapshot_t *snapshot,
             {
                 value = cJSON_IsTrue(enabled);
             }
-            else if (cJSON_IsNumber(enabled))
+            else if (cJSON_IsNumber(enabled) && isfinite(enabled->valuedouble))
             {
                 value = enabled->valuedouble != 0.0;
             }
@@ -407,7 +421,11 @@ static void parse_commands(const cJSON *root, const sensor_snapshot_t *snapshot,
                 continue;
             }
             char id[ACCEPTED_ID_LEN] = {0};
-            copy_command_id(id, command);
+            if (!copy_command_id(id, command))
+            {
+                ESP_LOGW(TAG, "Light command ignored: missing or overlong id");
+                continue;
+            }
             commands->has_light_command = true;
             commands->light_enabled = value;
             snprintf(commands->light_id, sizeof(commands->light_id), "%s", id);
@@ -425,7 +443,7 @@ static void apply_config_push(const cJSON *root, app_config_t *config)
     }
 
     cJSON *rev = cJSON_GetObjectItemCaseSensitive(pushed, "rev");
-    if (!cJSON_IsNumber(rev))
+    if (!cJSON_IsNumber(rev) || !isfinite(rev->valuedouble) || rev->valuedouble < 1.0)
     {
         return;
     }
@@ -438,7 +456,7 @@ static void apply_config_push(const cJSON *root, app_config_t *config)
 
     uint32_t new_interval = config->report_interval_sec;
     cJSON *interval = cJSON_GetObjectItemCaseSensitive(pushed, "reportIntervalSec");
-    if (cJSON_IsNumber(interval))
+    if (cJSON_IsNumber(interval) && isfinite(interval->valuedouble))
     {
         double value = interval->valuedouble;
         if (value < (double) CONFIG_REPORT_INTERVAL_MIN_SEC)
@@ -680,11 +698,19 @@ esp_err_t api_client_upload_sensor_data(const app_config_t *config,
         return ESP_ERR_NO_MEM;
     }
 
-    char response_buffer[HTTP_RESPONSE_BUFFER_SIZE] = {0};
+    // Heap, not stack: app_main runs TLS + JSON on an 8 KB stack and a
+    // 3 KB stack buffer leaves no margin for handshake spikes.
+    char *response_buffer = malloc(HTTP_RESPONSE_BUFFER_SIZE);
+    if (response_buffer == NULL)
+    {
+        free(payload);
+        return ESP_ERR_NO_MEM;
+    }
+    response_buffer[0] = '\0';
     http_response_buffer_t response =
     {
         .buffer = response_buffer,
-        .buffer_size = sizeof(response_buffer),
+        .buffer_size = HTTP_RESPONSE_BUFFER_SIZE,
         .data_length = 0,
         .truncated = false,
         .retry_after_sec = 0,
@@ -695,11 +721,13 @@ esp_err_t api_client_upload_sensor_data(const app_config_t *config,
     free(payload);
     if (err != ESP_OK)
     {
+        free(response_buffer);
         return err;
     }
 
     accepted_ids_clear();
     parse_response(response_buffer, snapshot, commands, (app_config_t *) config, ota);
+    free(response_buffer);
 
     return ESP_OK;
 }

@@ -6,13 +6,24 @@
 #include "actuators.h"
 #include "app_build_config.h"
 #include "esp_crt_bundle.h"
+#include "esp_http_client.h"
 #include "esp_https_ota.h"
 #include "esp_log.h"
 #include "esp_system.h"
+#include "esp_task_wdt.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
 static const char *TAG = "ota";
+
+static esp_err_t ota_http_event_handler(esp_http_client_event_t *event)
+{
+    (void) event;
+    // Download progress runs on the caller's task: feed the watchdog so a
+    // large image on a slow link doesn't trip it.
+    esp_task_wdt_reset();
+    return ESP_OK;
+}
 
 void ota_update_clear(ota_update_t *update)
 {
@@ -87,6 +98,7 @@ void ota_service_run_if_needed(const ota_update_t *update)
         .timeout_ms = 30000,
         .keep_alive_enable = false,
         .crt_bundle_attach = esp_crt_bundle_attach,
+        .event_handler = ota_http_event_handler,
     };
     esp_https_ota_config_t ota_config = {
         .http_config = &http_config,

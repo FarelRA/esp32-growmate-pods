@@ -12,6 +12,7 @@
 #include "esp_check.h"
 #include "esp_http_server.h"
 #include "esp_log.h"
+#include "esp_task_wdt.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/event_groups.h"
 #include "network_manager.h"
@@ -87,12 +88,19 @@ static esp_err_t read_request_body(httpd_req_t *req, char *buffer, size_t buffer
     return ESP_OK;
 }
 
-static void json_copy_string(cJSON *root, const char *key, char *destination, size_t destination_size)
+static bool json_copy_string(cJSON *root, const char *key, char *destination, size_t destination_size)
 {
     cJSON *item = cJSON_GetObjectItemCaseSensitive(root, key);
-    if (cJSON_IsString(item) && item->valuestring != NULL) {
-        strlcpy(destination, item->valuestring, destination_size);
+    if (!cJSON_IsString(item) || item->valuestring == NULL) {
+        return true;
     }
+    // Reject overlong values instead of silently truncating into
+    // credentials that can never authenticate.
+    if (strlen(item->valuestring) >= destination_size) {
+        return false;
+    }
+    strlcpy(destination, item->valuestring, destination_size);
+    return true;
 }
 
 static esp_err_t handle_index(httpd_req_t *req)
@@ -170,8 +178,13 @@ static esp_err_t handle_save_config(httpd_req_t *req)
     }
 
     app_config_t updated = *context->config;
-    json_copy_string(root, "wifiSsid", updated.wifi_ssid, sizeof(updated.wifi_ssid));
-    json_copy_string(root, "wifiPassword", updated.wifi_password, sizeof(updated.wifi_password));
+    if (!json_copy_string(root, "wifiSsid", updated.wifi_ssid, sizeof(updated.wifi_ssid)) ||
+        !json_copy_string(root, "wifiPassword", updated.wifi_password, sizeof(updated.wifi_password))) {
+        cJSON_Delete(root);
+        httpd_resp_set_status(req, "400 Bad Request");
+        httpd_resp_set_type(req, "application/json");
+        return httpd_resp_sendstr(req, "{\"message\":\"WiFi SSID or password too long\"}");
+    }
 
     cJSON_Delete(root);
     updated.provisioned = true;
@@ -271,7 +284,19 @@ esp_err_t onboarding_run(app_config_t *config)
         return err;
     }
 
-    xEventGroupWaitBits(event_group, ONBOARDING_COMPLETE_BIT, pdTRUE, pdFALSE, portMAX_DELAY);
+    // The portal blocks until the user saves. Wait in 1 s slices so the
+    // task watchdog stays fed for arbitrarily long setup sessions.
+    for (;;) {
+        EventBits_t bits = xEventGroupWaitBits(event_group,
+                                               ONBOARDING_COMPLETE_BIT,
+                                               pdTRUE,
+                                               pdFALSE,
+                                               pdMS_TO_TICKS(1000));
+        if ((bits & ONBOARDING_COMPLETE_BIT) != 0) {
+            break;
+        }
+        esp_task_wdt_reset();
+    }
 
     if (context.server != NULL) {
         httpd_stop(context.server);

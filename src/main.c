@@ -10,6 +10,7 @@
 #include "device_identity.h"
 #include "esp_check.h"
 #include "esp_log.h"
+#include "esp_task_wdt.h"
 #include "esp_timer.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
@@ -31,6 +32,7 @@ static void delay_with_housekeeping(const board_profile_t *profile, uint32_t tot
 
     while (remaining > 0) {
         actuators_tick(profile);
+        esp_task_wdt_reset();
         TickType_t current_step = remaining > step ? step : remaining;
         vTaskDelay(current_step);
         remaining -= current_step;
@@ -97,6 +99,7 @@ static esp_err_t upload_camera_image(const board_profile_t *profile, const app_c
             break;
         }
         actuators_tick(profile);
+        esp_task_wdt_reset();
         vTaskDelay(pdMS_TO_TICKS(1500));
     }
 
@@ -113,6 +116,17 @@ void app_main(void)
         err = nvs_flash_init();
     }
     ESP_ERROR_CHECK(err);
+
+    // The main loop legitimately blocks (12 s WiFi join, 45 s JPEG POST,
+    // OTA download, indefinite portal). A 5 s watchdog would false-trip,
+    // so subscribe app_main with a 60 s window; every blocking path
+    // above feeds it at least once per second.
+    ESP_ERROR_CHECK(esp_task_wdt_reconfigure(&(esp_task_wdt_config_t) {
+        .timeout_ms = 60000,
+        .idle_core_mask = (1 << 0) | (1 << 1),
+        .trigger_panic = true,
+    }));
+    ESP_ERROR_CHECK(esp_task_wdt_add(NULL));
 
     app_config_t config;
     app_config_load(&config);

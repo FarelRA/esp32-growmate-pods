@@ -6,7 +6,7 @@
 #include "driver/gpio.h"
 #include "esp_err.h"
 
-#define APP_CONFIG_VERSION 6
+#define APP_CONFIG_VERSION 1
 #define APP_CONFIG_NAMESPACE "growmate"
 #define APP_CONFIG_STORAGE_KEY "settings"
 

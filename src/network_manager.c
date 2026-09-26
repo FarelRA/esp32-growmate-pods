@@ -6,6 +6,7 @@
 #include "esp_event.h"
 #include "esp_log.h"
 #include "esp_netif.h"
+#include "esp_task_wdt.h"
 #include "esp_wifi.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/event_groups.h"
@@ -68,6 +69,16 @@ esp_err_t network_manager_init(void)
     wifi_init_config_t wifi_init_config = WIFI_INIT_CONFIG_DEFAULT();
     ESP_ERROR_CHECK(esp_wifi_init(&wifi_init_config));
     ESP_ERROR_CHECK(esp_wifi_set_storage(WIFI_STORAGE_RAM));
+
+    // World-safe region (channels 1-13): a home AP on 12/13 must connect.
+    // Policy AUTO still follows the AP's own country info when present.
+    wifi_country_t country = {
+        .cc = "01",
+        .schan = 1,
+        .nchan = 13,
+        .policy = WIFI_COUNTRY_POLICY_AUTO,
+    };
+    ESP_ERROR_CHECK(esp_wifi_set_country(&country));
 
     ESP_ERROR_CHECK(esp_event_handler_instance_register(WIFI_EVENT,
                                                         ESP_EVENT_ANY_ID,
@@ -134,19 +145,26 @@ esp_err_t network_manager_start_station(const app_config_t *config, uint32_t tim
     ESP_ERROR_CHECK(esp_wifi_start());
     ESP_ERROR_CHECK(esp_wifi_set_ps(WIFI_PS_NONE));
 
-    EventBits_t bits = xEventGroupWaitBits(
-        s_wifi_event_group,
-        WIFI_CONNECTED_BIT | WIFI_FAIL_BIT,
-        pdFALSE,
-        pdFALSE,
-        pdMS_TO_TICKS(timeout_ms));
+    // Wait in 1 s slices so the task watchdog stays fed on slow joins.
+    uint32_t waited_ms = 0;
+    while (waited_ms < timeout_ms) {
+        EventBits_t bits = xEventGroupWaitBits(
+            s_wifi_event_group,
+            WIFI_CONNECTED_BIT | WIFI_FAIL_BIT,
+            pdFALSE,
+            pdFALSE,
+            pdMS_TO_TICKS(1000));
 
-    if ((bits & WIFI_CONNECTED_BIT) != 0) {
-        return ESP_OK;
-    }
+        if ((bits & WIFI_CONNECTED_BIT) != 0) {
+            return ESP_OK;
+        }
 
-    if ((bits & WIFI_FAIL_BIT) != 0) {
-        return ESP_FAIL;
+        if ((bits & WIFI_FAIL_BIT) != 0) {
+            return ESP_FAIL;
+        }
+
+        waited_ms += 1000;
+        esp_task_wdt_reset();
     }
 
     return ESP_ERR_TIMEOUT;
@@ -157,6 +175,11 @@ esp_err_t network_manager_start_onboarding_ap(const char *ap_name, const char *a
     if (ap_name == NULL || ap_name[0] == '\0') {
         return ESP_ERR_INVALID_ARG;
     }
+    // WPA2-only by contract: an open setup AP would expose the home WiFi
+    // password typed into the portal to anyone in range.
+    if (ap_password == NULL || strlen(ap_password) < 8) {
+        return ESP_ERR_INVALID_ARG;
+    }
     ESP_RETURN_ON_ERROR(network_manager_stop_checked(), TAG, "failed to stop wifi before onboarding ap");
 
     wifi_config_t ap_config = {0};
@@ -164,12 +187,8 @@ esp_err_t network_manager_start_onboarding_ap(const char *ap_name, const char *a
     ap_config.ap.ssid_len = strlen(ap_name);
     ap_config.ap.channel = 1;
     ap_config.ap.max_connection = 4;
-    ap_config.ap.authmode = WIFI_AUTH_OPEN;
-
-    if (ap_password != NULL && strlen(ap_password) >= 8) {
-        strlcpy((char *) ap_config.ap.password, ap_password, sizeof(ap_config.ap.password));
-        ap_config.ap.authmode = WIFI_AUTH_WPA2_PSK;
-    }
+    ap_config.ap.authmode = WIFI_AUTH_WPA2_PSK;
+    strlcpy((char *) ap_config.ap.password, ap_password, sizeof(ap_config.ap.password));
 
     s_reconnect_enabled = false;
     xEventGroupClearBits(s_wifi_event_group, WIFI_CONNECTED_BIT | WIFI_FAIL_BIT);

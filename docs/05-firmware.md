@@ -15,7 +15,7 @@ delay_with_housekeeping()   # 250 ms ticks service the pump timer
 ```
 
 The sensor interval is the server-pushed `reportIntervalSec`
-(10–3600 s, persisted in NVS v6, echoed as `appliedConfigRev`) when
+(10–3600 s, persisted in NVS v1, echoed as `appliedConfigRev`) when
 one has been received, else the build default
 `APP_SENSOR_INTERVAL_SEC` (15 s). The camera period stays build-time
 (`APP_CAMERA_INTERVAL_SEC`, 900 s) and is not server-configurable.
@@ -42,7 +42,7 @@ portal instead of wedging.
 | `sensors.{h,c}` | 8-sample ADC average (ADC2 soil/light, ADC1 water), raw-only capture, DHT poll, continuous-3V3 water probe, camera-bus abort guard. |
 | `actuators.{h,c}` | GPIO2/4 init (no internal pull — external network owns boot level), one-shot timed pump (30 s contract cap), latched light with 24 h failsafe auto-off, conflict abort guard. |
 | `api_client.{h,c}` | sensor JSON POST (raw envelope + `health` + `acceptedCommandIds`, Bearer token when configured) with command/config parse (`pump durationMs` ≤ 30 s with water check, `light` bool-or-number), JPEG POST with `X-Device-Id` + token. |
-| `app_config.{h,c}` | NVS `growmate/settings` v6: WiFi SSID/pass + provisioned flag + assigned device ID + boot count + applied config rev + report interval. |
+| `app_config.{h,c}` | NVS `growmate/settings` v1: WiFi SSID/pass + provisioned flag + assigned device ID + boot count + applied config rev + report interval. Any size/version mismatch resets to defaults (pre-alpha: no migration, re-provision + reclaim). |
 | `device_identity.{h,c}` | MAC birth ID, effective ID, derived onboarding AP credentials. |
 | `ota_service.{h,c}` | semver compare + HTTPS OTA + restart. |
 | `network_manager.{h,c}` | STA connect/scan + onboarding AP + stop. |
@@ -55,10 +55,8 @@ portal instead of wedging.
 - **Build time** (`app_build_config.h`): identity, token, URLs,
   intervals — reflash to change.
 - **Runtime**: WiFi credentials via portal (NVS); assigned device ID via
-  server claim (NVS v6, effective immediately); report interval +
-  config rev via server push (NVS v6, echoed as `appliedConfigRev`).
-  The old docs claimed portal-editable device IDs/URLs/calibration —
-  that was never implemented and is removed from this doc set.
+  server claim (NVS v1, effective immediately); report interval +
+  config rev via server push (NVS v1, echoed as `appliedConfigRev`).
   Calibration lives server-side ([03-sensors-actuators](03-sensors-actuators.md)).
 
 ## Known firmware limits
@@ -82,6 +80,10 @@ portal instead of wedging.
   (`pio device monitor`, 115200).
 - Portal `httpd` worker task runs with an 8 KB stack (set in code at
   server start; the handlers hold multi-KB buffers).
+- Watchdog: `app_main` is subscribed to the task watchdog (60 s window).
+  Every blocking path (WiFi join, HTTP POSTs, OTA download, portal,
+  sensor sampling, interval wait) feeds it at least once per second, so
+  a trip means a genuine wedge, not a slow network.
 - No deep sleep: ~60 mA idle on USB/pack. Battery runtime ≈ pack/average
   draw; size accordingly.
 

@@ -50,10 +50,8 @@ For each analog channel, read the raw codes from a telemetry POST at
 both ends and store them in the device's SERVER-side config (mapping
 rules in [08-server-changes](08-server-changes.md)):
 
-- water: probe in air (EMPTY) vs fully submerged (FULL). Probe moved
-  from GPIO12/ADC2 (switched, 100R) to GPIO33/ADC1 (continuous 3V3, no
-  series R) — old `APP_WATER_RAW_*` values are invalid, recalibrate
-  from scratch.
+- water: probe in air (EMPTY) vs fully submerged (FULL). No defaults
+  are shipped — calibrate every install from scratch.
 - soil: probe in air (DRY) vs in saturated soil (WET).
 - light: covered module (DARK) vs grow light at canopy (BRIGHT).
   Scale is inverted (dark ≈ 4095).

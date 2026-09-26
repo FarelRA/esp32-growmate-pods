@@ -79,16 +79,17 @@ values are ignored.
 
 | Command | Accepted iff | Effect |
 |---|---|---|
-| `{kind: "pump", durationMs, id?}` | `0 < durationMs <= 30000` AND water channel readable | pump FET on for `durationMs` (one-shot, 30 s cap); `id` echoed in `acceptedCommandIds` |
-| `{kind: "light", enabled, id?}` | `enabled` is bool or number (0 = off, nonzero = on) | latch grow light; `id` echoed in `acceptedCommandIds` |
+| `{kind: "pump", durationMs, id}` | `0 < durationMs <= 30000` (finite) AND water channel readable AND non-empty `id` (< 32 chars) | pump FET on for `durationMs` (one-shot, 30 s cap); `id` echoed in `acceptedCommandIds` |
+| `{kind: "light", enabled, id}` | `enabled` is bool or finite number (0 = off, nonzero = on) AND non-empty `id` (< 32 chars) | latch grow light; `id` echoed in `acceptedCommandIds` |
 
-`id` is a server-generated string echoed verbatim. Commands without
-`id` are applied but cannot be acked — always send `id`.
+`id` is a server-generated string echoed verbatim and is REQUIRED.
+Id-less or overlong-id commands are ignored (an applied-but-unackable
+command would leave server and device permanently disagreed).
 
 ### Config push
 
 `config.rev` is an int, strictly increasing. `config.reportIntervalSec`
-is 10–3600 s. The device persists rev + interval (NVS v6), applies the
+is 10–3600 s. The device persists rev + interval (NVS v1), applies the
 interval to the sensor cycle, and echoes `appliedConfigRev` on the next
 POST. Stale revs (`rev <= appliedConfigRev`) and out-of-range intervals
 are ignored. The camera period stays build-time (900 s).
@@ -158,10 +159,11 @@ curl -X POST "$CAM_URL" -H 'Content-Type: image/jpeg' \
 - Analog entries carry `raw` only (no device percent math, no endpoints
   in firmware); DHT entries carry native floats. Unavailable omitted.
 - Envelope carries `deviceId` (+`hardwareId`), `snapshotId`, `ageMs`,
-  `appliedConfigRev`, `acceptedCommandIds`, `health` (NVS v6).
+  `appliedConfigRev`, `acceptedCommandIds`, `health` (NVS v1).
   Report interval is server-pushed (rev discipline); camera stays 900 s.
-- Pump needs `0 < durationMs <= 30000` plus a readable water channel;
-  light takes bool or number; accepted ids echo next POST.
+- Pump needs `0 < durationMs <= 30000` plus a readable water channel and
+  a non-empty `id`; light takes bool or finite number plus `id`;
+  accepted ids echo next POST.
 - 2xx ok; 429 honored; other 4xx fatal-no-count; 5xx/transport counted.
   Retries: 2 tries 1.5 s apart per cycle.
 - OTA + claim as above; light auto-offs after 24 h without a refresh.
