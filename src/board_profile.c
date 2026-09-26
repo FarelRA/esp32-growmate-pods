@@ -84,7 +84,9 @@ camera_config_t board_profile_build_camera_config(const board_profile_t *profile
         .ledc_timer = LEDC_TIMER_0,
         .ledc_channel = LEDC_CHANNEL_0,
         .pixel_format = PIXFORMAT_JPEG,
-        .frame_size = FRAMESIZE_UXGA,
+        // SVGA/Q12 nominal; camera_service_init() overrides both for the
+        // actual PSRAM state (SVGA/Q12 vs VGA/Q14), so these are placeholders.
+        .frame_size = FRAMESIZE_SVGA,
         .jpeg_quality = 12,
         .fb_count = 1,
         .grab_mode = CAMERA_GRAB_LATEST,

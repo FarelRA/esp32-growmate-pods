@@ -31,8 +31,8 @@ Camera init/deinit brackets each capture (PSRAM: SVGA/Q12, else VGA/Q14).
 `loops_since_camera` starts at one full period so the first boot captures
 immediately (intended: instant visual check after install).
 
-5 consecutive failures (WiFi, upload, or camera) reopen the onboarding AP
-portal instead of wedging.
+5 consecutive failures (WiFi, upload, camera, or total sensor
+failure) reopen the onboarding AP portal instead of wedging.
 
 ## Files
 

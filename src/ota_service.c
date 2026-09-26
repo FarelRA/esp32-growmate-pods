@@ -38,7 +38,8 @@ static bool parse_version(const char *text, int parts[3])
     if (text == NULL || text[0] == '\0' || strlen(text) >= 32) {
         return false;
     }
-    // Strict semver-ish: digits and dots only, at least one digit.
+    // Strict semver-ish: digits and dots only, at least one digit, and
+    // the whole string consumed (rejects "1..2", "2.1.0.4", "1.").
     bool has_digit = false;
     for (const char *p = text; *p != '\0'; ++p) {
         if (*p >= '0' && *p <= '9') {
@@ -50,8 +51,13 @@ static bool parse_version(const char *text, int parts[3])
     if (!has_digit) {
         return false;
     }
-    int matched = sscanf(text, "%d.%d.%d", &parts[0], &parts[1], &parts[2]);
-    return matched > 0 && parts[0] >= 0 && parts[1] >= 0 && parts[2] >= 0;
+    int end = 0;
+    int matched = sscanf(text, "%d.%d.%d%n", &parts[0], &parts[1], &parts[2], &end);
+    if (matched < 1 || end != (int) strlen(text)) {
+        return false;
+    }
+    // Unmatched trailing parts keep their zero init ("2.1" == 2.1.0).
+    return parts[0] >= 0 && parts[1] >= 0 && parts[2] >= 0;
 }
 
 static bool version_is_newer(const char *current, const char *candidate)

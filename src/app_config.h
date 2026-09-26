@@ -3,7 +3,6 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#include "driver/gpio.h"
 #include "esp_err.h"
 
 #define APP_CONFIG_VERSION 1

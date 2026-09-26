@@ -55,7 +55,7 @@ static esp_err_t upload_sensor_snapshot(app_config_t *config,
                                             actuators_is_light_enabled(),
                                             &commands,
                                             ota);
-        if (err == ESP_OK) {
+        if (err == ESP_OK || err == ESP_ERR_INVALID_STATE) {
             break;
         }
         // Keep the pump safety net serviced even while backing off.
@@ -95,7 +95,7 @@ static esp_err_t upload_camera_image(const board_profile_t *profile, const app_c
     err = ESP_FAIL;
     for (int attempt = 0; attempt < UPLOAD_RETRY_COUNT; ++attempt) {
         err = api_client_upload_image_bytes(config, fb->buf, fb->len);
-        if (err == ESP_OK) {
+        if (err == ESP_OK || err == ESP_ERR_INVALID_STATE) {
             break;
         }
         actuators_tick(profile);
@@ -149,9 +149,6 @@ void app_main(void)
     }
 
     uint32_t sensor_interval_sec = config.report_interval_sec ? config.report_interval_sec : APP_SENSOR_INTERVAL_SEC;
-    if (sensor_interval_sec == 0) {
-        sensor_interval_sec = APP_SENSOR_INTERVAL_SEC;
-    }
     uint32_t loops_since_camera = APP_CAMERA_INTERVAL_SEC / sensor_interval_sec;
     uint32_t consecutive_failures = 0;
     static uint32_t seq = 0;

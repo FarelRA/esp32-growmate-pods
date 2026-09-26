@@ -17,8 +17,8 @@ pio run --target upload    # tools/flash.sh: esptool, no_reset/no-stub, 115200
 pio device monitor           # 115200, RTS/DTR held (see monitor_* in ini)
 ```
 
-Remove the IO0–GND link and reset to boot normally. `upload_port` is
-`/dev/ttyACM0` (`platformio.ini`); override with
+Remove the IO0–GND link and reset to boot normally. If the port is not
+autodetected, override with
 `pio run --target upload --upload-port /dev/ttyUSB0` as needed.
 Single 5V source while flashing: the adapter powers the module, so
 disconnect the pack/boost 5V feed first — never drive the +5V rail from

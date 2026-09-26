@@ -91,8 +91,9 @@ command would leave server and device permanently disagreed).
 `config.rev` is an int, strictly increasing. `config.reportIntervalSec`
 is 10–3600 s. The device persists rev + interval (NVS v1), applies the
 interval to the sensor cycle, and echoes `appliedConfigRev` on the next
-POST. Stale revs (`rev <= appliedConfigRev`) and out-of-range intervals
-are ignored. The camera period stays build-time (900 s).
+POST. Stale revs (`rev <= appliedConfigRev`) are ignored;
+out-of-range intervals are clamped to 10–3600 s (rev still advances).
+The camera period stays build-time (900 s).
 
 ## POST camera — when due, `Content-Type: image/jpeg`
 
@@ -105,7 +106,7 @@ a failed frame retries at the next due slot.
 | Status | Device behavior |
 |---|---|
 | 2xx | ok; apply commands + config |
-| 429 | honor `Retry-After`, back off, retry next cycle |
+| 429 | wait `Retry-After` (cap 60 s), then skip to next cycle; never retried in-cycle, never counted |
 | other 4xx (incl. 401) | fatal for the request: no retry, NO portal reopen; keep sensing, surface for operator |
 | 5xx / transport error | retryable with backoff; counts toward the failure threshold |
 
@@ -164,6 +165,7 @@ curl -X POST "$CAM_URL" -H 'Content-Type: image/jpeg' \
 - Pump needs `0 < durationMs <= 30000` plus a readable water channel and
   a non-empty `id`; light takes bool or finite number plus `id`;
   accepted ids echo next POST.
-- 2xx ok; 429 honored; other 4xx fatal-no-count; 5xx/transport counted.
-  Retries: 2 tries 1.5 s apart per cycle.
+- 2xx ok; 429 waited out then skipped to next cycle (no count);
+  other 4xx fatal-no-count; 5xx/transport counted.
+  Retries: 2 tries 1.5 s apart per cycle; fatal/429 break after the first try.
 - OTA + claim as above; light auto-offs after 24 h without a refresh.

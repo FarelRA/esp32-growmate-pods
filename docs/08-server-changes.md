@@ -88,7 +88,9 @@ Storage API needs:
   sensor cycle, and echoes `appliedConfigRev`. Never re-send a
   `rev <= appliedConfigRev`. Validate 10–3600 server-side before send.
 - Camera period is NOT configurable (build-time 900 s); do not attempt
-  to pace imaging via `reportIntervalSec`.
+  to pace imaging via `reportIntervalSec`. Note the coupling: with an
+  interval above 900 s the camera fires every cycle (one frame per
+  interval), not every 900 s.
 
 ## 7. Rate limits
 

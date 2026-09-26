@@ -91,8 +91,13 @@ static esp_err_t read_request_body(httpd_req_t *req, char *buffer, size_t buffer
 static bool json_copy_string(cJSON *root, const char *key, char *destination, size_t destination_size)
 {
     cJSON *item = cJSON_GetObjectItemCaseSensitive(root, key);
-    if (!cJSON_IsString(item) || item->valuestring == NULL) {
+    if (item == NULL) {
         return true;
+    }
+    // Present-but-not-a-string (e.g. explicit null) is a client error,
+    // not "keep the stale value and report success".
+    if (!cJSON_IsString(item) || item->valuestring == NULL) {
+        return false;
     }
     // Reject overlong values instead of silently truncating into
     // credentials that can never authenticate.
@@ -190,10 +195,13 @@ static esp_err_t handle_save_config(httpd_req_t *req)
     updated.provisioned = true;
     app_config_sanitize(&updated);
 
-    if (!app_config_is_complete(&updated)) {
+    // The WiFi driver needs a NUL inside its 32-byte SSID field, so a
+    // full 32-octet SSID can never join: fail loudly at the portal
+    // instead of saving credentials that cannot authenticate.
+    if (strlen(updated.wifi_ssid) == 0 || strlen(updated.wifi_ssid) > 31) {
         httpd_resp_set_status(req, "400 Bad Request");
         httpd_resp_set_type(req, "application/json");
-        return httpd_resp_sendstr(req, "{\"message\":\"WiFi SSID is required\"}");
+        return httpd_resp_sendstr(req, "{\"message\":\"WiFi SSID must be 1-31 chars\"}");
     }
 
     esp_err_t save_err = app_config_save(&updated);

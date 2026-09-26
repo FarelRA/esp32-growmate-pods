@@ -125,7 +125,10 @@ static esp_err_t classify_status(const char *url, int status_code, http_response
         {
             ESP_LOGW(TAG, "HTTP %s returned 429", url);
         }
-        return ESP_FAIL;
+        // Backed off: retry next cycle, not 1.5 s later (a second instant
+        // attempt would just earn a second 429). INVALID_STATE tells the
+        // caller to break without counting toward the portal threshold.
+        return ESP_ERR_INVALID_STATE;
     }
 
     if (status_code >= 400 && status_code < 500)
@@ -526,7 +529,10 @@ static void apply_claim(const cJSON *root, app_config_t *config)
     snprintf(config->device_id, sizeof(config->device_id), "%s", id->valuestring);
     if (app_config_save(config) != ESP_OK)
     {
-        ESP_LOGW(TAG, "Claimed as %s but NVS save failed", config->device_id);
+        // Roll back the RAM copy: without the NVS write the old ID comes
+        // back on reboot, and flapping IDs poison the allowlist + dedup.
+        snprintf(config->device_id, sizeof(config->device_id), "%s", previous);
+        ESP_LOGW(TAG, "Claim save failed, keeping %s", previous);
         return;
     }
     ESP_LOGW(TAG, "Claimed: %s -> %s", previous, config->device_id);
