@@ -41,6 +41,7 @@ void app_config_sanitize(app_config_t *config)
 {
     ensure_terminated(config);
     trim_ascii(config->wifi_ssid);
+    trim_ascii(config->wifi_password);
 
     if (config->version != APP_CONFIG_VERSION) {
         config->version = APP_CONFIG_VERSION;

@@ -29,7 +29,7 @@ Details: [docs/07-operations](docs/07-operations.md).
 ## Docs
 
 00-overview, 01-pinout, 02-power, 03-sensors-actuators, 04-wiring,
-05-firmware, 06-api, 07-operations — in [docs/](docs/).
+05-firmware, 06-api, 07-operations, 08-server-changes — in [docs/](docs/).
 
 ## License
 

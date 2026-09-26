@@ -2,16 +2,22 @@
 
 ESP-IDF 5.5, PlatformIO, C17. Entry `app_main` in `src/main.c`.
 
-## Cycle (every `APP_SENSOR_INTERVAL_SEC`, default 15 s)
+## Cycle (every effective report interval, default 15 s)
 
 ```
 sensors_read_all()          # ADC burst + DHT, WiFi still STOPPED
 network_manager_start_station()   # connect, 12 s timeout
-upload_sensor_snapshot()    # POST sensors, 2 tries, apply commands
-upload_camera_image()       # if due (default every 900 s)
+upload_sensor_snapshot()    # POST sensors, 2 tries, apply commands + config
+upload_camera_image()       # if due (build-time 900 s)
 network_manager_stop()      # WiFi fully stopped again
 delay_with_housekeeping()   # 250 ms ticks service the pump timer
 ```
+
+The sensor interval is the server-pushed `reportIntervalSec`
+(10–3600 s, persisted in NVS v5, echoed as `appliedConfigRev`) when
+one has been received, else the build default
+`APP_SENSOR_INTERVAL_SEC` (15 s). The camera period stays build-time
+(`APP_CAMERA_INTERVAL_SEC`, 900 s) and is not server-configurable.
 
 **ADC-before-WiFi is load-bearing.** ADC2 (GPIO13/14) is shared with
 the WiFi driver on ESP32 classic: any ADC2 read between `esp_wifi_start`
@@ -32,31 +38,42 @@ portal instead of wedging.
 | File | Owns |
 |---|---|
 | `board_profile.{h,c}` | THE pin map (must match 01-pinout). Camera bus + conflict check. |
-| `sensors.{h,c}` | 8-sample ADC average (ADC2 soil/light, ADC1 water), raw→percent, DHT poll, continuous-3V3 water probe, camera-bus abort guard. |
-| `actuators.{h,c}` | GPIO2/4 init (no internal pull — external network owns boot level), timed pump, latched light, conflict abort guard. |
-| `api_client.{h,c}` | sensor JSON POST + command parse (`pump durationMs`, `light enabled`), JPEG POST with `X-Device-Id`. |
-| `app_config.{h,c}` | NVS `growmate/settings` v4: WiFi SSID/pass + provisioned flag only. |
+| `sensors.{h,c}` | 8-sample ADC average (ADC2 soil/light, ADC1 water), raw capture + transitional percent, DHT poll, continuous-3V3 water probe, camera-bus abort guard. |
+| `actuators.{h,c}` | GPIO2/4 init (no internal pull — external network owns boot level), one-shot timed pump (30 s contract cap), latched light, conflict abort guard. |
+| `api_client.{h,c}` | sensor JSON POST (raw envelope + `health` + `acceptedCommandIds`, Bearer token when configured) with command/config parse (`pump durationMs` ≤ 30 s with water check, `light` bool-or-number), JPEG POST with `X-Device-Id` + token. |
+| `app_config.{h,c}` | NVS `growmate/settings` v5: WiFi SSID/pass + provisioned flag + applied config rev + report interval. |
 | `network_manager.{h,c}` | STA connect/scan + onboarding AP + stop. |
-| `onboarding.{h,c}` | blocking portal `GrowMate-IAET01` / `growmate` at 192.168.4.1: `GET /`, `GET /api/config`, `POST /api/config{wifiSsid,wifiPassword}`, `GET /api/networks`. |
+| `onboarding.{h,c}` | blocking portal `GrowMate-IAET01` / `growmate` at 192.168.4.1: `GET /`, `GET /api/config`, `POST /api/config{wifiSsid,wifiPassword}`, `GET /api/networks`. Plaintext HTTP, shared password — commission in a trusted location (see 07-operations). |
 | `camera_service.{h,c}` | PWDN pulse, init/deinit, capture. |
-| `app_build_config.h` | device ID, firmware version, API URLs, intervals, calibration endpoints. Per-device values: edit + reflash. |
+| `app_build_config.h` | device ID, firmware version, API URLs, token, sensor/camera intervals. Per-device values: edit + reflash. |
 
 ## Configuration tiers
 
-- **Build time** (`app_build_config.h`): identity, URLs, intervals,
-  calibration — reflash to change.
-- **Runtime** (NVS via portal): WiFi credentials only. The old docs
-  claimed portal-editable device IDs/URLs/calibration — that was never
-  implemented and is removed from this doc set.
+- **Build time** (`app_build_config.h`): identity, token, URLs,
+  intervals — reflash to change.
+- **Runtime**: WiFi credentials via portal (NVS); report interval +
+  config rev via server push (NVS v5, echoed as `appliedConfigRev`).
+  The old docs claimed portal-editable device IDs/URLs/calibration —
+  that was never implemented and is removed from this doc set.
+  Calibration lives server-side ([03-sensors-actuators](03-sensors-actuators.md)).
 
 ## Known firmware limits
 
-- No auth on either endpoint. Sensor POSTs carry `deviceId` in the JSON
-  body only (no header); camera POSTs add an `X-Device-Id` header. Both
-  are identifiers, not credentials — server must allowlist device IDs
-  until auth lands.
+- Auth: `Authorization: Bearer` is sent when a token is compiled in;
+  until then the server must allowlist device IDs (`deviceId` in the
+  JSON body and `X-Device-Id` on camera POSTs are identifiers, not
+  credentials).
+- Status handling: 2xx ok; 429 honors `Retry-After`; other 4xx are
+  fatal-for-request (no retry, NO portal reopen); 5xx/transport errors
+  retry with backoff.
 - `deviceId`/`firmwareVersion` are compile-time constants, not per-flash
   provisioned. Per-device claiming is a server-side TODO.
+- No OTA (single-app partition, no rollback slot). `minFirmware` /
+  `firmwareUrl` are reserved response fields and are ignored.
+- Remote diagnosis beyond the `health` block is serial-only
+  (`pio device monitor`, 115200).
+- Portal `httpd` worker task runs with an 8 KB stack (set in code at
+  server start; the handlers hold multi-KB buffers).
 - No deep sleep: ~60 mA idle on USB/pack. Battery runtime ≈ pack/average
   draw; size accordingly.
 

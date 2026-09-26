@@ -1,5 +1,7 @@
 #pragma once
 
+#include <stdint.h>
+
 #include "board_profile.h"
 #include "esp_err.h"
 
@@ -15,7 +17,10 @@ typedef struct {
     sensor_measurement_t water;
     sensor_measurement_t temperature;
     sensor_measurement_t air;
+    uint32_t seq;
+    uint32_t age_ms;
 } sensor_snapshot_t;
 
 void sensors_init(const board_profile_t *profile);
 esp_err_t sensors_read_all(const board_profile_t *profile, sensor_snapshot_t *snapshot);
+void sensors_get_fail_counts(uint32_t *dht_fails, uint32_t *adc_fails);

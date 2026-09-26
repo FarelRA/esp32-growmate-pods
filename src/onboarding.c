@@ -197,6 +197,9 @@ static esp_err_t start_server(onboarding_context_t *context)
 {
     httpd_config_t config = HTTPD_DEFAULT_CONFIG();
     config.uri_match_fn = httpd_uri_match_wildcard;
+    // Portal handlers hold multi-KB buffers (scan list, form body, JSON),
+    // so the worker task gets headroom over the 4 KB default.
+    config.stack_size = 8192;
 
     ESP_RETURN_ON_ERROR(httpd_start(&context->server, &config), TAG, "failed to start onboarding web server");
 

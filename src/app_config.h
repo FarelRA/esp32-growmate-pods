@@ -6,18 +6,22 @@
 #include "driver/gpio.h"
 #include "esp_err.h"
 
-#define APP_CONFIG_VERSION 4
+#define APP_CONFIG_VERSION 5
 #define APP_CONFIG_NAMESPACE "growmate"
 #define APP_CONFIG_STORAGE_KEY "settings"
 
 #define APP_CONFIG_MAX_WIFI_SSID_LEN 32
 #define APP_CONFIG_MAX_WIFI_PASSWORD_LEN 64
 
-typedef struct {
+typedef struct
+{
     uint16_t version;
     bool provisioned;
     char wifi_ssid[APP_CONFIG_MAX_WIFI_SSID_LEN + 1];
     char wifi_password[APP_CONFIG_MAX_WIFI_PASSWORD_LEN + 1];
+    uint32_t boot_count;
+    uint32_t report_interval_sec;
+    uint32_t applied_config_rev;
 } app_config_t;
 
 void app_config_set_defaults(app_config_t *config);

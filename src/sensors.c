@@ -20,39 +20,14 @@
 static const char *TAG = "sensors";
 static adc_oneshot_unit_handle_t s_adc_handle;
 static adc_oneshot_unit_handle_t s_adc1_handle;
-
-static int clamp_int(int value, int min, int max)
-{
-    if (value < min) {
-        return min;
-    }
-    if (value > max) {
-        return max;
-    }
-    return value;
-}
+static uint32_t s_dht_fail_count;
+static uint32_t s_adc_fail_count;
 
 static void mark_measurement_unavailable(sensor_measurement_t *measurement)
 {
     measurement->available = false;
     measurement->raw = -1;
     measurement->value = NAN;
-}
-
-static int raw_to_percent(int raw, int low_raw, int high_raw)
-{
-    if (raw < 0 || low_raw == high_raw) {
-        return -1;
-    }
-
-    int pct = 0;
-    if (low_raw < high_raw) {
-        pct = (raw - low_raw) * 100 / (high_raw - low_raw);
-    } else {
-        pct = (low_raw - raw) * 100 / (low_raw - high_raw);
-    }
-
-    return clamp_int(pct, 0, 100);
 }
 
 static int read_adc_average(adc_oneshot_unit_handle_t unit, adc_channel_t channel)
@@ -76,17 +51,10 @@ static int read_adc_average(adc_oneshot_unit_handle_t unit, adc_channel_t channe
     return total / success_count;
 }
 
-static int measurement_value_as_int(const sensor_measurement_t *measurement)
-{
-    return measurement->available ? (int) measurement->value : -1;
-}
-
-static void read_percent_measurement(sensor_measurement_t *measurement,
-                                     bool enabled,
-                                     adc_oneshot_unit_handle_t unit,
-                                     adc_channel_t channel,
-                                     int low_raw,
-                                     int high_raw)
+static void read_raw_measurement(sensor_measurement_t *measurement,
+                                 bool enabled,
+                                 adc_oneshot_unit_handle_t unit,
+                                 adc_channel_t channel)
 {
     if (!enabled) {
         mark_measurement_unavailable(measurement);
@@ -94,10 +62,10 @@ static void read_percent_measurement(sensor_measurement_t *measurement,
     }
 
     measurement->raw = read_adc_average(unit, channel);
-    measurement->value = raw_to_percent(measurement->raw, low_raw, high_raw);
-    measurement->available = measurement->raw >= 0 && measurement->value >= 0;
+    measurement->value = NAN;
+    measurement->available = measurement->raw >= 0;
     if (!measurement->available) {
-        measurement->value = NAN;
+        s_adc_fail_count++;
     }
 }
 
@@ -112,9 +80,6 @@ static bool read_dht_if_enabled(const board_profile_t *profile, sensor_snapshot_
         return false;
     }
 
-    // esp-idf-lib/dht is stateless: no init/deinit, no ISR service, one
-    // blocking read (~25 ms) per call. Two attempts; the DHT22 needs >=2 s
-    // between samples and the 15 s cycle guarantees that.
     gpio_num_t dht_gpio = profile->dht_gpio;
     float humidity = NAN;
     float temperature = NAN;
@@ -126,10 +91,11 @@ static bool read_dht_if_enabled(const board_profile_t *profile, sensor_snapshot_
             read_ok = true;
             break;
         }
-        vTaskDelay(pdMS_TO_TICKS(250));
+        vTaskDelay(pdMS_TO_TICKS(2000));
     }
 
     if (!read_ok) {
+        s_dht_fail_count++;
         ESP_LOGW(TAG, "DHT read failed");
         return false;
     }
@@ -145,8 +111,6 @@ static bool read_dht_if_enabled(const board_profile_t *profile, sensor_snapshot_
 
 void sensors_init(const board_profile_t *profile)
 {
-    // Production safety: no sensor/actuator pin may overlap the fixed
-    // camera bus (0,5,18,19,21,22,23,25,26,27,32,34,35,36,39).
     const gpio_num_t used[] = {
         profile->water_level_gpio, profile->soil_moisture_gpio,
         profile->light_sensor_gpio, profile->dht_gpio,
@@ -182,24 +146,18 @@ void sensors_init(const board_profile_t *profile)
 
 esp_err_t sensors_read_all(const board_profile_t *profile, sensor_snapshot_t *snapshot)
 {
-    read_percent_measurement(&snapshot->water,
-                             APP_SENSOR_WATER_ENABLED,
-                             s_adc1_handle,
-                             profile->water_level_channel,
-                             APP_WATER_RAW_EMPTY,
-                             APP_WATER_RAW_FULL);
-    read_percent_measurement(&snapshot->soil,
-                             APP_SENSOR_SOIL_ENABLED,
-                             s_adc_handle,
-                             profile->soil_moisture_channel,
-                             APP_SOIL_RAW_DRY,
-                             APP_SOIL_RAW_WET);
-    read_percent_measurement(&snapshot->light,
-                             APP_SENSOR_LIGHT_ENABLED,
-                             s_adc_handle,
-                             profile->light_sensor_channel,
-                             APP_LIGHT_RAW_DARK,
-                             APP_LIGHT_RAW_BRIGHT);
+    read_raw_measurement(&snapshot->water,
+                         APP_SENSOR_WATER_ENABLED,
+                         s_adc1_handle,
+                         profile->water_level_channel);
+    read_raw_measurement(&snapshot->soil,
+                         APP_SENSOR_SOIL_ENABLED,
+                         s_adc_handle,
+                         profile->soil_moisture_channel);
+    read_raw_measurement(&snapshot->light,
+                         APP_SENSOR_LIGHT_ENABLED,
+                         s_adc_handle,
+                         profile->light_sensor_channel);
     mark_measurement_unavailable(&snapshot->temperature);
     mark_measurement_unavailable(&snapshot->air);
 
@@ -211,15 +169,60 @@ esp_err_t sensors_read_all(const board_profile_t *profile, sensor_snapshot_t *sn
         ESP_LOGW(TAG, "One or more ADC reads failed");
     }
 
-    ESP_LOGI(TAG, "Water=%d(%d%%) Soil=%d(%d%%) Light=%d(%d%%) Temp=%d Air=%d",
+    ESP_LOGI(TAG, "Water=%d Soil=%d Light=%d Temp=%.1f Air=%.1f",
              snapshot->water.raw,
-             measurement_value_as_int(&snapshot->water),
              snapshot->soil.raw,
-             measurement_value_as_int(&snapshot->soil),
              snapshot->light.raw,
-             measurement_value_as_int(&snapshot->light),
-             measurement_value_as_int(&snapshot->temperature),
-             measurement_value_as_int(&snapshot->air));
+             snapshot->temperature.value,
+             snapshot->air.value);
+
+    int enabled_count = 0;
+    int unavailable_count = 0;
+
+    if (APP_SENSOR_WATER_ENABLED) {
+        enabled_count++;
+        if (!snapshot->water.available) {
+            unavailable_count++;
+        }
+    }
+    if (APP_SENSOR_SOIL_ENABLED) {
+        enabled_count++;
+        if (!snapshot->soil.available) {
+            unavailable_count++;
+        }
+    }
+    if (APP_SENSOR_LIGHT_ENABLED) {
+        enabled_count++;
+        if (!snapshot->light.available) {
+            unavailable_count++;
+        }
+    }
+    if (APP_SENSOR_TEMPERATURE_ENABLED) {
+        enabled_count++;
+        if (!snapshot->temperature.available) {
+            unavailable_count++;
+        }
+    }
+    if (APP_SENSOR_AIR_ENABLED) {
+        enabled_count++;
+        if (!snapshot->air.available) {
+            unavailable_count++;
+        }
+    }
+
+    if (enabled_count > 0 && unavailable_count == enabled_count) {
+        return ESP_FAIL;
+    }
 
     return ESP_OK;
+}
+
+void sensors_get_fail_counts(uint32_t *dht_fails, uint32_t *adc_fails)
+{
+    if (dht_fails != NULL) {
+        *dht_fails = s_dht_fail_count;
+    }
+    if (adc_fails != NULL) {
+        *adc_fails = s_adc_fail_count;
+    }
 }

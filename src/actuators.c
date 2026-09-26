@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
+#include "app_build_config.h"
 #include "driver/gpio.h"
 #include "esp_log.h"
 #include "esp_timer.h"
@@ -11,6 +12,8 @@ static const char *TAG = "actuators";
 static bool s_pump_enabled;
 static bool s_light_enabled;
 static int64_t s_pump_deadline_us;
+static esp_timer_handle_t s_pump_timer = NULL;
+static const board_profile_t *s_profile = NULL;
 
 static void set_output_level(gpio_num_t gpio, int active_level, bool enabled)
 {
@@ -44,28 +47,66 @@ static void configure_output_pins(const board_profile_t *profile)
     ESP_ERROR_CHECK(gpio_config(&output_config));
 }
 
+static void pump_safety_timer_callback(void *arg)
+{
+    (void)arg;
+    if (s_profile == NULL) {
+        s_pump_enabled = false;
+        s_pump_deadline_us = 0;
+        ESP_LOGI(TAG, "Pump safety timer expired, pump OFF");
+        return;
+    }
+    gpio_set_level(s_profile->pump_gpio, !s_profile->pump_active_level);
+    s_pump_enabled = false;
+    s_pump_deadline_us = 0;
+    ESP_LOGI(TAG, "Pump safety timer expired, pump OFF");
+}
+
 void actuators_init(const board_profile_t *profile)
 {
     configure_output_pins(profile);
+    s_profile = profile;
     s_pump_enabled = false;
     s_light_enabled = false;
+    s_pump_deadline_us = 0;
+    if (s_pump_timer == NULL) {
+        esp_timer_create_args_t timer_args = {
+            .callback = pump_safety_timer_callback,
+            .arg = NULL,
+            .dispatch_method = ESP_TIMER_TASK,
+            .name = "pump_safety",
+        };
+        ESP_ERROR_CHECK(esp_timer_create(&timer_args, &s_pump_timer));
+    } else {
+        (void)esp_timer_stop(s_pump_timer);
+    }
     apply_outputs(profile);
 }
 
 void actuators_apply_commands(const board_profile_t *profile, const device_commands_t *commands)
 {
-    if (commands->has_pump_command && commands->pump_duration_ms > 0) {
-            set_output_level(profile->pump_gpio, profile->pump_active_level, true);
-            s_pump_enabled = true;
-            s_pump_deadline_us = esp_timer_get_time() + ((int64_t) commands->pump_duration_ms * 1000LL);
-            ESP_LOGI(TAG, "Pump command active for %d ms", commands->pump_duration_ms);
-    }
-
     if (commands->has_light_command && commands->light_enabled != s_light_enabled) {
         s_light_enabled = commands->light_enabled;
         set_output_level(profile->grow_light_gpio, profile->light_active_level, s_light_enabled);
         ESP_LOGI(TAG, "Grow light %s", s_light_enabled ? "enabled" : "disabled");
     }
+
+    if (!commands->has_pump_command) {
+        return;
+    }
+
+    if (commands->pump_duration_ms <= 0 || commands->pump_duration_ms > APP_MAX_PUMP_DURATION_MS) {
+        ESP_LOGW(TAG, "Pump command %d ms rejected (limit %d ms), pump remains OFF",
+            commands->pump_duration_ms, APP_MAX_PUMP_DURATION_MS);
+        return;
+    }
+
+    set_output_level(profile->pump_gpio, profile->pump_active_level, true);
+    s_pump_enabled = true;
+    s_pump_deadline_us = esp_timer_get_time() + ((int64_t) commands->pump_duration_ms * 1000LL);
+    (void)esp_timer_stop(s_pump_timer);
+    ESP_ERROR_CHECK(esp_timer_start_once(s_pump_timer, (uint64_t) commands->pump_duration_ms * 1000ULL));
+    ESP_LOGI(TAG, "Pump ON for %d ms (safety timer armed)", commands->pump_duration_ms);
 }
 
 void actuators_tick(const board_profile_t *profile)
@@ -74,10 +115,10 @@ void actuators_tick(const board_profile_t *profile)
         set_output_level(profile->pump_gpio, profile->pump_active_level, false);
         s_pump_enabled = false;
         s_pump_deadline_us = 0;
-        ESP_LOGI(TAG, "Pump timeout reached, disabling pump");
+        (void)esp_timer_stop(s_pump_timer);
+        ESP_LOGI(TAG, "Pump timeout reached, pump OFF");
     }
 }
-
 
 bool actuators_is_pump_enabled(void)
 {

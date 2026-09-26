@@ -1,4 +1,5 @@
 #include <stdbool.h>
+#include <stdint.h>
 
 #include "actuators.h"
 #include "api_client.h"
@@ -7,8 +8,8 @@
 #include "board_profile.h"
 #include "camera_service.h"
 #include "esp_check.h"
-#include "esp_heap_caps.h"
 #include "esp_log.h"
+#include "esp_timer.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "network_manager.h"
@@ -78,32 +79,23 @@ static esp_err_t upload_camera_image(const board_profile_t *profile, const app_c
         return ESP_FAIL;
     }
 
-    size_t image_len = fb->len;
-    uint8_t *image_data = heap_caps_malloc(image_len, MALLOC_CAP_SPIRAM | MALLOC_CAP_8BIT);
-    if (image_data == NULL) {
-        image_data = malloc(image_len);
-    }
-    if (image_data == NULL) {
+    if (fb->format != PIXFORMAT_JPEG) {
         esp_camera_fb_return(fb);
         camera_service_deinit();
-        return ESP_ERR_NO_MEM;
+        return ESP_FAIL;
     }
 
-    memcpy(image_data, fb->buf, image_len);
-
     err = ESP_FAIL;
-    esp_camera_fb_return(fb);
-    camera_service_deinit();
-
     for (int attempt = 0; attempt < UPLOAD_RETRY_COUNT; ++attempt) {
-        err = api_client_upload_image_bytes(config, image_data, image_len);
+        err = api_client_upload_image_bytes(config, fb->buf, fb->len);
         if (err == ESP_OK) {
             break;
         }
         vTaskDelay(pdMS_TO_TICKS(1500));
     }
 
-    free(image_data);
+    esp_camera_fb_return(fb);
+    camera_service_deinit();
     return err;
 }
 
@@ -119,6 +111,10 @@ void app_main(void)
     app_config_t config;
     app_config_load(&config);
     app_config_sanitize(&config);
+    config.boot_count++;
+    if (app_config_save(&config) != ESP_OK) {
+        ESP_LOGW(TAG, "Failed to save boot count");
+    }
 
     const board_profile_t *profile = board_profile_get((board_profile_id_t) APP_BOARD_PROFILE);
     ESP_LOGI(TAG, "Starting %s for board %s", APP_DEVICE_ID, profile->display_name);
@@ -132,33 +128,55 @@ void app_main(void)
         ESP_ERROR_CHECK(onboarding_run(&config));
     }
 
-    uint32_t loops_since_camera = APP_CAMERA_INTERVAL_SEC / APP_SENSOR_INTERVAL_SEC;
+    uint32_t sensor_interval_sec = config.report_interval_sec ? config.report_interval_sec : APP_SENSOR_INTERVAL_SEC;
+    if (sensor_interval_sec == 0) {
+        sensor_interval_sec = APP_SENSOR_INTERVAL_SEC;
+    }
+    uint32_t loops_since_camera = APP_CAMERA_INTERVAL_SEC / sensor_interval_sec;
     uint32_t consecutive_failures = 0;
+    static uint32_t seq = 0;
 
     while (true) {
+        sensor_interval_sec = config.report_interval_sec ? config.report_interval_sec : APP_SENSOR_INTERVAL_SEC;
+        if (sensor_interval_sec == 0) {
+            sensor_interval_sec = APP_SENSOR_INTERVAL_SEC;
+        }
+
         actuators_tick(profile);
 
         sensor_snapshot_t snapshot = {0};
         bool camera_due = false;
         bool station_started = false;
 
+        snapshot.seq = seq++;
+        snapshot.age_ms = (uint32_t) (esp_timer_get_time() / 1000);
+
         err = sensors_read_all(profile, &snapshot);
         if (err != ESP_OK) {
-            consecutive_failures++;
+            if (err != ESP_ERR_INVALID_STATE) {
+                consecutive_failures++;
+            }
             ESP_LOGE(TAG, "Sensor read failed: %s", esp_err_to_name(err));
         }
 
-        loops_since_camera++;
-        uint32_t camera_period = APP_CAMERA_INTERVAL_SEC / APP_SENSOR_INTERVAL_SEC;
-        if (camera_period == 0) {
-            camera_period = 1;
+        if (APP_CAMERA_ENABLED == 0 || !profile->has_camera) {
+            loops_since_camera = 0;
+            camera_due = false;
+        } else {
+            loops_since_camera++;
+            uint32_t camera_period = APP_CAMERA_INTERVAL_SEC / sensor_interval_sec;
+            if (camera_period == 0) {
+                camera_period = 1;
+            }
+            camera_due = loops_since_camera >= camera_period;
         }
-        camera_due = loops_since_camera >= camera_period;
 
         if (err == ESP_OK) {
             err = network_manager_start_station(&config, WIFI_CONNECT_TIMEOUT_MS);
             if (err != ESP_OK) {
-                consecutive_failures++;
+                if (err != ESP_ERR_INVALID_STATE) {
+                    consecutive_failures++;
+                }
                 ESP_LOGE(TAG, "WiFi connect failed: %s", esp_err_to_name(err));
             } else {
                 station_started = true;
@@ -167,7 +185,9 @@ void app_main(void)
                 if (err == ESP_OK) {
                     consecutive_failures = 0;
                 } else {
-                    consecutive_failures++;
+                    if (err != ESP_ERR_INVALID_STATE) {
+                        consecutive_failures++;
+                    }
                     ESP_LOGE(TAG, "Sensor cycle failed: %s", esp_err_to_name(err));
                 }
             }
@@ -179,7 +199,9 @@ void app_main(void)
                 loops_since_camera = 0;
                 consecutive_failures = 0;
             } else {
-                consecutive_failures++;
+                if (err != ESP_ERR_INVALID_STATE) {
+                    consecutive_failures++;
+                }
                 ESP_LOGE(TAG, "Camera cycle failed: %s", esp_err_to_name(err));
             }
         }
@@ -195,6 +217,6 @@ void app_main(void)
             loops_since_camera = 0;
         }
 
-        delay_with_housekeeping(profile, APP_SENSOR_INTERVAL_SEC * 1000);
+        delay_with_housekeeping(profile, sensor_interval_sec * 1000);
     }
 }

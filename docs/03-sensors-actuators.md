@@ -10,9 +10,28 @@ Reference designators match the parts list in [04-wiring](04-wiring.md).
 | LIGHT_AO (J3-2) | GPIO14 ADC2_CH6 | continuous 3V3 | photodiode module AO → R6 1k → GPIO, C1 100 n to GND. Inverted scale (dark ≈ 4095). |
 | WATER_AO (J1-2) | GPIO33 ADC1_CH5 | continuous 3V3 | resistive probe. R9 10k PD to GND (open probe reads ~0 = EMPTY). ADC1 is WiFi-safe. Continuous DC corrodes the probe — treat it as a consumable. Strapping-safe at any water level by construction (GPIO12 unused). |
 
-Firmware mapping raw→percent lives in `src/sensors.c`
-(`read_percent_measurement`) with endpoints from `src/app_build_config.h`
-(`APP_*_RAW_*`). Recalibrate per probe; defaults are placeholders.
+## Calibration (server-side)
+
+The device reports raw ADC codes and owns no calibration endpoints.
+Percent mapping lives on the SERVER, per probe, per install:
+
+| Channel | Server stores | Scale |
+|---|---|---|
+| water | `EMPTY` (probe in air) vs `FULL` (fully submerged) raw | rising |
+| soil | `DRY` (probe in air) vs `WET` (saturated soil) raw | rising |
+| light | `DARK` (covered module) vs `BRIGHT` (grow light at canopy) raw | inverted (dark ≈ 4095) |
+
+Procedure (see [07-operations](07-operations.md)): read the raw codes
+from a telemetry POST at both ends, store them in the device's
+server-side config, then sanity-check a mid-point reading. Moving a
+probe or changing its supply invalidates its ends — recalibrate from
+scratch. Storage and mapping rules are a server-team contract, detailed
+in [08-server-changes](08-server-changes.md).
+
+Firmware note: v2.0.0 still computes a transitional on-device percent
+(`read_percent_measurement` in `src/sensors.c` from the `APP_*_RAW_*`
+placeholders in `src/app_build_config.h`) and ships it as `value`. The
+server ignores `value` and maps from `raw`.
 
 ## DHT22 (U2)
 
@@ -35,9 +54,11 @@ and humidity unavailable (`NaN`) rather than blocking the cycle.
 | Protection | D1 1N5819 flyback, cathode +5V, anode PUMP_LO | strip modules are LED+resistor; no flyback needed |
 
 Behavior (`src/actuators.c`): pump command `{durationMs}` turns the FET on
-and auto-offs via `esp_timer` (serviced every 250 ms in
-`delay_with_housekeeping`); light command latches on/off. Both report back
-in `currentState`.
+and auto-offs via an `esp_timer` deadline (serviced every 250 ms in
+`delay_with_housekeeping`); the contract caps doses at 30 s
+(`0 < durationMs <= 30000`, water channel must read — see
+[06-api](06-api.md)). Light command latches on/off. Both report back
+in `currentState`, and command ids are echoed in `acceptedCommandIds`.
 
 GPIO4 also drives the onboard flash LED (voltage-divider fed, glows dimly
 even "off"). Kept deliberately: the camera flash still works. If the glow

@@ -15,8 +15,10 @@ channels, two command channels.
 | command | water | 5 V micro submersible pump, timed ms |
 | command | lighting | full-spectrum LED strip, latched on/off |
 
-Server loop (`POST sensors` → `{commands: [{pump durationMs}, {light enabled}]}`,
-`POST camera` JPEG) is specified in [06-api](06-api.md).
+Server loop (`POST /api/v1/sensors` → `{commands: [{pump durationMs},
+{light enabled}]}`, `POST /api/v1/camera` JPEG) is specified in
+[06-api](06-api.md); backend requirements live in
+[08-server-changes](08-server-changes.md).
 
 ## Documents
 
@@ -29,6 +31,7 @@ Server loop (`POST sensors` → `{commands: [{pump durationMs}, {light enabled}]
 | [05-firmware](05-firmware.md) | firmware map, ADC-before-WiFi rule, config |
 | [06-api](06-api.md) | server contract |
 | [07-operations](07-operations.md) | flash, onboard, calibrate, troubleshoot |
+| [08-server-changes](08-server-changes.md) | backend requirements: auth, acks, calibration storage, config push, limits |
 
 ## Hardware source of truth
 

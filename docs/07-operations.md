@@ -33,12 +33,21 @@ device blocks in the portal first) — use it as the install photo check.
 2. Open `http://192.168.4.1`, submit home WiFi SSID/pass.
 3. Device continues with the new settings (no reboot) into station mode
    and starts the 15 s cycle.
-4. After 5 straight failures the portal reopens by itself.
+4. After 5 straight failures the portal reopens by itself (transport
+   and 5xx errors; 4xx responses are fatal-for-request and never force
+   the portal — see [06-api](06-api.md)).
 
-## Calibrate (per probe, per install)
+Portal notes: the AP password is shared across all pods and the portal
+is plaintext HTTP — anyone in range can join and sniff the home WiFi
+credentials you type. Commission in a trusted location. Per-device AP
+passwords are future work. Remote diagnosis beyond the `health` block
+in telemetry is serial-only (`pio device monitor`, 115200).
 
-For each analog channel record the raw log value at both ends and set
-the matching `APP_*_RAW_*` pair in `src/app_build_config.h`, then reflash:
+## Calibrate (per probe, per install — server-side)
+
+For each analog channel, read the raw codes from a telemetry POST at
+both ends and store them in the device's SERVER-side config (mapping
+rules in [08-server-changes](08-server-changes.md)):
 
 - water: probe in air (EMPTY) vs fully submerged (FULL). Probe moved
   from GPIO12/ADC2 (switched, 100R) to GPIO33/ADC1 (continuous 3V3, no
@@ -47,6 +56,21 @@ the matching `APP_*_RAW_*` pair in `src/app_build_config.h`, then reflash:
 - soil: probe in air (DRY) vs in saturated soil (WET).
 - light: covered module (DARK) vs grow light at canopy (BRIGHT).
   Scale is inverted (dark ≈ 4095).
+
+The device holds no calibration endpoints (`APP_*_RAW_*` build
+constants are legacy placeholders the server ignores — `raw` is
+authoritative). Moving a probe invalidates its stored ends.
+
+## Soak test (before install)
+
+Run the pod on pack power for at least one full camera period plus
+several sensor cycles, with WiFi connected: camera init + capture +
+JPEG upload is the peak-draw event (ESP + camera + WiFi, plus pump/LED
+if commanded). Watch serial for brownout resets, camera-init failures,
+and WiFi drops — all three mean the 5V rail sagged under load. Check
+the server side too: one `snapshotId` per interval (no gaps, no
+dupes), a frame per camera period, and `appliedConfigRev` tracking the
+sent config rev.
 
 ## Symptom table
 
@@ -60,7 +84,14 @@ the matching `APP_*_RAW_*` pair in `src/app_build_config.h`, then reflash:
 | Pump never runs | gate node 0/3.3V on command? flyback orientation (D1 K→+5V)? separate pump supply ground shared? |
 | Light never latches | GPIO4 gate drive? strip polarity (+5V common)? server actually sending `light` command? |
 | Portal never opens | configured AP already provisioned — erase flash to force (`pio run --target erase`). |
-| Upload 4xx/5xx | URL constants, server allowlist for the compile-time `deviceId`. |
+| Upload 4xx/5xx | URL/token constants, server allowlist for the compile-time `deviceId`; 4xx needs operator action (device will not portal-loop on it). |
+
+## Limits
+
+- No OTA: updates are reflash-over-USB only. `minFirmware` /
+  `firmwareUrl` are reserved future fields, ignored by the device.
+- Pump doses cap at 30 s by contract; the server also clamps.
+- Beyond the `health` telemetry block, diagnosis is serial-only.
 
 ## Erase / recover
 
