@@ -20,7 +20,7 @@ passives, headers, and SW1 solder as normal.
 | 2 | PUMP_GATE | GPIO2 | ADC2_CH2 | output. Weak pulldown at reset + ext 100k (R3) = MOSFET OFF through the ~3 ms strapping window. GPIO2 strapping wants LOW/float: satisfied. |
 | 4 | LIGHT_GATE | GPIO4 | ADC2_CH0 | output. Weak pulldown at reset + ext 100k (R5) = OFF at boot. GPIO4 is **not** a strapping pin (official list: 0, 2, 5, 12/MTDI, 15/MTDO). Shares the onboard flash LED: documented, kept as camera flash. |
 | 8 | SOIL_AO | GPIO13 | ADC2_CH4 | input. No strapping, no boot-PWM: the safest analog pin on the header. |
-| 10 | LIGHT_AO | GPIO14 | ADC2_CH6 | input. Not a strapping pin. GPIO14 can drive boot-PWM, so the module AO comes through a 1k series (R6) + 100n to GND (C1): no contention, filtered ADC. |
+| 10 | LIGHT_AO | GPIO14 | ADC2_CH6 | input. Not a strapping pin. GPIO14 carries the ROM debug PWM probe at boot, so the module AO comes through a 1k series (R6) + 100n to GND (C1): no contention, filtered ADC. |
 | 12 | DHT_DATA | GPIO15 | ADC2_CH3 | digital. MTDO needs HIGH at boot: DHT idles HIGH and R1 (4.7k PU) holds it there. DHT is digital so the ADC2/WiFi conflict does not apply. |
 | 14 | WATER_AO | GPIO33 | ADC1_CH5 | input. No strapping, no camera bus, and ADC1 reads fine with WiFi on — safe by construction at any water level, full tank included. R9 10k PD to GND so an open (empty-tank) probe reads ~0 instead of floating. |
 | 16 | +5V | 5V rail | — | second 5V entry |

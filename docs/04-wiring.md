@@ -43,10 +43,10 @@ Notation: `U1-5` = carrier header U1 pin 5. `Q1-G/D/S` = gate/drain/source.
 | U0TXD | U1-7 ↔ J4-2 (adapter RX) |
 | BOOT_IO0 | U1-9 ↔ R8-2; U1-9 ↔ SW1-1 (SW1-2 → GND). R8-1 → +3V3 (10k PU = SPI boot HIGH) |
 | PUMP_GATE | U1-2 (GPIO2) ↔ R2-1 |
-| PUMP_GATE_Q | R2-2 ↔ R3-1 ↔ Q1-G (R3-2 → GND, 100k PD = OFF at boot) |
+| PUMP_GATE_Q | R2-2 ↔ R3-1 ↔ Q1-G (R3-2 → GND, 10k PD = OFF at boot, EMI-stiff) |
 | PUMP_LO | Q1-D ↔ M1-2 ↔ D1-A |
 | LIGHT_GATE | U1-4 (GPIO4) ↔ R4-1 |
-| LIGHT_GATE_Q | R4-2 ↔ R5-1 ↔ Q2-G (R5-2 → GND, 100k PD = OFF at boot) |
+| LIGHT_GATE_Q | R4-2 ↔ R5-1 ↔ Q2-G (R5-2 → GND, 10k PD = OFF at boot, EMI-stiff) |
 | LED_LO | Q2-D ↔ D2-K |
 | DHT_DATA | U1-12 (GPIO15) ↔ U2-DATA ↔ R1-2 (R1-1 → +3V3, 4.7k PU = MTDO HIGH) |
 | WATER_AO | U1-14 (GPIO33) ↔ J1-2 ↔ R9-1 (R9-2 → GND, 10k PD; open probe reads ~0) |
@@ -57,7 +57,7 @@ Notation: `U1-5` = carrier header U1 pin 5. `Q1-G/D/S` = gate/drain/source.
 
 U2 pin 3: No-Connect, left open.
 
-## Parts list (24 refs)
+## Parts list (27 refs)
 
 | Ref | Value | Footprint | Function |
 |---|---|---|---|
@@ -74,7 +74,7 @@ U2 pin 3: No-Connect, left open.
 | D2 | GROW-LED-5V | LED_Strip | full-spectrum strip (A→+5V, K→LED_LO) |
 | R1 | 4.7k | R_0603 | DHT pull-up (MTDO-HIGH strapping) |
 | R2, R4 | 220 | R_0603 | MOSFET gate stoppers |
-| R3, R5 | 100k | R_0603 | gate pulldowns (OFF at boot) |
+| R3, R5 | 10k | R_0603 | gate pulldowns (OFF at boot, stiff vs humidity/EMI) |
 | R6 | 1k | R_0603 | light-AO series (boot-PWM contention) |
 | R8 | 10k | R_0603 | BOOT pull-up (SPI boot) |
 | R9 | 10k | R_0603 | water-AO pulldown (open probe reads ~0 = EMPTY) |
@@ -82,6 +82,9 @@ U2 pin 3: No-Connect, left open.
 | C4 | 100n | C_0603 | DHT VCC decoupling, at U2 |
 | C2 | 1000u | CP_Radial_D8_P3.5 | 5V bulk at module entry |
 | C3 | 100n | C_0603 | 5V ceramic at module entry |
+| F1 | polyfuse 2.5–3 A hold | 1812 | pack+ → boost-in overcurrent |
+| F2 | polyfuse 1.1 A hold | 1812 | pump branch |
+| F3 | per strip 1.25× run current | 1812 | LED branch |
 
 Color code: red 5V, orange 3V3, black GND, yellow analog, green digital,
 blue gate drive.
