@@ -6,7 +6,7 @@ channels, two command channels.
 
 | Direction | Channel | Sensor / actuator |
 |---|---|---|
-| sense | water level in tank (analog) | resistive probe, switched 3V3 |
+| sense | water level in tank (analog) | resistive probe, continuous 3V3 |
 | sense | light (analog) | photodiode module |
 | sense | soil moisture (analog) | capacitive v1.2 |
 | sense | humidity | DHT22 |

@@ -19,6 +19,7 @@
 
 static const char *TAG = "sensors";
 static adc_oneshot_unit_handle_t s_adc_handle;
+static adc_oneshot_unit_handle_t s_adc1_handle;
 
 static int clamp_int(int value, int min, int max)
 {
@@ -54,14 +55,14 @@ static int raw_to_percent(int raw, int low_raw, int high_raw)
     return clamp_int(pct, 0, 100);
 }
 
-static int read_adc_average(adc_channel_t channel)
+static int read_adc_average(adc_oneshot_unit_handle_t unit, adc_channel_t channel)
 {
     int total = 0;
     int success_count = 0;
 
     for (int i = 0; i < ADC_SAMPLE_COUNT; ++i) {
         int raw = 0;
-        if (adc_oneshot_read(s_adc_handle, channel, &raw) == ESP_OK) {
+        if (adc_oneshot_read(unit, channel, &raw) == ESP_OK) {
             total += raw;
             success_count++;
         }
@@ -82,6 +83,7 @@ static int measurement_value_as_int(const sensor_measurement_t *measurement)
 
 static void read_percent_measurement(sensor_measurement_t *measurement,
                                      bool enabled,
+                                     adc_oneshot_unit_handle_t unit,
                                      adc_channel_t channel,
                                      int low_raw,
                                      int high_raw)
@@ -91,7 +93,7 @@ static void read_percent_measurement(sensor_measurement_t *measurement,
         return;
     }
 
-    measurement->raw = read_adc_average(channel);
+    measurement->raw = read_adc_average(unit, channel);
     measurement->value = raw_to_percent(measurement->raw, low_raw, high_raw);
     measurement->available = measurement->raw >= 0 && measurement->value >= 0;
     if (!measurement->available) {
@@ -157,53 +159,44 @@ void sensors_init(const board_profile_t *profile)
         }
     }
 
-    // Switched 3V3 for the resistive water probe. Default LOW (probe
-    // unpowered -> GPIO12 Hi-Z -> MTDI reads LOW at boot, 3V3 flash safe).
-    // If GPIO33 is not soldered this is a harmless no-op.
-    gpio_config_t pwr_config = {
-        .pin_bit_mask = 1ULL << profile->water_power_gpio,
-        .mode = GPIO_MODE_OUTPUT,
-        .pull_up_en = GPIO_PULLUP_DISABLE,
-        .pull_down_en = GPIO_PULLDOWN_DISABLE,
-        .intr_type = GPIO_INTR_DISABLE,
-    };
-    ESP_ERROR_CHECK(gpio_config(&pwr_config));
-    ESP_ERROR_CHECK(gpio_set_level(profile->water_power_gpio, 0));
-
     adc_oneshot_unit_init_cfg_t init_config = {
         .unit_id = profile->analog_unit,
         .ulp_mode = ADC_ULP_MODE_DISABLE,
     };
     ESP_ERROR_CHECK(adc_oneshot_new_unit(&init_config, &s_adc_handle));
 
+    adc_oneshot_unit_init_cfg_t init_config_1 = {
+        .unit_id = profile->water_level_unit,
+        .ulp_mode = ADC_ULP_MODE_DISABLE,
+    };
+    ESP_ERROR_CHECK(adc_oneshot_new_unit(&init_config_1, &s_adc1_handle));
+
     adc_oneshot_chan_cfg_t channel_config = {
         .bitwidth = ADC_BITWIDTH_12,
         .atten = ADC_ATTEN_DB_12,
     };
-    ESP_ERROR_CHECK(adc_oneshot_config_channel(s_adc_handle, profile->water_level_channel, &channel_config));
+    ESP_ERROR_CHECK(adc_oneshot_config_channel(s_adc1_handle, profile->water_level_channel, &channel_config));
     ESP_ERROR_CHECK(adc_oneshot_config_channel(s_adc_handle, profile->soil_moisture_channel, &channel_config));
     ESP_ERROR_CHECK(adc_oneshot_config_channel(s_adc_handle, profile->light_sensor_channel, &channel_config));
 }
 
 esp_err_t sensors_read_all(const board_profile_t *profile, sensor_snapshot_t *snapshot)
 {
-    // Power the resistive water probe (~60ms settle), keep it on for the
-    // ~250ms ADC burst only (2% duty @15s period -> negligible corrosion).
-    ESP_ERROR_CHECK(gpio_set_level(profile->water_power_gpio, 1));
-    vTaskDelay(pdMS_TO_TICKS(60));
-
     read_percent_measurement(&snapshot->water,
                              APP_SENSOR_WATER_ENABLED,
+                             s_adc1_handle,
                              profile->water_level_channel,
                              APP_WATER_RAW_EMPTY,
                              APP_WATER_RAW_FULL);
     read_percent_measurement(&snapshot->soil,
                              APP_SENSOR_SOIL_ENABLED,
+                             s_adc_handle,
                              profile->soil_moisture_channel,
                              APP_SOIL_RAW_DRY,
                              APP_SOIL_RAW_WET);
     read_percent_measurement(&snapshot->light,
                              APP_SENSOR_LIGHT_ENABLED,
+                             s_adc_handle,
                              profile->light_sensor_channel,
                              APP_LIGHT_RAW_DARK,
                              APP_LIGHT_RAW_BRIGHT);
@@ -211,9 +204,6 @@ esp_err_t sensors_read_all(const board_profile_t *profile, sensor_snapshot_t *sn
     mark_measurement_unavailable(&snapshot->air);
 
     read_dht_if_enabled(profile, snapshot);
-
-    // Probe off immediately after the ADC burst (DHT is independent).
-    ESP_ERROR_CHECK(gpio_set_level(profile->water_power_gpio, 0));
 
     if ((APP_SENSOR_WATER_ENABLED && !snapshot->water.available) ||
         (APP_SENSOR_SOIL_ENABLED && !snapshot->soil.available) ||

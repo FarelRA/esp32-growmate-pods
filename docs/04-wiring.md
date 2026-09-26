@@ -6,11 +6,11 @@
 |---|---|---|
 | 5V (1, 16) | MT3608 5V out, pump +, LED strip + | red, star at U1 |
 | GND (3, 13, 15) | common ground star | black |
-| 3V3 (11) | J2-1, J3-1, U2-VDD | orange |
+| 3V3 (11) | J1-1, J2-1, J3-1, U2-VDD | orange |
 | GPIO13 (8) | J2-2 soil AO | yellow |
 | GPIO14 (10) | R6 → J3-2 light AO | yellow |
-| GPIO12 (6) | J1-2 water AO; R9 to GND | yellow |
-| GPIO33 (14) | R7 → J1-1 water VCC | orange, 1 wire to red-LED test point |
+| GPIO12 (6) | unconnected — MTDI safety (float + weak pulldown = LOW) | — |
+| GPIO33 (14) | J1-2 water AO; R9 to GND | yellow |
 | GPIO15 (12) | U2-DATA; R1 to 3V3 | green |
 | GPIO2 (2) | R2 gate network | blue |
 | GPIO4 (4) | R4 gate network | blue |
@@ -37,7 +37,7 @@ Notation: `U1-5` = carrier header U1 pin 5. `Q1-G/D/S` = gate/drain/source.
 | Net | Nodes |
 |---|---|
 | +5V | MT3608 5V out → U1-1, U1-16, J4-4, M1-1, D1-K, D2-A, C2-1, C3-1 |
-| +3V3 | U1-11 (module AMS1117 out) → J2-1, J3-1, U2-VDD, R1-1, R8-1 |
+| +3V3 | U1-11 (module AMS1117 out) → J1-1, J2-1, J3-1, U2-VDD, R1-1, R8-1 |
 | GND | star → U1-3, U1-13, U1-15, J4-3, J1-3, J2-3, J3-3, U2-GND, Q1-S, Q2-S, R3-2, R5-2, R9-2, SW1-2, C1-2, C2-2, C3-2 |
 | U0RXD | U1-5 ↔ J4-1 (adapter TX) |
 | U0TXD | U1-7 ↔ J4-2 (adapter RX) |
@@ -49,16 +49,15 @@ Notation: `U1-5` = carrier header U1 pin 5. `Q1-G/D/S` = gate/drain/source.
 | LIGHT_GATE_Q | R4-2 ↔ R5-1 ↔ Q2-G (R5-2 → GND, 100k PD = OFF at boot) |
 | LED_LO | Q2-D ↔ D2-K |
 | DHT_DATA | U1-12 (GPIO15) ↔ U2-DATA ↔ R1-2 (R1-1 → +3V3, 4.7k PU = MTDO HIGH) |
-| WATER_AO | U1-6 (GPIO12) ↔ J1-2 ↔ R9-1 (R9-2 → GND, 10k PD = MTDI LOW) |
-| WTR_PWR_SW | U1-14 (GPIO33) ↔ R7-1 |
-| WTR_VCC | R7-2 ↔ J1-1 (100R switched probe supply) |
+| WATER_AO | U1-14 (GPIO33) ↔ J1-2 ↔ R9-1 (R9-2 → GND, 10k PD; open probe reads ~0) |
+| GPIO12_NC | U1-6 unconnected (float + weak pulldown = MTDI LOW, strapping safe) |
 | SOIL_AO | U1-8 (GPIO13) ↔ J2-2 |
 | LIGHT_MOD_AO | J3-2 ↔ R6-1 |
 | LIGHT_AO | U1-10 (GPIO14) ↔ R6-2 ↔ C1-1 (C1-2 → GND, 1k + 100n filter) |
 
 U2 pin 3: No-Connect, left open.
 
-## Parts list (24 refs)
+## Parts list (23 refs)
 
 | Ref | Value | Footprint | Function |
 |---|---|---|---|
@@ -77,9 +76,8 @@ U2 pin 3: No-Connect, left open.
 | R2, R4 | 220 | R_0603 | MOSFET gate stoppers |
 | R3, R5 | 100k | R_0603 | gate pulldowns (OFF at boot) |
 | R6 | 1k | R_0603 | light-AO series (boot-PWM contention) |
-| R7 | 100 | R_0603 | probe switched-supply series |
 | R8 | 10k | R_0603 | BOOT pull-up (SPI boot) |
-| R9 | 10k | R_0603 | water-AO pulldown (MTDI LOW) |
+| R9 | 10k | R_0603 | water-AO pulldown (open probe reads ~0 = EMPTY) |
 | C1 | 100n | C_0603 | light-AO filter |
 | C2 | 1000u | CP_Radial_D8_P3.5 | 5V bulk at module entry |
 | C3 | 100n | C_0603 | 5V ceramic at module entry |
@@ -105,6 +103,7 @@ blue gate drive.
 - No wire to camera pins (01-pinout forbidden list). The firmware aborts
   on overlap — treat an abort here as a wiring bug, not a firmware bug.
 - SD slot stays empty and uninitialized.
-- GPIO12 sees a pull-up **never** (not even scope probe 10x with PU).
-  If the board fails to boot after wiring, GPIO12 HIGH is suspect #1.
+- GPIO12 (U1-6) stays unconnected, **always** — it is the MTDI strapping
+  pin and must float LOW at boot. If the board fails to boot after wiring,
+  a stray connection on U1-6 is suspect #1.
 - Keep pump/LED high-current loops short and away from DHT/sensor leads.

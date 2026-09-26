@@ -7,8 +7,8 @@ commands pump / light / both. See [docs/00-overview](docs/00-overview.md).
 ## Hardware rev1 (BEST header-only rotation)
 
 - PUMP GPIO2, LIGHT GPIO4 (low-side IRLZ44N, 220R gate + 100k PD, 1N5819).
-- SOIL GPIO13, LIGHT_AO GPIO14 (1k + 100n), WATER GPIO12 (switched 3V3
-  from GPIO33 via 100R, 10k PD), DHT GPIO15 (4.7k PU).
+- SOIL GPIO13, LIGHT_AO GPIO14 (1k + 100n), WATER GPIO33 (ADC1, continuous
+  3V3, 10k PD), DHT GPIO15 (4.7k PU). GPIO12 left unconnected (MTDI safety).
 - No SD, PSRAM kept, no eFuse burn. Full proof: [docs/01-pinout](docs/01-pinout.md).
 - Wiring: complete net-by-net text reference in
   [docs/04-wiring](docs/04-wiring.md) (no CAD files in this repo).

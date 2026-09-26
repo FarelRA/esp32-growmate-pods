@@ -35,7 +35,10 @@ photo check.
 For each analog channel record the raw log value at both ends and set
 the matching `APP_*_RAW_*` pair in `src/app_build_config.h`, then reflash:
 
-- water: probe in air (EMPTY) vs fully submerged (FULL).
+- water: probe in air (EMPTY) vs fully submerged (FULL). Probe moved
+  from GPIO12/ADC2 (switched, 100R) to GPIO33/ADC1 (continuous 3V3, no
+  series R) — old `APP_WATER_RAW_*` values are invalid, recalibrate
+  from scratch.
 - soil: probe in air (DRY) vs in saturated soil (WET).
 - light: covered module (DARK) vs grow light at canopy (BRIGHT).
   Scale is inverted (dark ≈ 4095).
@@ -44,7 +47,7 @@ the matching `APP_*_RAW_*` pair in `src/app_build_config.h`, then reflash:
 
 | Symptom | First check |
 |---|---|
-| Won't boot after wiring | GPIO12 pulled HIGH (MTDI) — remove probe VCC, confirm LOW at EN rise. Then IO0–GND link left on. |
+| Won't boot after wiring | GPIO12 (MTDI) must float LOW — confirm U1-6 is unconnected. Then IO0–GND link left on. |
 | Boot loop / brownout reset | 5V rail under load; cable, pack charge, C2 solder. |
 | Camera init fails | ribbon seating; PSRAM enabled; no wire on camera pins (firmware aborts tell you which). |
 | ADC reads 0/4095 stuck | wrong `APP_*_RAW_*` ends; sensor on 5V instead of 3V3; R6/C1 solder. |

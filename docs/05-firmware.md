@@ -13,9 +13,10 @@ network_manager_stop()      # WiFi fully stopped again
 delay_with_housekeeping()   # 250 ms ticks service the pump timer
 ```
 
-**ADC-before-WiFi is load-bearing.** ADC2 (GPIO12/13/14) is shared with
-the WiFi driver on ESP32 classic: any ADC read between `esp_wifi_start`
-and `esp_wifi_stop` fails. The order above is the entire workaround.
+**ADC-before-WiFi is load-bearing.** ADC2 (GPIO13/14) is shared with
+the WiFi driver on ESP32 classic: any ADC2 read between `esp_wifi_start`
+and `esp_wifi_stop` fails. Water lives on ADC1 (GPIO33, WiFi-safe) but
+soil/light keep the rule, so the order above is the entire workaround.
 Do not "optimize" it into a persistent connection without moving to an
 external ADC.
 
@@ -31,7 +32,7 @@ portal instead of wedging.
 | File | Owns |
 |---|---|
 | `board_profile.{h,c}` | THE pin map (must match 01-pinout). Camera bus + conflict check. |
-| `sensors.{h,c}` | 8-sample ADC average, raw→percent, DHT poll, switched water power, camera-bus abort guard. |
+| `sensors.{h,c}` | 8-sample ADC average (ADC2 soil/light, ADC1 water), raw→percent, DHT poll, continuous-3V3 water probe, camera-bus abort guard. |
 | `actuators.{h,c}` | GPIO2/4 init (no internal pull — external network owns boot level), timed pump, latched light, conflict abort guard. |
 | `api_client.{h,c}` | sensor JSON POST + command parse (`pump durationMs`, `light enabled`), JPEG POST with `X-Device-Id`. |
 | `app_config.{h,c}` | NVS `growmate/settings` v4: WiFi SSID/pass + provisioned flag only. |

@@ -13,18 +13,20 @@ static const board_profile_t BOARD_PROFILES[] = {
         .light_active_level = 1,
         // BEST header-only rotation (verified against ESP32 datasheet +
         // ESP Hardware Design Guidelines + AI-Thinker fixed camera map):
-        //  GPIO12/MTDI = water AO  (Hi-Z at boot via switched power -> LOW, 3V3 flash safe)
+        //  GPIO12/MTDI = UNUSED (left unconnected; weak pulldown at reset
+        //                holds it LOW -> 3V3 flash safe, nothing to get wrong)
         //  GPIO13      = soil AO   (no strapping, safest analog input)
         //  GPIO14/MTMS = light AO  (non-strapping; 1k series tames boot PWM contention)
         //  GPIO15/MTDO = DHT22     (idle HIGH via 4.7k PU satisfies MTDO HIGH)
         //  GPIO2/4     = pump/light MOSFET gates (weak pulldown at reset -> OFF at boot)
-        //  GPIO33      = water-probe switched 3V3 (test-point solder, one wire)
-        .water_level_gpio = GPIO_NUM_12,
+        //  GPIO33      = water AO  (ADC1_CH5: no strapping, no camera bus,
+        //                ADC1 works with WiFi on; safe by construction)
+        .water_level_gpio = GPIO_NUM_33,
         .soil_moisture_gpio = GPIO_NUM_13,
         .light_sensor_gpio = GPIO_NUM_14,
         .dht_gpio = GPIO_NUM_15,
-        .water_power_gpio = GPIO_NUM_33,
         .analog_unit = ADC_UNIT_2,
+        .water_level_unit = ADC_UNIT_1,
         .water_level_channel = ADC_CHANNEL_5,
         .soil_moisture_channel = ADC_CHANNEL_4,
         .light_sensor_channel = ADC_CHANNEL_6,
