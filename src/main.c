@@ -39,7 +39,7 @@ static void delay_with_housekeeping(const board_profile_t *profile, uint32_t tot
     }
 }
 
-static esp_err_t upload_sensor_snapshot(const app_config_t *config,
+static esp_err_t upload_sensor_snapshot(app_config_t *config,
                                         const sensor_snapshot_t *snapshot,
                                         const board_profile_t *profile,
                                         ota_update_t *ota)
@@ -178,9 +178,8 @@ void app_main(void)
 
         err = sensors_read_all(profile, &snapshot);
         if (err != ESP_OK) {
-            if (err != ESP_ERR_INVALID_STATE) {
-                consecutive_failures++;
-            }
+            // sensors_read_all returns ESP_OK or ESP_FAIL only.
+            consecutive_failures++;
             ESP_LOGE(TAG, "Sensor read failed: %s", esp_err_to_name(err));
         }
 
@@ -199,9 +198,9 @@ void app_main(void)
         if (err == ESP_OK) {
             err = network_manager_start_station(&config, WIFI_CONNECT_TIMEOUT_MS);
             if (err != ESP_OK) {
-                if (err != ESP_ERR_INVALID_STATE) {
-                    consecutive_failures++;
-                }
+                // Station join returns OK/FAIL/TIMEOUT, all countable:
+                // no link means no telemetry either way.
+                consecutive_failures++;
                 ESP_LOGE(TAG, "WiFi connect failed: %s", esp_err_to_name(err));
             } else {
                 station_started = true;

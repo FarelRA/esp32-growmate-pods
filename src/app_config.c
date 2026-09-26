@@ -52,7 +52,6 @@ void app_config_sanitize(app_config_t *config)
     // NOTE: wifi_password is intentionally NOT trimmed. Leading/trailing
     // spaces are legal in WPA2 passphrases; stripping them breaks auth
     // with a misleading "portal doesn't work" symptom.
-    ensure_terminated(config);
 
     if (config->version != APP_CONFIG_VERSION) {
         config->version = APP_CONFIG_VERSION;

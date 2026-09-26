@@ -70,7 +70,7 @@ portal instead of wedging.
   retry with backoff.
 - `deviceId`/`firmwareVersion` are compile-time defaults; the server
   assigns the pod ID via the claim flow (`claim: {deviceId}`, persisted
-  NVS v6, effective immediately). Birth identity is always the WiFi MAC
+  NVS v1, effective immediately). Birth identity is always the WiFi MAC
   (`hardwareId`).
 - OTA is live: dual 1.5 MB slots, server offers `minFirmware` +
   `firmwareUrl`, device upgrades when newer (never mid pump-dose) and

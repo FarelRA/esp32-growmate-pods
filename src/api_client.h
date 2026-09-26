@@ -23,7 +23,7 @@ typedef struct
 //     Fatal/rejected, caller must NOT count toward retry thresholds.
 //   ESP_FAIL: transport error, timeout, 5xx, 429 after backoff wait,
 //     or truncated 2xx response body.
-esp_err_t api_client_upload_sensor_data(const app_config_t *config,
+esp_err_t api_client_upload_sensor_data(app_config_t *config,
                                         const sensor_snapshot_t *snapshot,
                                         bool pump_enabled,
                                         bool light_enabled,

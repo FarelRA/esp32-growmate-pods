@@ -112,7 +112,14 @@ static esp_err_t classify_status(const char *url, int status_code, http_response
         if (wait_sec > 0)
         {
             ESP_LOGW(TAG, "HTTP %s returned 429, waiting %d s", url, wait_sec);
-            vTaskDelay(pdMS_TO_TICKS((uint32_t) wait_sec * 1000U));
+            // Slice the wait: a 60 s Retry-After would otherwise sit exactly
+            // on the task-watchdog window. Pump safety needs no tick here —
+            // the esp_timer one-shot is authoritative and independent.
+            for (int i = 0; i < wait_sec; ++i)
+            {
+                esp_task_wdt_reset();
+                vTaskDelay(pdMS_TO_TICKS(1000));
+            }
         }
         else
         {
@@ -604,7 +611,7 @@ static void parse_response(const char *response_json,
     cJSON_Delete(root);
 }
 
-esp_err_t api_client_upload_sensor_data(const app_config_t *config,
+esp_err_t api_client_upload_sensor_data(app_config_t *config,
                                         const sensor_snapshot_t *snapshot,
                                         bool pump_enabled,
                                         bool light_enabled,
@@ -726,7 +733,7 @@ esp_err_t api_client_upload_sensor_data(const app_config_t *config,
     }
 
     accepted_ids_clear();
-    parse_response(response_buffer, snapshot, commands, (app_config_t *) config, ota);
+    parse_response(response_buffer, snapshot, commands, config, ota);
     free(response_buffer);
 
     return ESP_OK;
