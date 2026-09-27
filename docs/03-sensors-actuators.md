@@ -46,7 +46,7 @@ and humidity unavailable (`NaN`) rather than blocking the cycle.
 | | Pump | Light |
 |---|---|---|
 | GPIO | GPIO2 → R2 220R → gate node | GPIO4 → R4 220R → gate node |
-| Pulldown | R3 100k gate–GND | R5 100k gate–GND |
+| Pulldown | R3 10k gate–GND | R5 10k gate–GND |
 | FET | Q1 IRLZ44N (logic-level, Vgs(th) < 2 V), source GND, drain PUMP_LO | Q2 same, drain LED_LO |
 | Load | M1 between +5V and PUMP_LO | LED strip between +5V and LED_LO |
 | Protection | D1 1N5819 flyback, cathode +5V, anode PUMP_LO | strip modules are LED+resistor; no flyback needed |

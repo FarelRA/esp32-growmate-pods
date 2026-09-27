@@ -17,8 +17,8 @@ passives, headers, and SW1 solder as normal.
 | 9 | BOOT_IO0 | GPIO0 | ADC2_CH1 | XCLK inside module. 10k PU (R8) = HIGH = SPI boot. Tactile SW1 to GND = flash mode. Nothing else on GPIO0, ever. |
 | 11 | +3V3 | 3V3 rail | — | sensor rail out (from module AMS1117) |
 | 13, 15 | GND | GND | — | |
-| 2 | PUMP_GATE | GPIO2 | ADC2_CH2 | output. Weak pulldown at reset + ext 100k (R3) = MOSFET OFF through the ~3 ms strapping window. GPIO2 strapping wants LOW/float: satisfied. |
-| 4 | LIGHT_GATE | GPIO4 | ADC2_CH0 | output. Weak pulldown at reset + ext 100k (R5) = OFF at boot. GPIO4 is **not** a strapping pin (official list: 0, 2, 5, 12/MTDI, 15/MTDO). Shares the onboard flash LED: documented, kept as camera flash. |
+| 2 | PUMP_GATE | GPIO2 | ADC2_CH2 | output. Weak pulldown at reset + ext 10k (R3) = MOSFET OFF through the ~3 ms strapping window. GPIO2 strapping wants LOW/float: satisfied. |
+| 4 | LIGHT_GATE | GPIO4 | ADC2_CH0 | output. Weak pulldown at reset + ext 10k (R5) = OFF at boot. GPIO4 is **not** a strapping pin (official list: 0, 2, 5, 12/MTDI, 15/MTDO). Shares the onboard flash LED: documented, kept as camera flash. |
 | 8 | SOIL_AO | GPIO13 | ADC2_CH4 | input. No strapping, no boot-PWM: the safest analog pin on the header. |
 | 10 | LIGHT_AO | GPIO14 | ADC2_CH6 | input. Not a strapping pin. GPIO14 carries the ROM debug PWM probe at boot, so the module AO comes through a 1k series (R6) + 100n to GND (C1): no contention, filtered ADC. |
 | 12 | DHT_DATA | GPIO15 | ADC2_CH3 | digital. MTDO needs HIGH at boot: DHT idles HIGH and R1 (4.7k PU) holds it there. DHT is digital so the ADC2/WiFi conflict does not apply. |
