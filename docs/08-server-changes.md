@@ -36,7 +36,10 @@ Keep response bodies under ~3 KB (device response buffer limit).
 
 - Deduplicate telemetry on `snapshotId` (`"B<bootCount>-<seq>"`, unique
   per sample). Ingestion is at-least-once; double-POSTs of one id must
-  not double-count.
+  not double-count. Note the fleet asymmetry: pods burn a `seq` on
+  total-sensor-failure cycles (no POST), so pod gaps can mean failed
+  reads; tech increments only when an envelope is built, so tech gaps
+  mean queued-then-backfilled.
 - Track per-device `acceptedCommandIds`. Re-deliver any command whose
   `id` has not been acked until it is acked or superseded by a newer
   command for the same actuator. Always attach a server-generated
@@ -55,7 +58,9 @@ sampleTime = receivedAt - ageMs
 ```
 
 Store `sampleTime`, not arrival time. Clamp absurd values
-(`ageMs` larger than the report interval × 3) and flag the sample.
+(`ageMs` larger than the report interval × 3, floor 45 s) and flag the
+sample. Note: `ageMs` includes the WiFi join (up to 12 s) by design —
+worst case ~28 s at a 10 s interval, inside the clamp, but tight.
 
 ## 5. Percent-computation ownership + calibration storage
 

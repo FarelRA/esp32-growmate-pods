@@ -132,8 +132,13 @@ void app_main(void)
     app_config_load(&config);
     app_config_sanitize(&config);
     config.boot_count++;
+    bool boot_save_failed = false;
     if (app_config_save(&config) != ESP_OK) {
-        ESP_LOGW(TAG, "Failed to save boot count");
+        // A failed boot-count save reuses the previous boot's snapshotIds
+        // (B<boot>-<seq>), which the server dedups as duplicates. Retry
+        // before the first POST; the boot still runs but may gap ingestion.
+        ESP_LOGE(TAG, "Failed to save boot count, will retry before first POST");
+        boot_save_failed = true;
     }
 
     const board_profile_t *profile = board_profile_get((board_profile_id_t) APP_BOARD_PROFILE);
@@ -193,6 +198,13 @@ void app_main(void)
         }
 
         if (err == ESP_OK) {
+            if (boot_save_failed) {
+                if (app_config_save(&config) == ESP_OK) {
+                    boot_save_failed = false;
+                } else {
+                    ESP_LOGE(TAG, "Boot-count re-save failed, snapshotIds may dedup-drop");
+                }
+            }
             err = network_manager_start_station(&config, WIFI_CONNECT_TIMEOUT_MS);
             if (err != ESP_OK) {
                 // Station join returns OK/FAIL/TIMEOUT, all countable:
@@ -224,10 +236,14 @@ void app_main(void)
                 loops_since_camera = 0;
                 consecutive_failures = 0;
             } else {
+                // Camera-only failure must not force the portal: telemetry
+                // is healthy, the still retries at the next due slot.
                 if (err != ESP_ERR_INVALID_STATE) {
-                    consecutive_failures++;
+                    ESP_LOGW(TAG, "Camera frame failed, not counting toward portal: %s",
+                             esp_err_to_name(err));
+                } else {
+                    ESP_LOGE(TAG, "Camera cycle failed: %s", esp_err_to_name(err));
                 }
-                ESP_LOGE(TAG, "Camera cycle failed: %s", esp_err_to_name(err));
             }
         }
 

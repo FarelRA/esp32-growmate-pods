@@ -49,7 +49,7 @@ for re-provisioning.
 | `hardwareId` | string | birth identity: uppercase WiFi-MAC hex, always sent, never changes; claim/review key for unclaimed units |
 | `firmwareVersion` | string | semver, e.g. `"2.0.0"` |
 | `snapshotId` | string | `"B<bootCount>-<seq>"`, unique per sample; server dedup key |
-| `ageMs` | int | `>= 0`, sampling-to-POST latency; server reconstructs sample time as `receivedAt - ageMs` |
+| `ageMs` | int | `>= 0`, sampling-to-POST latency (includes WiFi join, up to ~12 s, by design); server reconstructs sample time as `receivedAt - ageMs` |
 | `appliedConfigRev` | int | `>= 0`, last config rev applied (0 = none) |
 | `sensors[]` | array | raw-only analog + native DHT entries (kinds below); unavailable sensors omitted, never null |
 | `acceptedCommandIds[]` | string[] | ids of commands applied since the previous POST (empty is valid) |

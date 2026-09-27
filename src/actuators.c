@@ -35,7 +35,7 @@ static void configure_output_pins(const board_profile_t *profile)
         ESP_LOGE(TAG, "actuator GPIO conflicts with fixed camera bus, aborting");
         abort();
     }
-    // External 100k pulldown + 220R gate series holds MOSFETs OFF through
+    // External 10k pulldown + 220R gate series holds MOSFETs OFF through
     // the ~3ms strapping window (GPIO2/4 reset state is weak pulldown).
     // No internal pull here: the external network owns the boot level.
     gpio_config_t output_config = {

@@ -278,7 +278,7 @@ esp_err_t onboarding_run(app_config_t *config)
         .server = NULL,
     };
 
-    ESP_LOGW(TAG, "Onboarding AP %s, password %s", ap_ssid, ap_password);
+    ESP_LOGW(TAG, "Onboarding AP %s (password in claim sheet, not the log)", ap_ssid);
     esp_err_t err = network_manager_start_onboarding_ap(ap_ssid, ap_password);
     if (err != ESP_OK) {
         vEventGroupDelete(event_group);
