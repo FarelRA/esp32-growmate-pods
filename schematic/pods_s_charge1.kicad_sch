@@ -628,7 +628,7 @@
     (on_board yes)
     (dnp no)
     (fields_autoplaced no)
-    (uuid ebfc424a-41e0-43c2-a9d0-180cc1e83b14)
+    (uuid 9750ff96-6152-489e-989b-d0711517f41d)
     (property "Reference" "CHG1"
       (at 80.7 75.0 0)
       (effects (font (size 1.27 1.27)) (justify left)))
@@ -639,13 +639,13 @@
       (at 76.2 76.2 0)
       (effects (font (size 1.27 1.27)) (hide yes)))
     (pin "1"
-      (uuid a81dee15-ce86-43ed-bc2f-824cda845fb3))
+      (uuid be43ac21-9c2a-4164-8021-b7bd0c2ab3e2))
     (pin "2"
-      (uuid 3de422ef-ee08-47d2-a05a-9f952b1eba31))
+      (uuid b701d714-3352-4ab5-adf8-15c8eba3b6dd))
     (pin "3"
-      (uuid 8410ad64-c356-46fa-a382-32a73124b76f))
+      (uuid 04390683-b85d-4d15-b55a-466c861d0950))
     (pin "4"
-      (uuid c28c7203-dc9a-421c-8f2a-b3fa4dbf82d7))
+      (uuid 36fa5339-c321-4c6c-ab61-7fa9fe93f459))
     (instances
       (project "GrowMate"
         (path "/216fdad8-4006-4d85-8157-93191bd90b6a/52201103-f9af-5c26-bb25-d1450f2a72f2"
@@ -660,7 +660,7 @@
     (on_board yes)
     (dnp no)
     (fields_autoplaced no)
-    (uuid 5c9b0516-3587-4a30-847d-7619a1b7e61a)
+    (uuid 8cd3ec14-56e2-418e-bf2f-b6aa2f1344b9)
     (property "Reference" "BT1"
       (at 31.06 75.0 0)
       (effects (font (size 1.27 1.27)) (justify right)))
@@ -671,9 +671,9 @@
       (at 35.56 76.2 0)
       (effects (font (size 1.27 1.27)) (hide yes)))
     (pin "1"
-      (uuid ac46e7db-8c1a-43c5-9bb0-5d14db4bb71d))
+      (uuid 2bd4ccf9-c463-454a-8d9c-8600e3e18ba0))
     (pin "2"
-      (uuid f1ee2171-2ccd-49cf-a6b7-fff3564cc65a))
+      (uuid df8cefcc-569d-437a-b066-ac4fff1c3c5b))
     (instances
       (project "GrowMate"
         (path "/216fdad8-4006-4d85-8157-93191bd90b6a/52201103-f9af-5c26-bb25-d1450f2a72f2"
@@ -685,81 +685,81 @@
       (xy 55.88 73.66)
     )
     (stroke (width 0.1524) (type default))
-    (uuid f7b780dc-3003-43f5-bf8d-782808c2dc7c))
+    (uuid 5aff3a92-226a-4c37-a3f2-64c9a3ceedab))
   (wire
     (pts
       (xy 55.88 73.66)
       (xy 55.88 68.58)
     )
     (stroke (width 0.1524) (type default))
-    (uuid 9fc7ffb5-2e26-43c9-8c3f-608d6cdfec51))
+    (uuid 35f1606c-2660-4375-bfb5-360a7a238a64))
   (wire
     (pts
       (xy 55.88 68.58)
       (xy 40.64 68.58)
     )
     (stroke (width 0.1524) (type default))
-    (uuid 9c6c8ca2-0dc5-4f92-9fe0-12d83c0ada6a))
+    (uuid c806463a-5592-479e-b4a2-6473538a7655))
   (wire
     (pts
       (xy 40.64 68.58)
       (xy 40.64 76.2)
     )
     (stroke (width 0.1524) (type default))
-    (uuid 164b9ccc-932b-4089-b9c8-e9a5425d6a83))
+    (uuid fb93602d-6232-47e0-9837-ce276385a08f))
   (wire
     (pts
       (xy 71.12 76.2)
       (xy 63.5 76.2)
     )
     (stroke (width 0.1524) (type default))
-    (uuid 715223e8-f815-404a-9fd9-76a3709b6d59))
+    (uuid 34002ac8-812f-4a2b-abd8-d8097438d65e))
   (wire
     (pts
       (xy 63.5 76.2)
       (xy 63.5 96.52)
     )
     (stroke (width 0.1524) (type default))
-    (uuid 21770b98-7a98-454e-93b3-e4c3337976c3))
+    (uuid 2f737c89-f0d3-4813-ace3-2acf91388438))
   (wire
     (pts
       (xy 71.12 81.28)
       (xy 68.58 81.28)
     )
     (stroke (width 0.1524) (type default))
-    (uuid 81ca2370-24b3-45a6-8096-3deafa327166))
+    (uuid 6d83451f-854d-45bf-b6ff-ba87d33b1d4a))
   (wire
     (pts
       (xy 68.58 81.28)
       (xy 68.58 96.52)
     )
     (stroke (width 0.1524) (type default))
-    (uuid c66991e1-af2e-46a5-ac20-53885b77c17a))
+    (uuid 739799d6-684e-4342-9841-07f74f47b1bb))
   (wire
     (pts
       (xy 40.64 73.66)
       (xy 48.26 73.66)
     )
     (stroke (width 0.1524) (type default))
-    (uuid 70f212f7-140f-46c9-a4dd-6f40d0c5f0e0))
+    (uuid a0c53ba4-647b-45cd-92b5-348e87305896))
   (wire
     (pts
       (xy 48.26 73.66)
       (xy 48.26 96.52)
     )
     (stroke (width 0.1524) (type default))
-    (uuid 9687c03d-269b-4b84-a168-84fb9db83157))
+    (uuid 59e39687-a0a9-42a7-8854-d2259d6052a5))
   (wire
     (pts
       (xy 48.26 96.52)
       (xy 73.66 96.52)
     )
     (stroke (width 0.1524) (type default))
-    (uuid 2e065093-6a97-466b-b0b4-233eeeff994e))
+    (uuid 3de506e4-afcd-4aa8-b5d3-47d2618ed8be))
   (junction (at 63.5 96.52) (diameter 0) (color 0 0 0 0)
-    (uuid b223adc3-67d2-4c4d-91f8-30f88de7a38f))
+    (uuid b9c8ed1e-a674-45fc-a32e-3cca9aca9d73))
   (junction (at 68.58 96.52) (diameter 0) (color 0 0 0 0)
-    (uuid 90b7e06e-81e1-4e2d-a6c1-db972bef522c))
+    (uuid e5978cd4-3377-48a6-9b98-c32513190449))
   (symbol
     (lib_id "power:GND")
     (at 55.88 106.67999999999999 0)
@@ -769,7 +769,7 @@
     (on_board yes)
     (dnp no)
     (fields_autoplaced no)
-    (uuid b98ecf90-5d19-418c-af22-1235cdb4375a)
+    (uuid 93e0819b-7f23-4980-b916-79969f8bb136)
     (property "Reference" "#GND01"
       (at 55.88 106.67999999999999 0)
       (effects (font (size 1.27 1.27)) (hide yes)))
@@ -777,7 +777,7 @@
       (at 55.88 106.67999999999999 0)
       (effects (font (size 1.27 1.27)) (hide yes)))
     (pin "1"
-      (uuid 05329a21-17a0-43c5-964d-39ad0b0115e9))
+      (uuid a81718f4-08e4-45be-9c0c-83bbd7dd3cec))
     (instances
       (project "GrowMate"
         (path "/216fdad8-4006-4d85-8157-93191bd90b6a/52201103-f9af-5c26-bb25-d1450f2a72f2"
@@ -789,9 +789,9 @@
       (xy 55.88 106.68)
     )
     (stroke (width 0.1524) (type default))
-    (uuid ee211ff6-a456-4e09-b259-6431f168f38d))
+    (uuid f4a5abed-a437-43a7-b864-0d25171931a2))
   (junction (at 55.88 96.52) (diameter 0) (color 0 0 0 0)
-    (uuid a81798ad-4f94-410c-836a-ab1c00844ff2))
+    (uuid 5659707b-9ed3-40a5-be00-5a839b5f4749))
   (symbol
     (lib_id "power:PWR_FLAG")
     (at 73.66 96.52 0)
@@ -801,12 +801,12 @@
     (on_board yes)
     (dnp no)
     (fields_autoplaced no)
-    (uuid 260a6609-2906-4b7f-a46b-3076e966eb20)
+    (uuid 2c4bf4b3-72e2-44a7-b8bd-4669f27c12dc)
     (property "Reference" "#PWR02"
       (at 73.66 96.52 0)
       (effects (font (size 1.27 1.27)) (hide yes)))
     (pin "1"
-      (uuid 8ed276f5-b562-41c9-8631-839b054bf54e))
+      (uuid e23ff071-7d5c-4091-b795-46970b1147db))
     (instances
       (project "GrowMate"
         (path "/216fdad8-4006-4d85-8157-93191bd90b6a/52201103-f9af-5c26-bb25-d1450f2a72f2"
@@ -818,18 +818,18 @@
       (xy 111.76 78.74)
     )
     (stroke (width 0.1524) (type default))
-    (uuid 6eeec761-d3ef-4e49-9720-96d21be902c8))
+    (uuid c0affca4-e7bf-47e5-9611-e5dd1890afa0))
   (global_label "SYS_PACK"
     (shape bidirectional)
     (at 111.76 78.74 0)
     (effects (font (size 1.27 1.27)) (justify left))
-    (uuid 9f9cc7d4-607a-40e9-9f61-217c83df13ff))
+    (uuid 7460f152-cd61-458e-813c-e9b23b4cf4ce))
   (text "CHG1: 5V enters via on-module USB-C."
     (at 25.4 139.7 0)
     (effects (font (size 1.0 1.0)) (justify left))
-    (uuid 53e4c8fa-d4e9-47f2-b3d7-7bc74098af19))
+    (uuid ff27ba5f-4436-444f-8fb8-ed9f23d303e9))
   (text "Load hangs on OUT+-, never B+- (02-power idle-charge rule)."
     (at 25.4 141.9 0)
     (effects (font (size 1.0 1.0)) (justify left))
-    (uuid b1e0b02c-b8aa-4aef-9bd3-f78065ed579a))
+    (uuid 13d8986d-6dd0-4b72-941a-7ee8511b321b))
 )

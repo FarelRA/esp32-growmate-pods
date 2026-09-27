@@ -347,7 +347,9 @@ s_led()
 ERC()
 generate_netlist()
 generate_xml()
-generate_schematic(title="GrowMate Pods carrier rev A", auto_stub=True)
+generate_schematic(title="GrowMate Pods carrier rev A", auto_stub=True,
+                    flatness=1.0)  # flat draft: hierarchical mode would
+# clobber the placed pods_s_*.kicad_sch sheets (same filenames).
 
 with open("bom.csv", "w") as f:
     f.write("ref,value,footprint,function\n")

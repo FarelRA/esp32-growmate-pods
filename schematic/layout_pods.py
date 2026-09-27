@@ -489,8 +489,9 @@ sh.wire([(99.06, 96.52), (99.06, 106.68)])
 sh.pwrflag(104.14, 88.9)
 sh.wire([(99.06, 88.9), (104.14, 88.9)])
 sh.junction(99.06, 88.9)
-# PUMP_5V rail top: +5V symbol, M1.1 stub, D1.K + C11 taps.
-sh.power("power:+5V", 124.46, 53.34)
+# PUMP_5V rail top: PUMP_5V global label (F2 branch), M1.1 stub,
+# D1.K + C11 taps.
+sh.glabel("PUMP_5V", 124.46, 53.34)
 sh.wire([(124.46, 53.34), (124.46, 73.66)])
 sh.wire([(124.46, 58.42), (154.94, 58.42)])
 sh.junction(124.46, 58.42)
@@ -540,8 +541,8 @@ sh.wire([(99.06, 96.52), (99.06, 106.68)])
 sh.pwrflag(104.14, 88.9)
 sh.wire([(99.06, 88.9), (104.14, 88.9)])
 sh.junction(99.06, 88.9)
-# LED_5V from fused branch (global +5V): symbol + stub to D2.A.
-sh.power("power:+5V", 124.46, 53.34)
+# LED_5V from F3 branch: global label + stub to D2.A.
+sh.glabel("LED_5V", 124.46, 53.34)
 sh.wire([(124.46, 53.34), (124.46, 73.66)])
 sh.pwrflag(129.54, 63.5)
 sh.wire([(124.46, 63.5), (129.54, 63.5)])
