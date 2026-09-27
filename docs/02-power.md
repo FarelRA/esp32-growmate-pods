@@ -16,8 +16,12 @@ BLP673 3.85V 4230mAh ──► TP4056 (Type-C, DW01A) ── charge path ──�
   protection is bypassed too). Rev2: real power-path (MCP73871 or
   P-FET load-share).
 - Boost: MT3608 5 V / 2 A setting from pack voltage (3.0–4.2 V).
-  Budget: ESP peak ~800 mA (WiFi + camera) + pump 200–500 mA + LED strip
-  per its module rating. Size the strip so the total stays under ~1.6 A.
+  Budget (measured loads): ESP peak ~800 mA (WiFi + camera) + pump
+  1 A run / 2 A stall + LED strip 20 cm 2 A. Pump and LED are NEVER
+  on together (server-paced interlock — combined 3.8 A run / 4.8 A
+  stall exceeds the 2 A setting; rev2 upsize to >= 5 A boost).
+  Interlocked worst case (ESP + LED) is 2.8 A @ 5 V ≈ 5.5 A in at a
+  3.0 V pack: F1 is 5 A hold (2920) and the pack→boost run is 1.5 mm².
 - Rails: sensors from module 3V3 **only** (AMS1117). Never 5 V into a GPIO
   or a 3V3 sensor header. Pump and LED strip on +5V only.
 - Decoupling: C2 1000 µ bulk + C3 100 n ceramic at the module 5V entry;

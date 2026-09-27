@@ -1,0 +1,250 @@
+(kicad_sch
+  (version 20230409)
+  (generator "skidl")
+  (generator_version "2.3.0")
+  (uuid fccbde66-8e32-5424-b7f2-b5a5a2578910)
+  (paper "A4")
+  (title_block
+    (title "GrowMate Pods carrier rev A")
+    (date "2026-09-27")
+    (company "")
+    (comment 1 "Generated with SKiDL")
+    (comment 2 "")
+    (comment 3 "")
+    (comment 4 ""))
+  (lib_symbols
+  (symbol "Device:Polyfuse"
+  		(pin_numbers
+  			(hide yes)
+  		)
+  		(pin_names
+  			(offset 0)
+  		)
+  		(exclude_from_sim no)
+  		(in_bom yes)
+  		(on_board yes)
+  		(in_pos_files yes)
+  		(duplicate_pin_numbers_are_jumpers no)
+  		(property "Reference" "F"
+  			(at -2.54 0 90)
+  			(show_name no)
+  			(do_not_autoplace no)
+  			(effects
+  				(font
+  					(size 1.27 1.27)
+  				)
+  			)
+  		)
+  		(property "Value" "Polyfuse"
+  			(at 2.54 0 90)
+  			(show_name no)
+  			(do_not_autoplace no)
+  			(effects
+  				(font
+  					(size 1.27 1.27)
+  				)
+  			)
+  		)
+  		(property "Footprint" ""
+  			(at 1.27 -5.08 0)
+  			(show_name no)
+  			(do_not_autoplace no)
+  			(hide yes)
+  			(effects
+  				(font
+  					(size 1.27 1.27)
+  				)
+  				(justify left)
+  			)
+  		)
+  		(property "Datasheet" ""
+  			(at 0 0 0)
+  			(show_name no)
+  			(do_not_autoplace no)
+  			(hide yes)
+  			(effects
+  				(font
+  					(size 1.27 1.27)
+  				)
+  			)
+  		)
+  		(property "Description" "Resettable fuse, polymeric positive temperature coefficient"
+  			(at 0 0 0)
+  			(show_name no)
+  			(do_not_autoplace no)
+  			(hide yes)
+  			(effects
+  				(font
+  					(size 1.27 1.27)
+  				)
+  			)
+  		)
+  		(property "ki_keywords" "resettable fuse PTC PPTC polyfuse polyswitch"
+  			(at 0 0 0)
+  			(show_name no)
+  			(do_not_autoplace no)
+  			(hide yes)
+  			(effects
+  				(font
+  					(size 1.27 1.27)
+  				)
+  			)
+  		)
+  		(property "ki_fp_filters" "*polyfuse* *PTC*"
+  			(at 0 0 0)
+  			(show_name no)
+  			(do_not_autoplace no)
+  			(hide yes)
+  			(effects
+  				(font
+  					(size 1.27 1.27)
+  				)
+  			)
+  		)
+  		
+  		
+  		(embedded_fonts no)
+  	(symbol "Polyfuse_0_1"
+  			(polyline
+  				(pts
+  					(xy -1.524 2.54) (xy -1.524 1.524) (xy 1.524 -1.524) (xy 1.524 -2.54)
+  				)
+  				(stroke
+  					(width 0)
+  					(type default)
+  				)
+  				(fill
+  					(type none)
+  				)
+  			)
+  			(rectangle
+  				(start -0.762 2.54)
+  				(end 0.762 -2.54)
+  				(stroke
+  					(width 0.254)
+  					(type default)
+  				)
+  				(fill
+  					(type none)
+  				)
+  			)
+  			(polyline
+  				(pts
+  					(xy 0 2.54) (xy 0 -2.54)
+  				)
+  				(stroke
+  					(width 0)
+  					(type default)
+  				)
+  				(fill
+  					(type none)
+  				)
+  			)
+  		)(symbol "Polyfuse_1_1"
+  			(pin passive line
+  				(at 0 3.81 270)
+  				(length 1.27)
+  				(name ""
+  					(effects
+  						(font
+  							(size 1.27 1.27)
+  						)
+  					)
+  				)
+  				(number "1"
+  					(effects
+  						(font
+  							(size 1.27 1.27)
+  						)
+  					)
+  				)
+  			)
+  			(pin passive line
+  				(at 0 -3.81 90)
+  				(length 1.27)
+  				(name ""
+  					(effects
+  						(font
+  							(size 1.27 1.27)
+  						)
+  					)
+  				)
+  				(number "2"
+  					(effects
+  						(font
+  							(size 1.27 1.27)
+  						)
+  					)
+  				)
+  			)
+  		))
+  )
+
+  (symbol
+    (lib_id "Device:Polyfuse")
+    (at 101.6 76.2 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced no)
+    (uuid 0343751f-1234-452d-bb39-4cecacda00be)
+    (property "Reference" "F1"
+      (at 106.1 75.0 0)
+      (effects (font (size 1.27 1.27)) (justify left)))
+    (property "Value" "Polyfuse-5A-hold"
+      (at 106.1 78.8 0)
+      (effects (font (size 1.27 1.27)) (justify left)))
+    (property "Footprint" "Fuse:Fuse_2920_7451Metric"
+      (at 101.6 76.2 0)
+      (effects (font (size 1.27 1.27)) (hide yes)))
+    (pin "1"
+      (uuid 27ed5c52-9e30-44eb-8113-240213c82364))
+    (pin "2"
+      (uuid cf010e5a-b251-4946-a676-c86b9076ac58))
+    (instances
+      (project "GrowMate"
+        (path "/216fdad8-4006-4d85-8157-93191bd90b6a/fccbde66-8e32-5424-b7f2-b5a5a2578910"
+          (reference "F1")
+          (unit 1)))))
+  (wire
+    (pts
+      (xy 78.74 72.39)
+      (xy 101.6 72.39)
+    )
+    (stroke (width 0.1524) (type default))
+    (uuid f8df87f7-7032-4693-b716-e4b2626e7913))
+  (global_label "SYS_PACK"
+    (shape bidirectional)
+    (at 78.74 72.39 0)
+    (effects (font (size 1.27 1.27)) (justify left))
+    (uuid 2e220938-0c37-4d66-acc5-9342aba11555))
+  (wire
+    (pts
+      (xy 101.6 80.01)
+      (xy 101.6 93.98)
+    )
+    (stroke (width 0.1524) (type default))
+    (uuid 974c656e-bd9b-4aef-b4f9-e1c686a303ea))
+  (wire
+    (pts
+      (xy 101.6 93.98)
+      (xy 119.38 93.98)
+    )
+    (stroke (width 0.1524) (type default))
+    (uuid 5c2a65e6-1a66-42f7-8cb7-089ce7d4074c))
+  (global_label "BST_IN"
+    (shape bidirectional)
+    (at 119.38 93.98 0)
+    (effects (font (size 1.27 1.27)) (justify left))
+    (uuid 45b56950-e42b-4dc6-b50f-f8e1192cc73d))
+  (text "F1 5A hold: interlocked max ~5.5A in at 3.0V pack;"
+    (at 25.4 139.7 0)
+    (effects (font (size 1.0 1.0)) (justify left))
+    (uuid fca60a41-a526-47d8-b9f9-d8cdee9997ee))
+  (text "trips on dead short only."
+    (at 25.4 141.9 0)
+    (effects (font (size 1.0 1.0)) (justify left))
+    (uuid 860e70b0-3569-4923-8f3c-0aee3663debd))
+)

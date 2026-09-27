@@ -1,0 +1,612 @@
+(kicad_sch
+  (version 20230409)
+  (generator "skidl")
+  (generator_version "2.3.0")
+  (uuid d92d2f4f-55ca-5e7f-ac14-dd9d42664854)
+  (paper "A4")
+  (title_block
+    (title "GrowMate Pods carrier rev A")
+    (date "2026-09-27")
+    (company "")
+    (comment 1 "Generated with SKiDL")
+    (comment 2 "")
+    (comment 3 "")
+    (comment 4 ""))
+  (lib_symbols
+  (symbol "Device:Polyfuse"
+  		(pin_numbers
+  			(hide yes)
+  		)
+  		(pin_names
+  			(offset 0)
+  		)
+  		(exclude_from_sim no)
+  		(in_bom yes)
+  		(on_board yes)
+  		(in_pos_files yes)
+  		(duplicate_pin_numbers_are_jumpers no)
+  		(property "Reference" "F"
+  			(at -2.54 0 90)
+  			(show_name no)
+  			(do_not_autoplace no)
+  			(effects
+  				(font
+  					(size 1.27 1.27)
+  				)
+  			)
+  		)
+  		(property "Value" "Polyfuse"
+  			(at 2.54 0 90)
+  			(show_name no)
+  			(do_not_autoplace no)
+  			(effects
+  				(font
+  					(size 1.27 1.27)
+  				)
+  			)
+  		)
+  		(property "Footprint" ""
+  			(at 1.27 -5.08 0)
+  			(show_name no)
+  			(do_not_autoplace no)
+  			(hide yes)
+  			(effects
+  				(font
+  					(size 1.27 1.27)
+  				)
+  				(justify left)
+  			)
+  		)
+  		(property "Datasheet" ""
+  			(at 0 0 0)
+  			(show_name no)
+  			(do_not_autoplace no)
+  			(hide yes)
+  			(effects
+  				(font
+  					(size 1.27 1.27)
+  				)
+  			)
+  		)
+  		(property "Description" "Resettable fuse, polymeric positive temperature coefficient"
+  			(at 0 0 0)
+  			(show_name no)
+  			(do_not_autoplace no)
+  			(hide yes)
+  			(effects
+  				(font
+  					(size 1.27 1.27)
+  				)
+  			)
+  		)
+  		(property "ki_keywords" "resettable fuse PTC PPTC polyfuse polyswitch"
+  			(at 0 0 0)
+  			(show_name no)
+  			(do_not_autoplace no)
+  			(hide yes)
+  			(effects
+  				(font
+  					(size 1.27 1.27)
+  				)
+  			)
+  		)
+  		(property "ki_fp_filters" "*polyfuse* *PTC*"
+  			(at 0 0 0)
+  			(show_name no)
+  			(do_not_autoplace no)
+  			(hide yes)
+  			(effects
+  				(font
+  					(size 1.27 1.27)
+  				)
+  			)
+  		)
+  		
+  		
+  		(embedded_fonts no)
+  	(symbol "Polyfuse_0_1"
+  			(polyline
+  				(pts
+  					(xy -1.524 2.54) (xy -1.524 1.524) (xy 1.524 -1.524) (xy 1.524 -2.54)
+  				)
+  				(stroke
+  					(width 0)
+  					(type default)
+  				)
+  				(fill
+  					(type none)
+  				)
+  			)
+  			(rectangle
+  				(start -0.762 2.54)
+  				(end 0.762 -2.54)
+  				(stroke
+  					(width 0.254)
+  					(type default)
+  				)
+  				(fill
+  					(type none)
+  				)
+  			)
+  			(polyline
+  				(pts
+  					(xy 0 2.54) (xy 0 -2.54)
+  				)
+  				(stroke
+  					(width 0)
+  					(type default)
+  				)
+  				(fill
+  					(type none)
+  				)
+  			)
+  		)(symbol "Polyfuse_1_1"
+  			(pin passive line
+  				(at 0 3.81 270)
+  				(length 1.27)
+  				(name ""
+  					(effects
+  						(font
+  							(size 1.27 1.27)
+  						)
+  					)
+  				)
+  				(number "1"
+  					(effects
+  						(font
+  							(size 1.27 1.27)
+  						)
+  					)
+  				)
+  			)
+  			(pin passive line
+  				(at 0 -3.81 90)
+  				(length 1.27)
+  				(name ""
+  					(effects
+  						(font
+  							(size 1.27 1.27)
+  						)
+  					)
+  				)
+  				(number "2"
+  					(effects
+  						(font
+  							(size 1.27 1.27)
+  						)
+  					)
+  				)
+  			)
+  		))
+  (symbol "power:+5V"
+  		(power global)
+  		(pin_numbers
+  			(hide yes)
+  		)
+  		(pin_names
+  			(offset 0)
+  			(hide yes)
+  		)
+  		(exclude_from_sim no)
+  		(in_bom yes)
+  		(on_board yes)
+  		(in_pos_files yes)
+  		(duplicate_pin_numbers_are_jumpers no)
+  		(property "Reference" "#PWR"
+  			(at 0 -3.81 0)
+  			(show_name no)
+  			(do_not_autoplace no)
+  			(hide yes)
+  			(effects
+  				(font
+  					(size 1.27 1.27)
+  				)
+  			)
+  		)
+  		(property "Value" "+5V"
+  			(at 0 3.556 0)
+  			(show_name no)
+  			(do_not_autoplace no)
+  			(effects
+  				(font
+  					(size 1.27 1.27)
+  				)
+  			)
+  		)
+  		(property "Footprint" ""
+  			(at 0 0 0)
+  			(show_name no)
+  			(do_not_autoplace no)
+  			(hide yes)
+  			(effects
+  				(font
+  					(size 1.27 1.27)
+  				)
+  			)
+  		)
+  		(property "Datasheet" ""
+  			(at 0 0 0)
+  			(show_name no)
+  			(do_not_autoplace no)
+  			(hide yes)
+  			(effects
+  				(font
+  					(size 1.27 1.27)
+  				)
+  			)
+  		)
+  		(property "Description" "Power symbol creates a global label with name \"+5V\""
+  			(at 0 0 0)
+  			(show_name no)
+  			(do_not_autoplace no)
+  			(hide yes)
+  			(effects
+  				(font
+  					(size 1.27 1.27)
+  				)
+  			)
+  		)
+  		(property "ki_keywords" "global power"
+  			(at 0 0 0)
+  			(show_name no)
+  			(do_not_autoplace no)
+  			(hide yes)
+  			(effects
+  				(font
+  					(size 1.27 1.27)
+  				)
+  			)
+  		)
+  		
+  		
+  		(embedded_fonts no)
+  	(symbol "+5V_0_1"
+  			(polyline
+  				(pts
+  					(xy -0.762 1.27) (xy 0 2.54)
+  				)
+  				(stroke
+  					(width 0)
+  					(type default)
+  				)
+  				(fill
+  					(type none)
+  				)
+  			)
+  			(polyline
+  				(pts
+  					(xy 0 2.54) (xy 0.762 1.27)
+  				)
+  				(stroke
+  					(width 0)
+  					(type default)
+  				)
+  				(fill
+  					(type none)
+  				)
+  			)
+  			(polyline
+  				(pts
+  					(xy 0 0) (xy 0 2.54)
+  				)
+  				(stroke
+  					(width 0)
+  					(type default)
+  				)
+  				(fill
+  					(type none)
+  				)
+  			)
+  		)(symbol "+5V_1_1"
+  			(pin power_in line
+  				(at 0 0 90)
+  				(length 0)
+  				(name ""
+  					(effects
+  						(font
+  							(size 1.27 1.27)
+  						)
+  					)
+  				)
+  				(number "1"
+  					(effects
+  						(font
+  							(size 1.27 1.27)
+  						)
+  					)
+  				)
+  			)
+  		))
+  (symbol "power:PWR_FLAG"
+  		(power global)
+  		(pin_numbers
+  			(hide yes)
+  		)
+  		(pin_names
+  			(offset 0)
+  			(hide yes)
+  		)
+  		(exclude_from_sim no)
+  		(in_bom yes)
+  		(on_board yes)
+  		(in_pos_files yes)
+  		(duplicate_pin_numbers_are_jumpers no)
+  		(property "Reference" "#FLG"
+  			(at 0 1.905 0)
+  			(show_name no)
+  			(do_not_autoplace no)
+  			(hide yes)
+  			(effects
+  				(font
+  					(size 1.27 1.27)
+  				)
+  			)
+  		)
+  		(property "Value" "PWR_FLAG"
+  			(at 0 3.81 0)
+  			(show_name no)
+  			(do_not_autoplace no)
+  			(effects
+  				(font
+  					(size 1.27 1.27)
+  				)
+  			)
+  		)
+  		(property "Footprint" ""
+  			(at 0 0 0)
+  			(show_name no)
+  			(do_not_autoplace no)
+  			(hide yes)
+  			(effects
+  				(font
+  					(size 1.27 1.27)
+  				)
+  			)
+  		)
+  		(property "Datasheet" ""
+  			(at 0 0 0)
+  			(show_name no)
+  			(do_not_autoplace no)
+  			(hide yes)
+  			(effects
+  				(font
+  					(size 1.27 1.27)
+  				)
+  			)
+  		)
+  		(property "Description" "Special symbol for telling ERC where power comes from"
+  			(at 0 0 0)
+  			(show_name no)
+  			(do_not_autoplace no)
+  			(hide yes)
+  			(effects
+  				(font
+  					(size 1.27 1.27)
+  				)
+  			)
+  		)
+  		(property "ki_keywords" "flag power"
+  			(at 0 0 0)
+  			(show_name no)
+  			(do_not_autoplace no)
+  			(hide yes)
+  			(effects
+  				(font
+  					(size 1.27 1.27)
+  				)
+  			)
+  		)
+  		
+  		
+  		(embedded_fonts no)
+  	(symbol "PWR_FLAG_0_0"
+  			(pin power_out line
+  				(at 0 0 90)
+  				(length 0)
+  				(name ""
+  					(effects
+  						(font
+  							(size 1.27 1.27)
+  						)
+  					)
+  				)
+  				(number "1"
+  					(effects
+  						(font
+  							(size 1.27 1.27)
+  						)
+  					)
+  				)
+  			)
+  		)(symbol "PWR_FLAG_0_1"
+  			(polyline
+  				(pts
+  					(xy 0 0) (xy 0 1.27) (xy -1.016 1.905) (xy 0 2.54) (xy 1.016 1.905) (xy 0 1.27)
+  				)
+  				(stroke
+  					(width 0)
+  					(type default)
+  				)
+  				(fill
+  					(type none)
+  				)
+  			)
+  		))
+  )
+
+  (symbol
+    (lib_id "Device:Polyfuse")
+    (at 88.9 76.2 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced no)
+    (uuid f1a290e7-d5bd-4a0e-9343-de3d51ec9094)
+    (property "Reference" "F2"
+      (at 93.4 75.0 0)
+      (effects (font (size 1.27 1.27)) (justify left)))
+    (property "Value" "Polyfuse-1.5A-hold"
+      (at 93.4 78.8 0)
+      (effects (font (size 1.27 1.27)) (justify left)))
+    (property "Footprint" "Fuse:Fuse_1812_4532Metric"
+      (at 88.9 76.2 0)
+      (effects (font (size 1.27 1.27)) (hide yes)))
+    (pin "1"
+      (uuid 7a980be7-3e57-4830-bca6-e0520223c51d))
+    (pin "2"
+      (uuid 90c22086-5049-45a8-bacc-71313af96c0b))
+    (instances
+      (project "GrowMate"
+        (path "/216fdad8-4006-4d85-8157-93191bd90b6a/d92d2f4f-55ca-5e7f-ac14-dd9d42664854"
+          (reference "F2")
+          (unit 1)))))
+  (symbol
+    (lib_id "Device:Polyfuse")
+    (at 139.7 76.2 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced no)
+    (uuid 1e3256e6-cff5-4746-8b4c-b669baa9b497)
+    (property "Reference" "F3"
+      (at 144.2 75.0 0)
+      (effects (font (size 1.27 1.27)) (justify left)))
+    (property "Value" "Polyfuse-2.5A-hold"
+      (at 144.2 78.8 0)
+      (effects (font (size 1.27 1.27)) (justify left)))
+    (property "Footprint" "Fuse:Fuse_1812_4532Metric"
+      (at 139.7 76.2 0)
+      (effects (font (size 1.27 1.27)) (hide yes)))
+    (pin "1"
+      (uuid cb1dec9b-d114-4176-b3a9-6d756420b5c7))
+    (pin "2"
+      (uuid 5e2d2a5e-7d77-4dd4-966b-925b939056e6))
+    (instances
+      (project "GrowMate"
+        (path "/216fdad8-4006-4d85-8157-93191bd90b6a/d92d2f4f-55ca-5e7f-ac14-dd9d42664854"
+          (reference "F3")
+          (unit 1)))))
+  (wire
+    (pts
+      (xy 83.82 67.31)
+      (xy 139.7 67.31)
+    )
+    (stroke (width 0.1524) (type default))
+    (uuid f3909d8b-6b46-4464-a6f3-d2f4481cce46))
+  (wire
+    (pts
+      (xy 88.9 67.31)
+      (xy 88.9 72.39)
+    )
+    (stroke (width 0.1524) (type default))
+    (uuid 823f9ca7-858a-47da-9396-5b2b58425b9e))
+  (wire
+    (pts
+      (xy 139.7 67.31)
+      (xy 139.7 72.39)
+    )
+    (stroke (width 0.1524) (type default))
+    (uuid ca28fb4e-cceb-4b44-b0d9-39c866613383))
+  (junction (at 88.9 67.31) (diameter 0) (color 0 0 0 0)
+    (uuid 5624065d-b3c1-4293-8c36-b51281149e75))
+  (junction (at 139.7 67.31) (diameter 0) (color 0 0 0 0)
+    (uuid c588c6f4-dde4-450d-8caf-914709d248ef))
+  (symbol
+    (lib_id "power:+5V")
+    (at 114.3 57.15 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom no)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced no)
+    (uuid 46edabf4-a64f-4dc1-9d91-9f53d02c5651)
+    (property "Reference" "#+5V01"
+      (at 114.3 57.15 0)
+      (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Value" "+5V"
+      (at 114.3 57.15 0)
+      (effects (font (size 1.27 1.27)) (hide yes)))
+    (pin "1"
+      (uuid fc850bb1-51e2-4c2c-bee2-4bc45d359867))
+    (instances
+      (project "GrowMate"
+        (path "/216fdad8-4006-4d85-8157-93191bd90b6a/d92d2f4f-55ca-5e7f-ac14-dd9d42664854"
+          (reference "#+5V01")
+          (unit 1)))))
+  (wire
+    (pts
+      (xy 114.3 57.15)
+      (xy 114.3 67.31)
+    )
+    (stroke (width 0.1524) (type default))
+    (uuid 5b3df210-4bf5-42d4-8fd6-7aa4e8681979))
+  (junction (at 114.3 67.31) (diameter 0) (color 0 0 0 0)
+    (uuid de3649ce-1f5d-4e13-b538-178a1fe98df0))
+  (symbol
+    (lib_id "power:PWR_FLAG")
+    (at 83.82 67.31 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom no)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced no)
+    (uuid 343d29b6-27f2-458f-bd19-cea9064a5dcf)
+    (property "Reference" "#PWR02"
+      (at 83.82 67.31 0)
+      (effects (font (size 1.27 1.27)) (hide yes)))
+    (pin "1"
+      (uuid 6b01e2a6-8b3b-439c-8019-760f40d7f298))
+    (instances
+      (project "GrowMate"
+        (path "/216fdad8-4006-4d85-8157-93191bd90b6a/d92d2f4f-55ca-5e7f-ac14-dd9d42664854"
+          (reference "#PWR02")
+          (unit 1)))))
+  (wire
+    (pts
+      (xy 88.9 80.01)
+      (xy 88.9 93.98)
+    )
+    (stroke (width 0.1524) (type default))
+    (uuid c27b6bb6-d072-4fd7-bfe2-0772a321bd38))
+  (wire
+    (pts
+      (xy 88.9 93.98)
+      (xy 104.14 93.98)
+    )
+    (stroke (width 0.1524) (type default))
+    (uuid 213e8161-2f31-491c-9c5e-5186236105ab))
+  (global_label "PUMP_5V"
+    (shape bidirectional)
+    (at 104.14 93.98 0)
+    (effects (font (size 1.27 1.27)) (justify left))
+    (uuid 5e13f6b3-caf9-46fd-8600-d0120d2bf3ef))
+  (wire
+    (pts
+      (xy 139.7 80.01)
+      (xy 139.7 93.98)
+    )
+    (stroke (width 0.1524) (type default))
+    (uuid a120a9b7-7857-4311-8fee-f2c9b0543a03))
+  (wire
+    (pts
+      (xy 139.7 93.98)
+      (xy 154.94 93.98)
+    )
+    (stroke (width 0.1524) (type default))
+    (uuid bfeae6b6-c00b-4d49-8b9d-8fd10759c89b))
+  (global_label "LED_5V"
+    (shape bidirectional)
+    (at 154.94 93.98 0)
+    (effects (font (size 1.27 1.27)) (justify left))
+    (uuid 97342b6f-6fe1-4621-87f1-3edc20b293cf))
+  (text "F2 1.5A: pump 1A run / 2A stall. F3 2.5A: 2A strip x1.25."
+    (at 25.4 139.7 0)
+    (effects (font (size 1.0 1.0)) (justify left))
+    (uuid 985e23f5-21a2-4e55-b03e-0876523de5d2))
+)

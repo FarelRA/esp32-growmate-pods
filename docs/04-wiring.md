@@ -36,10 +36,10 @@ Notation: `U1-5` = carrier header U1 pin 5. `Q1-G/D/S` = gate/drain/source.
 
 | Net | Nodes |
 |---|---|
-| PACK+ | BLP673+ → F1-1; F1-2 → MT3608 IN+ (F1 = pack overcurrent, 2.5–3 A hold polyfuse) |
+| PACK+ | BLP673+ → F1-1; F1-2 → MT3608 IN+ (F1 = pack overcurrent, 5 A hold polyfuse, 2920) |
 | +5V | MT3608 5V out → U1-1, U1-16, J4-4, C2-1, C3-1; pump branch via F2 → M1-1 + D1-K; LED branch via F3 → D2-A |
-| +3V3 | U1-11 (module AMS1117 out) → J1-1, J2-1, J3-1, U2-VDD, C4-1 (at U2), R1-1, R8-1 |
-| GND | star → U1-3, U1-13, U1-15, J4-3, J1-3, J2-3, J3-3, U2-GND, C4-2 (at U2), Q1-S, Q2-S, R3-2, R5-2, R9-2, SW1-2, C1-2, C2-2, C3-2 |
+| +3V3 | U1-11 (module AMS1117 out) → R7-1, J2-1, J3-1, U2-VDD, C4-1 (at U2), C5-1, R1-1, R8-1 |
+| GND | star → U1-3, U1-13, U1-15, J4-3, J1-3, J2-3, J3-3, U2-GND, C4-2 (at U2), C5-2, C6-2, C7-2, C8-2, C9-2, C10-2, Q1-S, Q2-S, R3-2, R5-2, R9-2, SW1-2, C1-2, C2-2, C3-2 |
 | U0RXD | U1-5 ↔ J4-1 (adapter TX) |
 | U0TXD | U1-7 ↔ J4-2 (adapter RX) |
 | BOOT_IO0 | U1-9 ↔ R8-2; U1-9 ↔ SW1-1 (SW1-2 → GND). R8-1 → +3V3 (10k PU = SPI boot HIGH) |
@@ -50,15 +50,19 @@ Notation: `U1-5` = carrier header U1 pin 5. `Q1-G/D/S` = gate/drain/source.
 | LIGHT_GATE_Q | R4-2 ↔ R5-1 ↔ Q2-G (R5-2 → GND, 10k PD = OFF at boot, EMI-stiff) |
 | LED_LO | Q2-D ↔ D2-K |
 | DHT_DATA | U1-12 (GPIO15) ↔ U2-DATA ↔ R1-2 (R1-1 → +3V3, 4.7k PU = MTDO HIGH) |
-| WATER_AO | U1-14 (GPIO33) ↔ J1-2 ↔ R9-1 (R9-2 → GND, 10k PD; open probe reads ~0) |
+| TANK_VCC | +3V3 → R7-1; R7-2 ↔ J1-1 ↔ C6-1 (330 Ω series, dead-short → 10 mA) |
+| WATER_AO | J1-2 ↔ R9-1 (R9-2 → GND, 10k PD; open probe reads ~0) ↔ R11-1 |
+| WATER_ADC | R11-2 ↔ U1-14 (GPIO33) ↔ C10-1 (C10-2 → GND, 1k + 100n filter) |
 | GPIO12_NC | U1-6 unconnected (float + weak pulldown = MTDI LOW, strapping safe) |
-| SOIL_AO | U1-8 (GPIO13) ↔ J2-2 |
+| SOIL_AO | J2-2 ↔ R10-1 |
+| SOIL_ADC | R10-2 ↔ U1-8 (GPIO13) ↔ C9-1 (C9-2 → GND, 1k + 100n filter) |
 | LIGHT_MOD_AO | J3-2 ↔ R6-1 |
 | LIGHT_AO | U1-10 (GPIO14) ↔ R6-2 ↔ C1-1 (C1-2 → GND, 1k + 100n filter) |
+| PUMP_RF | M1 + D1-K branch ↔ C11-1; C11-2 ↔ PUMP_LO (100n pump-terminal shunt) |
 
 U2 pin 3: No-Connect, left open.
 
-## Parts list (27 refs)
+## Parts list (40 refs — matches schematic/bom.csv; U1A/U1B are units of U1)
 
 | Ref | Value | Footprint | Function |
 |---|---|---|---|
@@ -70,22 +74,32 @@ U2 pin 3: No-Connect, left open.
 | J4 | PROG | PinHeader_1x04_P2.54mm | flash header: 1 RX, 2 TX, 3 GND, 4 5V |
 | SW1 | BOOT | SW_Tactile_SPST | IO0 → GND for download mode |
 | Q1, Q2 | IRLZ44N | TO-220-3 | low-side N-MOSFETs, pump + light |
-| M1 | PUMP-5V | Motor_DC | 5 V micro submersible pump |
-| D1 | 1N5819 | DO-41 | pump flyback (K→+5V, A→PUMP_LO) |
-| D2 | GROW-LED-5V | LED_Strip | full-spectrum strip (A→+5V, K→LED_LO) |
+| M1 | PUMP-5V-1A | Motor_DC | 5 V micro submersible pump, 1 A run / 2 A stall |
+| D1 | 1N5819 | DO-41 | pump flyback (K→fused +5V branch, A→PUMP_LO) |
+| D2 | GROW-LED-5V-20CM-2A | LED_Strip | full-spectrum strip 20 cm 2 A (A→fused +5V, K→LED_LO) |
 | R1 | 4.7k | R_0603 | DHT pull-up (MTDO-HIGH strapping) |
 | R2, R4 | 220 | R_0603 | MOSFET gate stoppers |
 | R3, R5 | 10k | R_0603 | gate pulldowns (OFF at boot, stiff vs humidity/EMI) |
 | R6 | 1k | R_0603 | light-AO series (boot-PWM contention) |
+| R7 | 330 | R_0603 | tank-probe VCC series (dead-short → 10 mA) |
 | R8 | 10k | R_0603 | BOOT pull-up (SPI boot) |
 | R9 | 10k | R_0603 | water-AO pulldown (open probe reads ~0 = EMPTY) |
-| C1 | 100n | C_0603 | light-AO filter |
-| C4 | 100n | C_0603 | DHT VCC decoupling, at U2 |
-| C2 | 1000u | CP_Radial_D8_P3.5 | 5V bulk at module entry |
-| C3 | 100n | C_0603 | 5V ceramic at module entry |
-| F1 | polyfuse 2.5–3 A hold | 1812 | pack+ → boost-in overcurrent |
-| F2 | polyfuse 1.1 A hold | 1812 | pump branch |
-| F3 | per strip 1.25× run current | 1812 | LED branch |
+| R10 | 1k | R_0603 | soil input series |
+| R11 | 1k | R_0603 | water input series |
+| C1 | 100n-50V | C_0603 | light-AO filter |
+| C4 | 100n-50V | C_0603 | DHT VCC decoupling, at U2 |
+| C5 | 10u-6V3 | C_0603 | +3V3 bulk at U1-11 |
+| C6 | 100n-50V | C_0603 | tank header decoupling |
+| C7 | 100n-50V | C_0603 | soil header decoupling |
+| C8 | 100n-50V | C_0603 | light header decoupling |
+| C9 | 100n-50V | C_0603 | soil input filter |
+| C10 | 100n-50V | C_0603 | water input filter |
+| C11 | 100n-50V | C_0603 | pump terminal RF shunt |
+| C2 | 1000u-10V | CP_Radial_D8.0mm_P3.50mm | 5V bulk at module entry |
+| C3 | 100n-50V | C_0603 | 5V ceramic at module entry |
+| F1 | polyfuse 5 A hold | 2920 | pack+ → boost-in overcurrent (interlocked max ~5.5 A in at 3.0 V) |
+| F2 | polyfuse 1.5 A hold | 1812 | pump branch (1 A run / 2 A stall) |
+| F3 | polyfuse 2.5 A hold | 1812 | LED branch (20 cm 2 A strip × 1.25) |
 
 Color code: red 5V, orange 3V3, black GND, yellow analog, green digital,
 blue gate drive.

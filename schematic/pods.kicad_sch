@@ -1,0 +1,301 @@
+(kicad_sch
+  (version 20230409)
+  (generator "skidl")
+  (generator_version "2.3.0")
+  (uuid 216fdad8-4006-4d85-8157-93191bd90b6a)
+  (paper "A3")
+  (title_block
+    (title "GrowMate Pods carrier rev A")
+    (date "2026-09-27")
+    (company "")
+    (comment 1 "Generated with SKiDL")
+    (comment 2 "")
+    (comment 3 "")
+    (comment 4 ""))
+  (lib_symbols)
+  (sheet
+    (at 198.88 161.29)
+    (size 21.34 17.78)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (stroke
+      (width 0.1524)
+      (type solid))
+    (fill
+      (color 0 0 0 0.0))
+    (uuid 52201103-f9af-5c26-bb25-d1450f2a72f2)
+    (property "Sheetname" "s_charge1"
+      (at 198.88 160.58 0)
+      (effects
+        (font
+          (size 1.27 1.27))
+        (justify left bottom)))
+    (property "Sheetfile" "pods_s_charge1.kicad_sch"
+      (at 198.88 179.65 0)
+      (effects
+        (font
+          (size 1.27 1.27))
+        (justify left top))))
+  (sheet
+    (at 197.36 25.4)
+    (size 24.38 17.78)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (stroke
+      (width 0.1524)
+      (type solid))
+    (fill
+      (color 0 0 0 0.0))
+    (uuid fccbde66-8e32-5424-b7f2-b5a5a2578910)
+    (property "Sheetname" "s_feed_fuse1"
+      (at 197.36 24.69 0)
+      (effects
+        (font
+          (size 1.27 1.27))
+        (justify left bottom)))
+    (property "Sheetfile" "pods_s_feed_fuse1.kicad_sch"
+      (at 197.36 43.76 0)
+      (effects
+        (font
+          (size 1.27 1.27))
+        (justify left top))))
+  (sheet
+    (at 199.39 139.7)
+    (size 20.32 17.78)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (stroke
+      (width 0.1524)
+      (type solid))
+    (fill
+      (color 0 0 0 0.0))
+    (uuid 24b2d625-1355-5c4c-8fd3-30ad1de1baa3)
+    (property "Sheetname" "s_boost1"
+      (at 199.39 138.99 0)
+      (effects
+        (font
+          (size 1.27 1.27))
+        (justify left bottom)))
+    (property "Sheetfile" "pods_s_boost1.kicad_sch"
+      (at 199.39 158.06 0)
+      (effects
+        (font
+          (size 1.27 1.27))
+        (justify left top))))
+  (sheet
+    (at 197.87 48.26)
+    (size 23.37 17.78)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (stroke
+      (width 0.1524)
+      (type solid))
+    (fill
+      (color 0 0 0 0.0))
+    (uuid d92d2f4f-55ca-5e7f-ac14-dd9d42664854)
+    (property "Sheetname" "s_branches1"
+      (at 197.87 47.55 0)
+      (effects
+        (font
+          (size 1.27 1.27))
+        (justify left bottom)))
+    (property "Sheetfile" "pods_s_branches1.kicad_sch"
+      (at 197.87 66.62 0)
+      (effects
+        (font
+          (size 1.27 1.27))
+        (justify left top))))
+  (sheet
+    (at 200.41 93.98)
+    (size 18.29 17.78)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (stroke
+      (width 0.1524)
+      (type solid))
+    (fill
+      (color 0 0 0 0.0))
+    (uuid 892f9ba6-0ae3-5f3c-a1cb-cb6bbcc52ad1)
+    (property "Sheetname" "s_mcu1"
+      (at 200.41 93.27 0)
+      (effects
+        (font
+          (size 1.27 1.27))
+        (justify left bottom)))
+    (property "Sheetfile" "pods_s_mcu1.kicad_sch"
+      (at 200.41 112.34 0)
+      (effects
+        (font
+          (size 1.27 1.27))
+        (justify left top))))
+  (sheet
+    (at 199.39 252.73)
+    (size 20.32 17.78)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (stroke
+      (width 0.1524)
+      (type solid))
+    (fill
+      (color 0 0 0 0.0))
+    (uuid 282e8b6f-c0ea-57cf-becc-b88cbb09f3db)
+    (property "Sheetname" "s_water1"
+      (at 199.39 252.02 0)
+      (effects
+        (font
+          (size 1.27 1.27))
+        (justify left bottom)))
+    (property "Sheetfile" "pods_s_water1.kicad_sch"
+      (at 199.39 271.09 0)
+      (effects
+        (font
+          (size 1.27 1.27))
+        (justify left top))))
+  (sheet
+    (at 199.9 116.84)
+    (size 19.3 17.78)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (stroke
+      (width 0.1524)
+      (type solid))
+    (fill
+      (color 0 0 0 0.0))
+    (uuid 27f304de-9c3e-5417-beaa-bbe8c764e41e)
+    (property "Sheetname" "s_soil1"
+      (at 199.9 116.13 0)
+      (effects
+        (font
+          (size 1.27 1.27))
+        (justify left bottom)))
+    (property "Sheetfile" "pods_s_soil1.kicad_sch"
+      (at 199.9 135.2 0)
+      (effects
+        (font
+          (size 1.27 1.27))
+        (justify left top))))
+  (sheet
+    (at 197.36 184.15)
+    (size 24.38 17.78)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (stroke
+      (width 0.1524)
+      (type solid))
+    (fill
+      (color 0 0 0 0.0))
+    (uuid 91ef9dad-ef34-5895-821c-1f97dfd4b1f0)
+    (property "Sheetname" "s_lightsens1"
+      (at 197.36 183.44 0)
+      (effects
+        (font
+          (size 1.27 1.27))
+        (justify left bottom)))
+    (property "Sheetfile" "pods_s_lightsens1.kicad_sch"
+      (at 197.36 202.51 0)
+      (effects
+        (font
+          (size 1.27 1.27))
+        (justify left top))))
+  (sheet
+    (at 200.41 207.01)
+    (size 18.29 17.78)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (stroke
+      (width 0.1524)
+      (type solid))
+    (fill
+      (color 0 0 0 0.0))
+    (uuid a38d173b-c688-50e9-8ed6-b7feae1549e5)
+    (property "Sheetname" "s_dht1"
+      (at 200.41 206.3 0)
+      (effects
+        (font
+          (size 1.27 1.27))
+        (justify left bottom)))
+    (property "Sheetfile" "pods_s_dht1.kicad_sch"
+      (at 200.41 225.37 0)
+      (effects
+        (font
+          (size 1.27 1.27))
+        (justify left top))))
+  (sheet
+    (at 199.9 229.87)
+    (size 19.3 17.78)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (stroke
+      (width 0.1524)
+      (type solid))
+    (fill
+      (color 0 0 0 0.0))
+    (uuid 6a7fc3da-a420-529d-b2e9-45718d2c3adc)
+    (property "Sheetname" "s_pump1"
+      (at 199.9 229.16 0)
+      (effects
+        (font
+          (size 1.27 1.27))
+        (justify left bottom)))
+    (property "Sheetfile" "pods_s_pump1.kicad_sch"
+      (at 199.9 248.23 0)
+      (effects
+        (font
+          (size 1.27 1.27))
+        (justify left top))))
+  (sheet
+    (at 200.41 71.12)
+    (size 18.29 17.78)
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced yes)
+    (stroke
+      (width 0.1524)
+      (type solid))
+    (fill
+      (color 0 0 0 0.0))
+    (uuid aa84ae83-c52b-5517-9ae5-9507ffaa1848)
+    (property "Sheetname" "s_led1"
+      (at 200.41 70.41 0)
+      (effects
+        (font
+          (size 1.27 1.27))
+        (justify left bottom)))
+    (property "Sheetfile" "pods_s_led1.kicad_sch"
+      (at 200.41 89.48 0)
+      (effects
+        (font
+          (size 1.27 1.27))
+        (justify left top)))))
