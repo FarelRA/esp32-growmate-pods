@@ -1,6 +1,7 @@
 # Build artifacts
 .pio/
 .venv/
+venv/
 build/
 *.o
 *.bin
@@ -27,6 +28,17 @@ __pycache__/
 # Temporary files
 *.tmp
 *.temp
+
+# Test outputs
+/tmp/
+*.jpg
+*.jpeg
+*.png
+*.svg
+# Inspection renders are local-only (regenerate via kicad-cli when
+# inspecting); the versioned deliverables are sources + PDFs.
+schematic/insp/
+schematic/pods_s_*-erc.rpt
 
 # ESP-IDF managed deps (re-downloaded by the component manager on build)
 managed_components/
