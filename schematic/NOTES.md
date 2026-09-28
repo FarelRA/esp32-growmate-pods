@@ -1,18 +1,9 @@
 # Pods carrier rev A — release notes (also placed on-sheet)
 
-## Operating rules (binding)
-- Pump and LED NEVER on together (server paces). Combined 3.8 A run /
-  4.8 A stall browns out the rail; the firmware obeys whatever the
-  server sends. Boost XL6009 4 A (heatsink on) covers the 2.8 A
-  worst allowed state.
-- Charge idle / low-duty only (TP4056 has no load-share; cell floats
-  at 4.20 V under load — see docs/02-power.md).
-- F1 5 A hold (2920): interlocked max ~5.5 A in at 3.0 V pack; trips
-  on dead short only. F2 1.5 A (pump 1 A run / 2 A stall). F3 2.5 A
-  (20 cm 2 A strip x1.25).
-- GPIO12 (U1-6) stays unconnected, always (MTDI strapping LOW).
-- Water probe is a consumable (continuous-DC electrolysis): rinse/dry
-  between tanks, recalibrate after moving, stock spares.
+## Operating rules (binding — defined in docs/, repeated on-sheet)
+- Pump/LED XOR, charge idle/low-duty, fuses, GPIO12, probe care:
+  `docs/01-pinout.md`, `docs/02-power.md`, `docs/04-wiring.md`. The
+  binding instances also sit as on-sheet notes.
 
 ## Files
 - `pods.py` — SKiDL source of truth (netlist/BOM/ERC). Pin `skidl==2.3.0`.
@@ -24,10 +15,27 @@
   placement pass (no hand edits in KiCad without back-annotating here).
 - `mfg/pods.pdf` — plotted release drawing.
 
+## Release gate (ERC — KiCad 10.0.6 CLI, SKiDL 2.3.0)
+0 errors on all 11 sheets. Waived:
+1. `isolated_pin_label` — single-ended global labels are the
+   inter-sheet ports (e.g. `PUMP_GATE` on `s_mcu`/`s_pump`); mating
+   label on the sibling sheet, same nets as `docs/06-api.md`.
+2. `lib_symbol_mismatch` on `Diode:1N5819` (pump sheet only) —
+   flattened copy of the installed lib's own `1N5819`+`SB120` units;
+   connectivity proven independently (zero pin errors, netlist shows
+   D1.1 on `PUMP_5V` with M1.1/C11.1, D1.2 on `PUMP_LO` with the rest).
+Zero (must stay zero): `pin_not_connected`,
+`unconnected_wire_endpoint`, `wire_dangling`, `multiple_net_names`,
+`pin_to_pin`, `power_pin_not_driven`, `endpoint_off_grid`,
+`no_net_danger`. `footprint_link_issues`/`lib_symbol_issues` appear
+only without GUI lib tables (env-only).
+Netlist proof: every sheet netlist machine-compared pin-for-pin vs
+`mfg/pods.net` — zero mismatches.
+
 ## Manual review checklist (signed per release)
 - [ ] No wire/wire, wire/text, or refdes/symbol overlaps on any sheet.
 - [ ] Power top, GND bottom, signal left->right on every sheet.
 - [ ] Every fuse/diode/MOSFET orientation matches 04-wiring (K faces
       the fused branch; low-side drains face loads).
 - [ ] `mfg/bom.csv` refs/values/footprints match the placed schematic.
-- [ ] ERC log matches ERC-REVIEW.md waiver classes only.
+- [ ] ERC log matches the waiver classes in the Release gate section above.

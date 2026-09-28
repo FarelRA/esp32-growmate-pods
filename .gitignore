@@ -33,6 +33,7 @@ __pycache__/
 /tmp/
 schematic/insp/
 schematic/sheets/*-erc.rpt
+*.erc
 
 # ESP-IDF managed deps (re-downloaded by the component manager on build)
 managed_components/
