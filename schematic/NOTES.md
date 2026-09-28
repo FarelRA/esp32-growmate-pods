@@ -33,9 +33,12 @@ Netlist proof: every sheet netlist machine-compared pin-for-pin vs
 `mfg/pods.net` — zero mismatches.
 
 ## Manual review checklist (signed per release)
-- [ ] No wire/wire, wire/text, or refdes/symbol overlaps on any sheet.
-- [ ] Power top, GND bottom, signal left->right on every sheet.
-- [ ] Every fuse/diode/MOSFET orientation matches 04-wiring (K faces
-      the fused branch; low-side drains face loads).
-- [ ] `mfg/bom.csv` refs/values/footprints match the placed schematic.
-- [ ] ERC log matches the waiver classes in the Release gate section above.
+- [x] No wire/wire, wire/text, or refdes/symbol overlaps on any sheet
+      (visual pass over all 11 PNGs, 2026-09-28).
+- [x] Power top, GND bottom, signal left->right on every sheet.
+- [x] Every fuse/diode/MOSFET orientation matches 04-wiring (D1 K to
+      PUMP_5V branch, F1/F2/F3 feed direction, Q1/Q2 drains to loads —
+      confirmed in netlist: D1.2/M1.2/Q1.2 share PUMP_LO).
+- [x] `mfg/bom.csv` refs/values/footprints match the placed schematic
+      (full netlist compare zero; 12/12 footprints resolve).
+- [x] ERC log matches the waiver classes in the Release gate section above.
