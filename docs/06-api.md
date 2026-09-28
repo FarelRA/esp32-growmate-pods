@@ -72,8 +72,9 @@ Sensor kinds:
 ```
 
 Pump XOR light is SERVER-PACED: never send both in one response
-(combined 3.8 A run exceeds the 2 A boost — the rail browns out and
-the pod reboot-loops). The device applies whatever it receives.
+(combined 3.8 A run / 4.8 A stall leaves no margin on the 4 A boost —
+stall exceeds it, the rail browns out and the pod reboot-loops). The
+device applies whatever it receives.
 
 Both keys optional; either may be absent. Unknown command `kind`
 values are ignored.

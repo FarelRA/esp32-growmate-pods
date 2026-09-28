@@ -144,7 +144,7 @@ Dashboard per device: last `snapshotId`, `appliedConfigRev` vs sent
   device validates, persists (NVS), and reports the new `deviceId` from
   the next POST. Re-sending the same ID is a no-op. Onboarding AP name
   follows the effective ID, so it changes once at claim time.
-- Unclaim = erase NVS (`pio run --target erase`); the unit returns to
+- Unclaim = erase flash (`tools/erase.sh`); the unit returns to
   its birth identity and must be re-claimed.
 - OTA is live: send `minFirmware: "x.y.z"` + `firmwareUrl: "https://…"`
   to offer an update. The device upgrades only when the offered version

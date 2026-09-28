@@ -46,9 +46,17 @@ failure) reopen the onboarding AP portal instead of wedging.
 | `device_identity.{h,c}` | MAC birth ID, effective ID, derived onboarding AP credentials. |
 | `ota_service.{h,c}` | semver compare + HTTPS OTA + restart. |
 | `network_manager.{h,c}` | STA connect/scan + onboarding AP + stop. |
-| `onboarding.{h,c}` | blocking portal at 192.168.4.1: `GET /`, `GET /api/config`, `POST /api/config{wifiSsid,wifiPassword}`, `GET /api/networks`. AP name `GrowMate-<last6 of device ID>`, WPA2 password `GrowMate-<last6 of MAC>` (per-device; read it from the boot log). Plaintext HTTP — commission in a trusted location (see 07-operations). |
+| `onboarding.{h,c}` | blocking portal at 192.168.4.1: `GET /`, `GET /api/config`, `POST /api/config{wifiSsid,wifiPassword}`, `GET /api/networks`. AP name `GrowMate-<last6 of device ID>`, WPA2 password `GrowMate-<last6 of MAC>` from the manufacturing claim sheet (never the log). Plaintext HTTP — commission in a trusted location (see 07-operations). |
 | `camera_service.{h,c}` | PWDN pulse, init/deinit, capture. |
+| `api_rules.{h,c}` | pure validators (ids, dose window, rev discipline, clamps, charsets). |
+| `api_parse.{h,c}` | cJSON traversal for commands/config/claim/OTA + id ring. |
+| `ota_logic.{h,c}` | semver parse/compare + upgrade gate. |
+| `onboarding_rules.{h,c}` / `network_rules.{h,c}` | portal field copy, AP/station/scan guards. |
+| `camera_logic.{h,c}` / `main_logic.{h,c}` | frame pick, interval scheduling. |
 | `app_build_config.h` | device ID, firmware version, API URLs, token, sensor/camera intervals. Per-device values: edit + reflash. |
+
+Unity tests live in `test/` (PlatformIO native env, no hardware);
+`tools/test_all.sh` runs them. See `tools/README.md`.
 
 ## Configuration tiers
 
