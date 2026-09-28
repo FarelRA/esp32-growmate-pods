@@ -17,7 +17,12 @@ import unittest
 
 
 def parse_version(text):
-    """Mirror of ota_service.c parse_version: strict digits+dots, full consume."""
+    """Mirror of ota_service.c parse_version: strict digits+dots, full consume.
+
+    Only full X.Y.Z triples parse: the firmware's sscanf "%d.%d.%d%n"
+    never reaches %n on a partial match ("2.1", "3"), so `end` mismatches
+    and parsing fails. Verified against the compiled C, 2026-09-28.
+    """
     parts = [0, 0, 0]
     if not text or len(text) >= 32:
         return None
@@ -30,7 +35,7 @@ def parse_version(text):
     if not has_digit:
         return None
     segs = text.split(".")
-    if len(segs) > 3 or any(s == "" for s in segs) or any(not s.isdigit() for s in segs):
+    if len(segs) != 3 or any(s == "" for s in segs) or any(not s.isdigit() for s in segs):
         return None
     for i, s in enumerate(segs):
         parts[i] = int(s)
@@ -65,8 +70,8 @@ def valid_claim(cid):
 class TestPureContract(unittest.TestCase):
     def test_semver_strict(self):
         self.assertEqual(parse_version("2.0.0"), [2, 0, 0])
-        self.assertEqual(parse_version("2.1"), [2, 1, 0])
-        for bad in ("", "1..2", "2.1.0.4", "1.", ".1", "v1.2", "1.2a", "x" * 32):
+        for bad in ("", "1..2", "2.1.0.4", "1.", ".1", "v1.2", "1.2a",
+                    "2.1", "3", "x" * 32):
             self.assertIsNone(parse_version(bad), bad)
         self.assertTrue(version_is_newer("2.0.0", "2.0.1"))
         self.assertFalse(version_is_newer("2.0.1", "2.0.0"))

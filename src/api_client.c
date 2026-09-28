@@ -10,6 +10,8 @@
 #include <ctype.h>
 
 #include "app_build_config.h"
+#include "api_parse.h"
+#include "api_rules.h"
 #include "cJSON.h"
 #include "device_identity.h"
 #include "esp_crt_bundle.h"
@@ -26,17 +28,20 @@
 #define HTTP_RESPONSE_BUFFER_SIZE 3072
 #define SENSOR_POST_TIMEOUT_MS 12000
 #define IMAGE_POST_TIMEOUT_MS 45000
-#define ACCEPTED_ID_RING_SIZE 16
-#define ACCEPTED_ID_LEN 32
-#define RETRY_AFTER_MAX_SEC 60
-#define CONFIG_REPORT_INTERVAL_MIN_SEC 10
-#define CONFIG_REPORT_INTERVAL_MAX_SEC 3600
 
 static const char *TAG = "api_client";
 
-static char s_accepted_ids[ACCEPTED_ID_RING_SIZE][ACCEPTED_ID_LEN];
-static size_t s_accepted_count = 0;
-static size_t s_accepted_head = 0;
+static api_accepted_ring_t s_accepted_ids;
+
+static void accepted_ids_append(const char *id)
+{
+    api_accepted_ring_push(&s_accepted_ids, id);
+}
+
+static void accepted_ids_clear(void)
+{
+    api_accepted_ring_clear(&s_accepted_ids);
+}
 
 typedef struct
 {
@@ -47,38 +52,6 @@ typedef struct
     int retry_after_sec;
     bool has_retry_after;
 } http_response_buffer_t;
-
-static void accepted_ids_append(const char *id)
-{
-    if (id == NULL || id[0] == '\0')
-    {
-        return;
-    }
-
-    size_t index = 0;
-    if (s_accepted_count < ACCEPTED_ID_RING_SIZE)
-    {
-        index = (s_accepted_head + s_accepted_count) % ACCEPTED_ID_RING_SIZE;
-        s_accepted_count++;
-    }
-    else
-    {
-        index = s_accepted_head;
-        s_accepted_head = (s_accepted_head + 1) % ACCEPTED_ID_RING_SIZE;
-    }
-
-    snprintf(s_accepted_ids[index], ACCEPTED_ID_LEN, "%s", id);
-}
-
-static void accepted_ids_clear(void)
-{
-    for (size_t i = 0; i < ACCEPTED_ID_RING_SIZE; ++i)
-    {
-        s_accepted_ids[i][0] = '\0';
-    }
-    s_accepted_count = 0;
-    s_accepted_head = 0;
-}
 
 static void maybe_set_auth_header(esp_http_client_handle_t client)
 {
@@ -99,15 +72,7 @@ static esp_err_t classify_status(const char *url, int status_code, http_response
         int wait_sec = 0;
         if (response != NULL && response->has_retry_after)
         {
-            wait_sec = response->retry_after_sec;
-        }
-        if (wait_sec < 0)
-        {
-            wait_sec = 0;
-        }
-        if (wait_sec > RETRY_AFTER_MAX_SEC)
-        {
-            wait_sec = RETRY_AFTER_MAX_SEC;
+            wait_sec = api_rule_clamp_retry_after_sec(response->retry_after_sec);
         }
         if (wait_sec > 0)
         {
@@ -158,15 +123,7 @@ static esp_err_t http_event_handler(esp_http_client_event_t *event)
             strcasecmp(event->header_key, "Retry-After") == 0)
         {
             long secs = strtol(event->header_value, NULL, 10);
-            if (secs < 0)
-            {
-                secs = 0;
-            }
-            if (secs > RETRY_AFTER_MAX_SEC)
-            {
-                secs = RETRY_AFTER_MAX_SEC;
-            }
-            response->retry_after_sec = (int) secs;
+            response->retry_after_sec = api_rule_clamp_retry_after_sec(secs);
             response->has_retry_after = true;
         }
         return ESP_OK;
@@ -316,7 +273,7 @@ static void sensor_array_add_raw(cJSON *array,
                                  const char *unit,
                                  const sensor_measurement_t *measurement)
 {
-    if (!measurement->available || measurement->raw < 0)
+    if (!api_rule_raw_sample_included(measurement->available, measurement->raw))
     {
         return;
     }
@@ -338,7 +295,7 @@ static void sensor_array_add_dht(cJSON *array,
                                  const char *unit,
                                  const sensor_measurement_t *measurement)
 {
-    if (!measurement->available || !isfinite((double) measurement->value))
+    if (!api_rule_dht_sample_included(measurement->available, measurement->value))
     {
         return;
     }
@@ -355,129 +312,30 @@ static void sensor_array_add_dht(cJSON *array,
     cJSON_AddItemToArray(array, entry);
 }
 
-// Command ids are mandatory: an id-less command would be applied but
-// never ackable, leaving server and device permanently disagreed.
-static bool copy_command_id(char out[ACCEPTED_ID_LEN], const cJSON *command)
+// Command ids feed the accepted-id ring in server order so the next POST
+// can ack exactly the commands this cycle applied.
+static void accepted_ids_collect(const char *id, void *ctx)
 {
-    out[0] = '\0';
-
-    cJSON *id = cJSON_GetObjectItemCaseSensitive(command, "id");
-    if (!cJSON_IsString(id) || id->valuestring == NULL || id->valuestring[0] == '\0' ||
-        strlen(id->valuestring) >= ACCEPTED_ID_LEN)
-    {
-        return false;
-    }
-    snprintf(out, ACCEPTED_ID_LEN, "%s", id->valuestring);
-    return true;
+    (void) ctx;
+    accepted_ids_append(id);
 }
 
 static void parse_commands(const cJSON *root, const sensor_snapshot_t *snapshot, device_commands_t *commands)
 {
-    cJSON *command_array = cJSON_GetObjectItemCaseSensitive(root, "commands");
-    if (!cJSON_IsArray(command_array))
-    {
-        return;
-    }
-
-    cJSON *command = NULL;
-    cJSON_ArrayForEach(command, command_array)
-    {
-        cJSON *kind = cJSON_GetObjectItemCaseSensitive(command, "kind");
-        if (!cJSON_IsString(kind) || kind->valuestring == NULL)
-        {
-            continue;
-        }
-
-        if (strcmp(kind->valuestring, "pump") == 0)
-        {
-            cJSON *duration_ms = cJSON_GetObjectItemCaseSensitive(command, "durationMs");
-            if (!cJSON_IsNumber(duration_ms) ||
-                !isfinite(duration_ms->valuedouble) ||
-                duration_ms->valuedouble <= 0.0 ||
-                duration_ms->valuedouble > (double) APP_MAX_PUMP_DURATION_MS)
-            {
-                continue;
-            }
-            if (!snapshot->water.available)
-            {
-                ESP_LOGW(TAG, "Pump command rejected: tank level unavailable");
-                continue;
-            }
-            char id[ACCEPTED_ID_LEN] = {0};
-            if (!copy_command_id(id, command))
-            {
-                ESP_LOGW(TAG, "Pump command ignored: missing or overlong id");
-                continue;
-            }
-            commands->has_pump_command = true;
-            commands->pump_duration_ms = (int) duration_ms->valuedouble;
-            snprintf(commands->pump_id, sizeof(commands->pump_id), "%s", id);
-            accepted_ids_append(id);
-        }
-        else if (strcmp(kind->valuestring, "light") == 0)
-        {
-            cJSON *enabled = cJSON_GetObjectItemCaseSensitive(command, "enabled");
-            bool value = false;
-            if (cJSON_IsBool(enabled))
-            {
-                value = cJSON_IsTrue(enabled);
-            }
-            else if (cJSON_IsNumber(enabled) && isfinite(enabled->valuedouble))
-            {
-                value = enabled->valuedouble != 0.0;
-            }
-            else
-            {
-                continue;
-            }
-            char id[ACCEPTED_ID_LEN] = {0};
-            if (!copy_command_id(id, command))
-            {
-                ESP_LOGW(TAG, "Light command ignored: missing or overlong id");
-                continue;
-            }
-            commands->has_light_command = true;
-            commands->light_enabled = value;
-            snprintf(commands->light_id, sizeof(commands->light_id), "%s", id);
-            accepted_ids_append(id);
-        }
-    }
+    api_parse_commands(root, snapshot->water.available, commands, accepted_ids_collect, NULL);
 }
 
 static void apply_config_push(const cJSON *root, app_config_t *config)
 {
-    cJSON *pushed = cJSON_GetObjectItemCaseSensitive(root, "config");
-    if (!cJSON_IsObject(pushed))
+    uint32_t new_rev = 0;
+    uint32_t new_interval = 0;
+    if (!api_parse_config_push(root,
+                               config->applied_config_rev,
+                               config->report_interval_sec,
+                               &new_rev,
+                               &new_interval))
     {
         return;
-    }
-
-    cJSON *rev = cJSON_GetObjectItemCaseSensitive(pushed, "rev");
-    if (!cJSON_IsNumber(rev) || !isfinite(rev->valuedouble) || rev->valuedouble < 1.0)
-    {
-        return;
-    }
-
-    uint32_t new_rev = (uint32_t) rev->valuedouble;
-    if (new_rev <= config->applied_config_rev)
-    {
-        return;
-    }
-
-    uint32_t new_interval = config->report_interval_sec;
-    cJSON *interval = cJSON_GetObjectItemCaseSensitive(pushed, "reportIntervalSec");
-    if (cJSON_IsNumber(interval) && isfinite(interval->valuedouble))
-    {
-        double value = interval->valuedouble;
-        if (value < (double) CONFIG_REPORT_INTERVAL_MIN_SEC)
-        {
-            value = (double) CONFIG_REPORT_INTERVAL_MIN_SEC;
-        }
-        if (value > (double) CONFIG_REPORT_INTERVAL_MAX_SEC)
-        {
-            value = (double) CONFIG_REPORT_INTERVAL_MAX_SEC;
-        }
-        new_interval = (uint32_t) value;
     }
 
     config->report_interval_sec = new_interval;
@@ -497,36 +355,15 @@ static void apply_config_push(const cJSON *root, app_config_t *config)
 
 static void apply_claim(const cJSON *root, app_config_t *config)
 {
-    cJSON *claim = cJSON_GetObjectItemCaseSensitive(root, "claim");
-    if (!cJSON_IsObject(claim))
+    char claimed[APP_CONFIG_MAX_DEVICE_ID_LEN + 1] = {0};
+    if (!api_parse_claim(root, device_effective_id(config), claimed))
     {
-        return;
-    }
-
-    cJSON *id = cJSON_GetObjectItemCaseSensitive(claim, "deviceId");
-    if (!cJSON_IsString(id) || id->valuestring == NULL || id->valuestring[0] == '\0')
-    {
-        return;
-    }
-    if (strcmp(device_effective_id(config), id->valuestring) == 0)
-    {
-        return;
-    }
-
-    bool sane = strlen(id->valuestring) <= APP_CONFIG_MAX_DEVICE_ID_LEN;
-    for (const char *p = id->valuestring; sane && *p != '\0'; ++p)
-    {
-        sane = isalnum((unsigned char) *p) || *p == '-' || *p == '_';
-    }
-    if (!sane)
-    {
-        ESP_LOGW(TAG, "Claim with bad deviceId ignored");
         return;
     }
 
     char previous[APP_CONFIG_MAX_DEVICE_ID_LEN + 1];
     snprintf(previous, sizeof(previous), "%s", device_effective_id(config));
-    snprintf(config->device_id, sizeof(config->device_id), "%s", id->valuestring);
+    snprintf(config->device_id, sizeof(config->device_id), "%s", claimed);
     if (app_config_save(config) != ESP_OK)
     {
         // Roll back the RAM copy: without the NVS write the old ID comes
@@ -540,30 +377,7 @@ static void apply_claim(const cJSON *root, app_config_t *config)
 
 static void parse_firmware_offer(const cJSON *root, ota_update_t *ota)
 {
-    if (ota == NULL)
-    {
-        return;
-    }
-
-    cJSON *version = cJSON_GetObjectItemCaseSensitive(root, "minFirmware");
-    cJSON *url = cJSON_GetObjectItemCaseSensitive(root, "firmwareUrl");
-    if (!cJSON_IsString(version) || version->valuestring == NULL || version->valuestring[0] == '\0' ||
-        !cJSON_IsString(url) || url->valuestring == NULL || url->valuestring[0] == '\0')
-    {
-        return;
-    }
-
-    // Reject overlong offers instead of truncating into a corrupt URL.
-    if (strlen(version->valuestring) >= sizeof(ota->version) ||
-        strlen(url->valuestring) >= sizeof(ota->url))
-    {
-        ESP_LOGW(TAG, "Firmware offer overlong, ignored");
-        return;
-    }
-
-    snprintf(ota->version, sizeof(ota->version), "%s", version->valuestring);
-    snprintf(ota->url, sizeof(ota->url), "%s", url->valuestring);
-    ota->available = true;
+    api_parse_firmware_offer(root, ota);
 }
 
 static const char *reset_reason_str(esp_reset_reason_t reason)
@@ -670,10 +484,10 @@ esp_err_t api_client_upload_sensor_data(app_config_t *config,
     sensor_array_add_dht(sensor_array, "temperature", "C", &snapshot->temperature);
     sensor_array_add_dht(sensor_array, "air", "%", &snapshot->air);
 
-    for (size_t i = 0; i < s_accepted_count; ++i)
+    for (size_t i = 0; i < api_accepted_ring_count(&s_accepted_ids); ++i)
     {
-        size_t index = (s_accepted_head + i) % ACCEPTED_ID_RING_SIZE;
-        cJSON *entry = cJSON_CreateString(s_accepted_ids[index]);
+        const char *acked = api_accepted_ring_at(&s_accepted_ids, i);
+        cJSON *entry = cJSON_CreateString(acked);
         if (entry == NULL)
         {
             cJSON_Delete(root);

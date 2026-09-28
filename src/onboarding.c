@@ -16,6 +16,7 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/event_groups.h"
 #include "network_manager.h"
+#include "onboarding_rules.h"
 
 #define ONBOARDING_FORM_BUFFER_SIZE 2048
 #define ONBOARDING_COMPLETE_BIT BIT0
@@ -86,26 +87,6 @@ static esp_err_t read_request_body(httpd_req_t *req, char *buffer, size_t buffer
 
     buffer[received] = '\0';
     return ESP_OK;
-}
-
-static bool json_copy_string(cJSON *root, const char *key, char *destination, size_t destination_size)
-{
-    cJSON *item = cJSON_GetObjectItemCaseSensitive(root, key);
-    if (item == NULL) {
-        return true;
-    }
-    // Present-but-not-a-string (e.g. explicit null) is a client error,
-    // not "keep the stale value and report success".
-    if (!cJSON_IsString(item) || item->valuestring == NULL) {
-        return false;
-    }
-    // Reject overlong values instead of silently truncating into
-    // credentials that can never authenticate.
-    if (strlen(item->valuestring) >= destination_size) {
-        return false;
-    }
-    strlcpy(destination, item->valuestring, destination_size);
-    return true;
 }
 
 static esp_err_t handle_index(httpd_req_t *req)
@@ -183,8 +164,8 @@ static esp_err_t handle_save_config(httpd_req_t *req)
     }
 
     app_config_t updated = *context->config;
-    if (!json_copy_string(root, "wifiSsid", updated.wifi_ssid, sizeof(updated.wifi_ssid)) ||
-        !json_copy_string(root, "wifiPassword", updated.wifi_password, sizeof(updated.wifi_password))) {
+    if (!onboarding_copy_field(root, "wifiSsid", updated.wifi_ssid, sizeof(updated.wifi_ssid)) ||
+        !onboarding_copy_field(root, "wifiPassword", updated.wifi_password, sizeof(updated.wifi_password))) {
         cJSON_Delete(root);
         httpd_resp_set_status(req, "400 Bad Request");
         httpd_resp_set_type(req, "application/json");
@@ -198,7 +179,7 @@ static esp_err_t handle_save_config(httpd_req_t *req)
     // The WiFi driver needs a NUL inside its 32-byte SSID field, so a
     // full 32-octet SSID can never join: fail loudly at the portal
     // instead of saving credentials that cannot authenticate.
-    if (strlen(updated.wifi_ssid) == 0 || strlen(updated.wifi_ssid) > 31) {
+    if (!onboarding_ssid_valid(updated.wifi_ssid)) {
         httpd_resp_set_status(req, "400 Bad Request");
         httpd_resp_set_type(req, "application/json");
         return httpd_resp_sendstr(req, "{\"message\":\"WiFi SSID must be 1-31 chars\"}");

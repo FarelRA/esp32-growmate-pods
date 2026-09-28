@@ -13,6 +13,7 @@
 #include "esp_task_wdt.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
+#include "ota_logic.h"
 
 static const char *TAG = "ota";
 
@@ -32,69 +33,25 @@ void ota_update_clear(ota_update_t *update)
     }
 }
 
-static bool parse_version(const char *text, int parts[3])
-{
-    parts[0] = parts[1] = parts[2] = 0;
-    if (text == NULL || text[0] == '\0' || strlen(text) >= 32) {
-        return false;
-    }
-    // Strict semver-ish: digits and dots only, at least one digit, and
-    // the whole string consumed (rejects "1..2", "2.1.0.4", "1.").
-    bool has_digit = false;
-    for (const char *p = text; *p != '\0'; ++p) {
-        if (*p >= '0' && *p <= '9') {
-            has_digit = true;
-        } else if (*p != '.') {
-            return false;
-        }
-    }
-    if (!has_digit) {
-        return false;
-    }
-    int end = 0;
-    int matched = sscanf(text, "%d.%d.%d%n", &parts[0], &parts[1], &parts[2], &end);
-    if (matched < 1 || end != (int) strlen(text)) {
-        return false;
-    }
-    // Unmatched trailing parts keep their zero init ("2.1" == 2.1.0).
-    return parts[0] >= 0 && parts[1] >= 0 && parts[2] >= 0;
-}
-
-static bool version_is_newer(const char *current, const char *candidate)
-{
-    int cur[3];
-    int next[3];
-    if (!parse_version(current, cur) || !parse_version(candidate, next)) {
-        return false;
-    }
-    for (int i = 0; i < 3; ++i) {
-        if (next[i] != cur[i]) {
-            return next[i] > cur[i];
-        }
-    }
-    return false;
-}
-
 void ota_service_run_if_needed(const ota_update_t *update)
 {
     if (APP_OTA_ENABLED == 0) {
         return;
     }
-    if (update == NULL || !update->available || update->url[0] == '\0') {
-        return;
-    }
-    if (!version_is_newer(APP_FIRMWARE_VERSION, update->version)) {
-        return;
-    }
-    if (strncmp(update->url, "https://", 8) != 0) {
-        ESP_LOGW(TAG, "OTA refused: URL must be https");
-        return;
-    }
-    // Never reboot mid-dose: the restart would cut the pump timer short
-    // and leave the server blind. Next cycle retries.
-    if (actuators_is_pump_enabled()) {
-        ESP_LOGW(TAG, "OTA %s deferred: pump running", update->version);
-        return;
+    bool pump_running = actuators_is_pump_enabled();
+    switch (ota_check_start(APP_FIRMWARE_VERSION, update, pump_running)) {
+        case OTA_GATE_OK:
+            break;
+        case OTA_GATE_URL_NOT_HTTPS:
+            ESP_LOGW(TAG, "OTA refused: URL must be https");
+            return;
+        case OTA_GATE_PUMP_RUNNING:
+            ESP_LOGW(TAG, "OTA %s deferred: pump running", update->version);
+            return;
+        case OTA_GATE_NO_UPDATE:
+        case OTA_GATE_NOT_NEWER:
+        default:
+            return;
     }
 
     ESP_LOGW(TAG, "OTA %s -> %s", APP_FIRMWARE_VERSION, update->version);

@@ -1,5 +1,6 @@
 #include "camera_service.h"
 
+#include "camera_logic.h"
 #include "driver/gpio.h"
 #include "esp_err.h"
 #include "esp_log.h"
@@ -23,10 +24,8 @@ esp_err_t camera_service_init(const board_profile_t *profile)
 
     camera_config_t config = board_profile_build_camera_config(profile);
     bool psram = esp_psram_is_initialized();
-    config.frame_size = psram ? FRAMESIZE_SVGA : FRAMESIZE_VGA;
+    camera_logic_pick_frame(psram, &config.frame_size, &config.jpeg_quality, &config.fb_location);
     config.fb_count = 1;
-    config.jpeg_quality = psram ? 12 : 14;
-    config.fb_location = psram ? CAMERA_FB_IN_PSRAM : CAMERA_FB_IN_DRAM;
 
     if (config.pin_pwdn != GPIO_NUM_NC) {
         gpio_config_t pwdn_config = {

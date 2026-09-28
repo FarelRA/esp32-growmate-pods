@@ -14,6 +14,7 @@
 #include "esp_timer.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
+#include "main_logic.h"
 #include "network_manager.h"
 #include "nvs_flash.h"
 #include "onboarding.h"
@@ -153,16 +154,13 @@ void app_main(void)
         ESP_ERROR_CHECK(onboarding_run(&config));
     }
 
-    uint32_t sensor_interval_sec = config.report_interval_sec ? config.report_interval_sec : APP_SENSOR_INTERVAL_SEC;
+    uint32_t sensor_interval_sec = main_logic_report_interval_sec(config.report_interval_sec);
     uint32_t loops_since_camera = APP_CAMERA_INTERVAL_SEC / sensor_interval_sec;
     uint32_t consecutive_failures = 0;
     static uint32_t seq = 0;
 
     while (true) {
-        sensor_interval_sec = config.report_interval_sec ? config.report_interval_sec : APP_SENSOR_INTERVAL_SEC;
-        if (sensor_interval_sec == 0) {
-            sensor_interval_sec = APP_SENSOR_INTERVAL_SEC;
-        }
+        sensor_interval_sec = main_logic_report_interval_sec(config.report_interval_sec);
 
         actuators_tick(profile);
 
@@ -185,17 +183,9 @@ void app_main(void)
             ESP_LOGE(TAG, "Sensor read failed: %s", esp_err_to_name(err));
         }
 
-        if (APP_CAMERA_ENABLED == 0 || !profile->has_camera) {
-            loops_since_camera = 0;
-            camera_due = false;
-        } else {
-            loops_since_camera++;
-            uint32_t camera_period = APP_CAMERA_INTERVAL_SEC / sensor_interval_sec;
-            if (camera_period == 0) {
-                camera_period = 1;
-            }
-            camera_due = loops_since_camera >= camera_period;
-        }
+        camera_due = main_logic_camera_slot_due(APP_CAMERA_ENABLED != 0 && profile->has_camera,
+                                                sensor_interval_sec,
+                                                &loops_since_camera);
 
         if (err == ESP_OK) {
             if (boot_save_failed) {
@@ -254,7 +244,7 @@ void app_main(void)
             network_manager_stop();
         }
 
-        if (consecutive_failures >= APP_ONBOARDING_FAILURE_THRESHOLD) {
+        if (main_logic_should_reopen_portal(consecutive_failures)) {
             ESP_LOGW(TAG, "Repeated network failures detected, reopening onboarding portal");
             ESP_ERROR_CHECK(onboarding_run(&config));
             consecutive_failures = 0;

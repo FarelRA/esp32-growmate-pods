@@ -10,6 +10,7 @@
 #include "esp_wifi.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/event_groups.h"
+#include "network_rules.h"
 
 static const char *TAG = "network";
 static EventGroupHandle_t s_wifi_event_group;
@@ -123,7 +124,7 @@ esp_err_t network_manager_stop(void)
 
 esp_err_t network_manager_start_station(const app_config_t *config, uint32_t timeout_ms)
 {
-    if (config == NULL) {
+    if (!network_station_args_valid(config)) {
         return ESP_ERR_INVALID_ARG;
     }
     ESP_RETURN_ON_ERROR(network_manager_stop_checked(), TAG, "failed to stop wifi before station start");
@@ -172,12 +173,12 @@ esp_err_t network_manager_start_station(const app_config_t *config, uint32_t tim
 
 esp_err_t network_manager_start_onboarding_ap(const char *ap_name, const char *ap_password)
 {
-    if (ap_name == NULL || ap_name[0] == '\0') {
+    if (!network_ap_name_valid(ap_name)) {
         return ESP_ERR_INVALID_ARG;
     }
     // WPA2-only by contract: an open setup AP would expose the home WiFi
     // password typed into the portal to anyone in range.
-    if (ap_password == NULL || strlen(ap_password) < 8) {
+    if (!network_ap_password_valid(ap_password)) {
         return ESP_ERR_INVALID_ARG;
     }
     ESP_RETURN_ON_ERROR(network_manager_stop_checked(), TAG, "failed to stop wifi before onboarding ap");
@@ -204,12 +205,10 @@ esp_err_t network_manager_start_onboarding_ap(const char *ap_name, const char *a
 
 esp_err_t network_manager_scan(network_scan_result_t *results, size_t max_results, size_t *result_count)
 {
-    if (results == NULL || result_count == NULL || max_results == 0) {
+    if (!network_scan_args_valid(results, result_count, max_results)) {
         return ESP_ERR_INVALID_ARG;
     }
-    if (max_results > NETWORK_MANAGER_MAX_SCAN_RESULTS) {
-        max_results = NETWORK_MANAGER_MAX_SCAN_RESULTS;
-    }
+    max_results = network_scan_limit(max_results);
     wifi_scan_config_t scan_config = {
         .show_hidden = false,
         .scan_type = WIFI_SCAN_TYPE_ACTIVE,

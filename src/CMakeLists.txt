@@ -11,6 +11,13 @@ idf_component_register(
         "actuators.c"
         "device_identity.c"
         "ota_service.c"
+        "ota_logic.c"
+        "api_rules.c"
+        "api_parse.c"
+        "onboarding_rules.c"
+        "network_rules.c"
+        "camera_logic.c"
+        "main_logic.c"
     INCLUDE_DIRS "."
     REQUIRES
         app_update
