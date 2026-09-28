@@ -443,7 +443,7 @@
     (on_board yes)
     (dnp no)
     (fields_autoplaced no)
-    (uuid c2096778-6064-4269-a32b-e745eca10aae)
+    (uuid 18e87167-7f78-489f-9745-beae498ffd22)
     (property "Reference" "F2"
       (at 93.4 75.0 0)
       (effects (font (size 1.27 1.27)) (justify left)))
@@ -454,9 +454,9 @@
       (at 88.9 76.2 0)
       (effects (font (size 1.27 1.27)) (hide yes)))
     (pin "1"
-      (uuid 6a288d9a-14fa-4600-9840-f5f44904d2f4))
+      (uuid 4154bb3a-da30-4b5c-be6e-9dbef0c9d610))
     (pin "2"
-      (uuid 4b0ab17c-50c2-43f2-aa35-f494ccc77ff5))
+      (uuid e69d9d65-30a9-4b01-9fbc-6bbb2717accb))
     (instances
       (project "GrowMate"
         (path "/216fdad8-4006-4d85-8157-93191bd90b6a/d92d2f4f-55ca-5e7f-ac14-dd9d42664854"
@@ -471,7 +471,7 @@
     (on_board yes)
     (dnp no)
     (fields_autoplaced no)
-    (uuid ea58867f-a2f4-400d-8c81-10aca32e58ca)
+    (uuid 32f92250-fcd5-432f-972e-2bdf1b9d1f62)
     (property "Reference" "F3"
       (at 144.2 75.0 0)
       (effects (font (size 1.27 1.27)) (justify left)))
@@ -482,9 +482,9 @@
       (at 139.7 76.2 0)
       (effects (font (size 1.27 1.27)) (hide yes)))
     (pin "1"
-      (uuid 22dd6f78-aa82-4a75-8a28-544c5cef42dc))
+      (uuid 0254162a-5651-47df-a9e5-8a74650dcecb))
     (pin "2"
-      (uuid c820a382-d74c-4bfd-a34c-30111686f662))
+      (uuid 61b3a6d8-f333-4839-925c-c4787ef69327))
     (instances
       (project "GrowMate"
         (path "/216fdad8-4006-4d85-8157-93191bd90b6a/d92d2f4f-55ca-5e7f-ac14-dd9d42664854"
@@ -496,25 +496,25 @@
       (xy 139.7 67.31)
     )
     (stroke (width 0.1524) (type default))
-    (uuid f55c2e13-9d9f-4153-b19b-6da1c86dbefb))
+    (uuid bb4418c3-ddd1-4efa-950d-1bbf2a4245eb))
   (wire
     (pts
       (xy 88.9 67.31)
       (xy 88.9 72.39)
     )
     (stroke (width 0.1524) (type default))
-    (uuid 9aa41dbf-1762-4747-8a6c-755c6f966efe))
+    (uuid 31842199-f663-4342-9548-1fbe455da842))
   (wire
     (pts
       (xy 139.7 67.31)
       (xy 139.7 72.39)
     )
     (stroke (width 0.1524) (type default))
-    (uuid 4142c863-7092-48ed-a0d9-0d4638940dd2))
+    (uuid fa42388a-c0b7-44ec-8aac-1a1c49827582))
   (junction (at 88.9 67.31) (diameter 0) (color 0 0 0 0)
-    (uuid 37d4f28e-81d8-4178-a43e-f7317fcddd0b))
+    (uuid ccf287cc-f7fb-422c-afeb-26c2ebe47505))
   (junction (at 139.7 67.31) (diameter 0) (color 0 0 0 0)
-    (uuid c63f3516-3954-4f9e-b04b-4e7a011bc341))
+    (uuid f5a070e2-eb0d-4eec-b417-b350507b1d81))
   (symbol
     (lib_id "power:+5V")
     (at 114.3 57.15 0)
@@ -524,7 +524,7 @@
     (on_board yes)
     (dnp no)
     (fields_autoplaced no)
-    (uuid d57c6750-336b-44f7-ab6f-c359073319c0)
+    (uuid 895cf3bb-d4d2-4abe-b470-3f156e771407)
     (property "Reference" "#+5V01"
       (at 114.3 57.15 0)
       (effects (font (size 1.27 1.27)) (hide yes)))
@@ -532,7 +532,7 @@
       (at 114.3 57.15 0)
       (effects (font (size 1.27 1.27)) (hide yes)))
     (pin "1"
-      (uuid 4111bed0-9d44-48f5-a7dd-dfcf3e49d16c))
+      (uuid 2412b9f0-2471-4fa2-b30c-b50be5b61a42))
     (instances
       (project "GrowMate"
         (path "/216fdad8-4006-4d85-8157-93191bd90b6a/d92d2f4f-55ca-5e7f-ac14-dd9d42664854"
@@ -544,9 +544,9 @@
       (xy 114.3 67.31)
     )
     (stroke (width 0.1524) (type default))
-    (uuid 3cb2c12a-2c84-4325-b32c-ccb020fb5805))
+    (uuid 8c20c940-ef63-4cc3-a9c4-d7d89d290782))
   (junction (at 114.3 67.31) (diameter 0) (color 0 0 0 0)
-    (uuid b25143d3-6577-4a00-b2f4-59d62ddbc5d4))
+    (uuid 208be673-6570-4634-91da-87e8405df151))
   (symbol
     (lib_id "power:PWR_FLAG")
     (at 83.82 67.31 0)
@@ -556,12 +556,12 @@
     (on_board yes)
     (dnp no)
     (fields_autoplaced no)
-    (uuid 50da33be-628d-49df-85f9-21ec1ee4cc1a)
+    (uuid e6e6442b-1a35-4da1-bdc9-34571f8b0f3e)
     (property "Reference" "#PWR02"
       (at 83.82 67.31 0)
       (effects (font (size 1.27 1.27)) (hide yes)))
     (pin "1"
-      (uuid dd8f90c5-bb4c-4687-a5cf-9ea94adb21db))
+      (uuid 312c86e4-c70f-4e8b-a4a6-1b0b2f7f237d))
     (instances
       (project "GrowMate"
         (path "/216fdad8-4006-4d85-8157-93191bd90b6a/d92d2f4f-55ca-5e7f-ac14-dd9d42664854"
@@ -573,40 +573,40 @@
       (xy 88.9 93.98)
     )
     (stroke (width 0.1524) (type default))
-    (uuid d3a87476-f19d-4ff2-b890-3c1b96aa8999))
+    (uuid 556e2073-2e3e-4e4e-907b-1a55a4e3c401))
   (wire
     (pts
       (xy 88.9 93.98)
       (xy 104.14 93.98)
     )
     (stroke (width 0.1524) (type default))
-    (uuid 052a3244-0673-473a-9bbc-bf2e362f4ce8))
+    (uuid 80170de1-a3bb-4efb-bf43-5d9594999b43))
   (global_label "PUMP_5V"
     (shape bidirectional)
     (at 104.14 93.98 0)
     (effects (font (size 1.27 1.27)) (justify left))
-    (uuid e2eb4ccc-b185-431c-b2dd-34086816d5e5))
+    (uuid 1810880e-b30e-4149-b5d5-89d6d698c684))
   (wire
     (pts
       (xy 139.7 80.01)
       (xy 139.7 93.98)
     )
     (stroke (width 0.1524) (type default))
-    (uuid d4ddcb22-c1c7-402a-b360-3faa1dfbb298))
+    (uuid 294a3bc7-2f7e-4651-b73a-d1ad12255b02))
   (wire
     (pts
       (xy 139.7 93.98)
       (xy 154.94 93.98)
     )
     (stroke (width 0.1524) (type default))
-    (uuid de8d2a5d-f346-4363-bdfe-280a6b09c44b))
+    (uuid 25cd1dd8-c060-4b96-bfbf-0dc27f2f4b91))
   (global_label "LED_5V"
     (shape bidirectional)
     (at 154.94 93.98 0)
     (effects (font (size 1.27 1.27)) (justify left))
-    (uuid 2ab839d8-e986-41a8-8c04-5fd384e4cbb2))
+    (uuid c8cd7175-c830-4e3b-9258-8593301ad321))
   (text "F2 1.5A: pump 1A run / 2A stall. F3 2.5A: 2A strip x1.25."
     (at 25.4 139.7 0)
     (effects (font (size 1.0 1.0)) (justify left))
-    (uuid 9495fd1b-b90d-41dd-abd1-45ed421998fd))
+    (uuid c5556fe6-88a6-41f5-8898-74c973c458d1))
 )

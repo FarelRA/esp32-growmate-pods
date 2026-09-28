@@ -298,9 +298,9 @@ def s_pump():
     m1[2] += pump_lo
     d1 = mk(Part("Diode", "1N5819",
                  footprint="Diode_THT:D_DO-41_SOD81_P7.62mm_Horizontal"),
-            "D1", "1N5819",
+            "D1", "1N5822",
             "Diode_THT:D_DO-41_SOD81_P7.62mm_Horizontal",
-            "pump flyback (K to fused +5V branch)")
+            "pump flyback 3A class (K to PUMP_5V branch)")
     d1["K"] += pump_5v
     d1["A"] += pump_lo
     c11 = C("C11", "100n-50V", "pump terminal RF shunt")

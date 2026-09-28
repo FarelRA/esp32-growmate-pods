@@ -463,7 +463,7 @@ sh.place("Q1", "Transistor_FET:IRLZ44N", "IRLZ44N",
          "Package_TO_SOT_THT:TO-220-3_Vertical", 96.52, 73.66, rot=0)
 sh.place("M1", "Connector_Generic:Conn_01x02", "PUMP-5V-1A", H2,
          129.54, 73.66, rot=0)
-sh.place("D1", "Diode:1N5819", "1N5819",
+sh.place("D1", "Diode:1N5819", "1N5822",
          "Diode_THT:D_DO-41_SOD81_P7.62mm_Horizontal", 139.7, 71.12, rot=270)
 sh.place("C11", "Device:C", "100n-50V",
          "Capacitor_SMD:C_0603_1608Metric", 154.94, 71.12, rot=0)

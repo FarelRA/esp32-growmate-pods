@@ -67,16 +67,16 @@ U2 pin 3: No-Connect, left open.
 | Ref | Value | Footprint | Function |
 |---|---|---|---|
 | U1 | ESP32-CAM | PinHeader_2x08_P2.54mm | AI-Thinker module (header) |
-| U2 | DHT22 | DHT22 | temp + humidity |
+| U2 | DHT22 | PinHeader_1x04_P2.54mm_Vertical | temp + humidity (DHT11 symbol, pin-compatible) |
 | J1 | WATER | PinHeader_1x03_P2.54mm | tank probe: 1 VCC, 2 AO, 3 GND |
 | J2 | SOIL | PinHeader_1x03_P2.54mm | soil probe: 1 3V3, 2 AO, 3 GND |
 | J3 | LIGHT-SENS | PinHeader_1x03_P2.54mm | light module: 1 3V3, 2 AO, 3 GND |
 | J4 | PROG | PinHeader_1x04_P2.54mm | flash header: 1 RX, 2 TX, 3 GND, 4 5V |
-| SW1 | BOOT | SW_Tactile_SPST | IO0 → GND for download mode |
+| SW1 | BOOT | Button_Switch_THT:SW_PUSH-12mm | IO0 → GND for download mode |
 | Q1, Q2 | IRLZ44N | TO-220-3 | low-side N-MOSFETs, pump + light |
-| M1 | PUMP-5V-1A | Motor_DC | 5 V micro submersible pump, 1 A run / 2 A stall |
-| D1 | 1N5819 | DO-41 | pump flyback (K→fused +5V branch, A→PUMP_LO) |
-| D2 | GROW-LED-5V-20CM-2A | LED_Strip | full-spectrum strip 20 cm 2 A (A→fused +5V, K→LED_LO) |
+| M1 | PUMP-5V-1A | Conn_01x02 (HDR2) | 5 V micro submersible pump, 1 A run / 2 A stall (off-board, header) |
+| D1 | 1N5822 | DO-41 | pump flyback (K→PUMP_5V branch, A→PUMP_LO) — 3 A class for 2 A stall turn-off |
+| D2 | GROW-LED-5V-20CM-2A | Conn_01x02 (HDR2) | full-spectrum strip 20 cm 2 A (A→LED_5V, K→LED_LO, off-board header) |
 | R1 | 4.7k | R_0603 | DHT pull-up (MTDO-HIGH strapping) |
 | R2, R4 | 220 | R_0603 | MOSFET gate stoppers |
 | R3, R5 | 10k | R_0603 | gate pulldowns (OFF at boot, stiff vs humidity/EMI) |

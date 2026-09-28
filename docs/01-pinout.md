@@ -22,7 +22,7 @@ passives, headers, and SW1 solder as normal.
 | 8 | SOIL_AO | GPIO13 | ADC2_CH4 | input. No strapping, no boot-PWM: the safest analog pin on the header. |
 | 10 | LIGHT_AO | GPIO14 | ADC2_CH6 | input. Not a strapping pin. GPIO14 carries the ROM debug PWM probe at boot, so the module AO comes through a 1k series (R6) + 100n to GND (C1): no contention, filtered ADC. |
 | 12 | DHT_DATA | GPIO15 | ADC2_CH3 | digital. MTDO needs HIGH at boot: DHT idles HIGH and R1 (4.7k PU) holds it there. DHT is digital so the ADC2/WiFi conflict does not apply. |
-| 14 | WATER_AO | GPIO33 | ADC1_CH5 | input. No strapping, no camera bus, and ADC1 reads fine with WiFi on — safe by construction at any water level, full tank included. R9 10k PD to GND so an open (empty-tank) probe reads ~0 instead of floating. |
+| 14 | WATER_AO | GPIO33 | ADC1_CH5 | input. No strapping, no camera bus, and ADC1 reads fine with WiFi on. NOTE: the AI-Thinker red LED hangs on GPIO33 (active-low) — it pulls the high-Z ADC input toward 3V3 against R9 10k PD, shifting EMPTY offset and compressing span (LED may glow dimly); disclosed like the GPIO4 LED, absorbed by server end-calibration, ends must be captured in situ. R9 10k PD to GND so an open (empty-tank) probe reads ~0 instead of floating. |
 | 16 | +5V | 5V rail | — | second 5V entry |
 
 ## Forbidden / reserved (do not use)

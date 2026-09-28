@@ -859,7 +859,7 @@
     (on_board yes)
     (dnp no)
     (fields_autoplaced no)
-    (uuid 1474d6ce-72a5-44e6-b677-18556f8d6b4e)
+    (uuid b4272494-17ae-48c6-954f-23675d2a7f0b)
     (property "Reference" "U2"
       (at 60.96 98.34 0)
       (effects (font (size 1.27 1.27)) (justify left)))
@@ -870,11 +870,11 @@
       (at 60.96 76.2 0)
       (effects (font (size 1.27 1.27)) (hide yes)))
     (pin "1"
-      (uuid 5d8c89bc-dc64-41a4-9b4a-c7e854eb11e6))
+      (uuid 549a6b75-21a1-4a31-8e84-d4d11f8f7e06))
     (pin "2"
-      (uuid fd6b613d-b645-4b6e-9f63-a288192b1e23))
+      (uuid dc24bcfd-940e-4d3c-a608-90fff0e488e6))
     (pin "4"
-      (uuid 26d16b0d-99bf-4f86-8211-0fa4b67fe342))
+      (uuid fe75d424-10d9-4ba2-830f-d29680d26d28))
     (instances
       (project "GrowMate"
         (path "/216fdad8-4006-4d85-8157-93191bd90b6a/a38d173b-c688-50e9-8ed6-b7feae1549e5"
@@ -889,7 +889,7 @@
     (on_board yes)
     (dnp no)
     (fields_autoplaced no)
-    (uuid 4eba518a-4ded-4514-865c-77834a57e161)
+    (uuid b37846c7-b300-4bf0-8651-5014b7dbb60e)
     (property "Reference" "R1"
       (at 85.78 62.3 0)
       (effects (font (size 1.27 1.27)) (justify left)))
@@ -900,9 +900,9 @@
       (at 81.28 63.5 0)
       (effects (font (size 1.27 1.27)) (hide yes)))
     (pin "1"
-      (uuid 3469bdfd-42e5-48a5-8ff3-4ead48bb4108))
+      (uuid cb6954e9-5a50-4c0d-857f-91c2925fab2d))
     (pin "2"
-      (uuid 95321a0f-04a3-49af-93fe-b397b3cd0215))
+      (uuid 49a292fa-1d00-4062-a975-b9adb9f66bdd))
     (instances
       (project "GrowMate"
         (path "/216fdad8-4006-4d85-8157-93191bd90b6a/a38d173b-c688-50e9-8ed6-b7feae1549e5"
@@ -917,7 +917,7 @@
     (on_board yes)
     (dnp no)
     (fields_autoplaced no)
-    (uuid f1b930d4-58da-41fa-a64b-c53ef073af0c)
+    (uuid 3b4b17e1-1f16-41c3-ba87-7d0055f916e5)
     (property "Reference" "C4"
       (at 52.76 82.62 0)
       (effects (font (size 1.27 1.27)) (justify left)))
@@ -928,9 +928,9 @@
       (at 48.26 83.82 0)
       (effects (font (size 1.27 1.27)) (hide yes)))
     (pin "1"
-      (uuid 2bf29b4f-5e31-42b1-96d0-c8ffe3f6ca8d))
+      (uuid 5d61d19c-486b-46e0-9096-e54f4ac75baf))
     (pin "2"
-      (uuid 05718f05-5269-44c8-a5f3-31e58e34a637))
+      (uuid 9b6ef1df-990a-441a-8fa4-2ab6d71818f6))
     (instances
       (project "GrowMate"
         (path "/216fdad8-4006-4d85-8157-93191bd90b6a/a38d173b-c688-50e9-8ed6-b7feae1549e5"
@@ -945,7 +945,7 @@
     (on_board yes)
     (dnp no)
     (fields_autoplaced no)
-    (uuid 0014dee8-f150-4752-aa63-cf1d16dc0c0e)
+    (uuid 2c1ee802-c664-46fc-909b-7f59f8f24b7f)
     (property "Reference" "C5"
       (at 111.18 82.62 0)
       (effects (font (size 1.27 1.27)) (justify left)))
@@ -956,9 +956,9 @@
       (at 106.68 83.82 0)
       (effects (font (size 1.27 1.27)) (hide yes)))
     (pin "1"
-      (uuid 3b1c34ab-4449-42f7-9105-343ad986710e))
+      (uuid 87ed7cb3-8c32-41ec-ad1c-b193da1e85a4))
     (pin "2"
-      (uuid d7f4a01d-247c-44fa-beb1-aaca80454e0b))
+      (uuid 0cd22a23-dac2-40e3-83cf-4ba595a7df14))
     (instances
       (project "GrowMate"
         (path "/216fdad8-4006-4d85-8157-93191bd90b6a/a38d173b-c688-50e9-8ed6-b7feae1549e5"
@@ -973,7 +973,7 @@
     (on_board yes)
     (dnp no)
     (fields_autoplaced no)
-    (uuid cd2d0608-727d-4908-896d-6c2c3c0d504a)
+    (uuid 027d4607-947b-4cef-8468-af238723fb5e)
     (property "Reference" "#+3V301"
       (at 60.96 58.42 0)
       (effects (font (size 1.27 1.27)) (hide yes)))
@@ -981,7 +981,7 @@
       (at 60.96 58.42 0)
       (effects (font (size 1.27 1.27)) (hide yes)))
     (pin "1"
-      (uuid 81bcf398-b433-4b61-a327-79b46c13c90e))
+      (uuid bf1836c2-07ac-4a59-ad01-cf12de328ca8))
     (instances
       (project "GrowMate"
         (path "/216fdad8-4006-4d85-8157-93191bd90b6a/a38d173b-c688-50e9-8ed6-b7feae1549e5"
@@ -993,7 +993,7 @@
       (xy 60.96 68.58)
     )
     (stroke (width 0.1524) (type default))
-    (uuid 86cf38f4-a2f7-4c26-8f4a-dd9aea59f51a))
+    (uuid be6c2100-a970-4629-8591-f31ea9883949))
   (symbol
     (lib_id "power:PWR_FLAG")
     (at 66.04 63.5 0)
@@ -1003,12 +1003,12 @@
     (on_board yes)
     (dnp no)
     (fields_autoplaced no)
-    (uuid 553d6dcb-e0c1-478d-8b10-c43a20f23844)
+    (uuid ba0d7389-da7e-4dc3-bfc3-043a6e1e0444)
     (property "Reference" "#PWR02"
       (at 66.04 63.5 0)
       (effects (font (size 1.27 1.27)) (hide yes)))
     (pin "1"
-      (uuid 633f13ca-c55f-481a-b488-ca9c47a4d1ad))
+      (uuid 402f2f65-ecee-4e46-b37e-466b9d4922e4))
     (instances
       (project "GrowMate"
         (path "/216fdad8-4006-4d85-8157-93191bd90b6a/a38d173b-c688-50e9-8ed6-b7feae1549e5"
@@ -1020,44 +1020,44 @@
       (xy 66.04 63.5)
     )
     (stroke (width 0.1524) (type default))
-    (uuid f2af499d-59df-4443-8a0e-329bd23cd4f4))
+    (uuid ad95a715-589f-4edb-b219-15c569100270))
   (junction (at 60.96 63.5) (diameter 0) (color 0 0 0 0)
-    (uuid 30161d6d-ca2f-48a6-a15f-fc67a01e7620))
+    (uuid 257bbacc-494e-472c-a6bf-c2c8d48221a3))
   (wire
     (pts
       (xy 48.26 80.01)
       (xy 48.26 68.58)
     )
     (stroke (width 0.1524) (type default))
-    (uuid 883eb9fb-c1a5-42da-a6d0-e109644f55c4))
+    (uuid 74140ba2-69f4-4a23-8de4-be594158bbc8))
   (wire
     (pts
       (xy 48.26 68.58)
       (xy 60.96 68.58)
     )
     (stroke (width 0.1524) (type default))
-    (uuid ad2e9082-3df4-4c86-8163-f7d1031bf5aa))
+    (uuid 6c11349b-6f43-4f1d-8f7c-73c5cf3f1692))
   (wire
     (pts
       (xy 68.58 76.2)
       (xy 83.82 76.2)
     )
     (stroke (width 0.1524) (type default))
-    (uuid e7542f74-e0bd-4e0b-abf7-f8f8086109ed))
+    (uuid dd9fc8a3-8964-4015-ab95-9477060a2a51))
   (global_label "DHT_DATA"
     (shape bidirectional)
     (at 83.82 76.2 0)
     (effects (font (size 1.27 1.27)) (justify left))
-    (uuid 9020ee7e-b88c-40a3-8ac7-1633fcfbfd1e))
+    (uuid c78ce17b-0521-426e-a565-866f36fb697f))
   (wire
     (pts
       (xy 81.28 67.31)
       (xy 81.28 76.2)
     )
     (stroke (width 0.1524) (type default))
-    (uuid 267b6923-cc46-4d6e-8d6f-2c7b164fb734))
+    (uuid 97456699-d29a-455f-a290-380175883f24))
   (junction (at 81.28 76.2) (diameter 0) (color 0 0 0 0)
-    (uuid be9f2ada-1f01-41c4-bd97-6180de4ec8d9))
+    (uuid 5de13ad9-5455-43b4-8dd1-2ccf61858149))
   (symbol
     (lib_id "power:+3V3")
     (at 81.28 50.8 0)
@@ -1067,7 +1067,7 @@
     (on_board yes)
     (dnp no)
     (fields_autoplaced no)
-    (uuid 9f2790f8-bd4c-42b1-8482-ef9a335ed58a)
+    (uuid c6093535-fa92-4ff8-b1af-f568fcbb2669)
     (property "Reference" "#+3V303"
       (at 81.28 50.8 0)
       (effects (font (size 1.27 1.27)) (hide yes)))
@@ -1075,7 +1075,7 @@
       (at 81.28 50.8 0)
       (effects (font (size 1.27 1.27)) (hide yes)))
     (pin "1"
-      (uuid 57518b77-e398-44b9-8d92-ba48e6bd11b6))
+      (uuid 4bcfedce-f7a7-457c-b05c-cc247c9ffdb9))
     (instances
       (project "GrowMate"
         (path "/216fdad8-4006-4d85-8157-93191bd90b6a/a38d173b-c688-50e9-8ed6-b7feae1549e5"
@@ -1087,30 +1087,30 @@
       (xy 81.28 59.69)
     )
     (stroke (width 0.1524) (type default))
-    (uuid bbc88745-4d1f-4975-b990-694041f85b60))
+    (uuid a5b73771-0c63-4f85-8557-da1e3bc023c2))
   (wire
     (pts
       (xy 60.96 83.82)
       (xy 60.96 96.52)
     )
     (stroke (width 0.1524) (type default))
-    (uuid 0bbfda35-af2d-4320-a84d-58ff008c0981))
+    (uuid 2c7b7627-4dbc-4abd-97f5-ee559d12da76))
   (wire
     (pts
       (xy 48.26 87.63)
       (xy 48.26 96.52)
     )
     (stroke (width 0.1524) (type default))
-    (uuid 91961a3c-7629-4215-9c72-c4fba68b440e))
+    (uuid f09711b2-7365-4ce3-aea8-171b47e3e254))
   (wire
     (pts
       (xy 48.26 96.52)
       (xy 60.96 96.52)
     )
     (stroke (width 0.1524) (type default))
-    (uuid f82300b2-12a4-44cf-9633-483ea019f578))
+    (uuid 105320ca-ad8c-4c12-aea7-12dcfb30dcd3))
   (junction (at 60.96 96.52) (diameter 0) (color 0 0 0 0)
-    (uuid 46efed93-981f-4d87-8d54-ef216bcf4d77))
+    (uuid 51a2ae5e-4e66-4877-91dd-4457ba6f38aa))
   (symbol
     (lib_id "power:GND")
     (at 53.34 106.68 0)
@@ -1120,7 +1120,7 @@
     (on_board yes)
     (dnp no)
     (fields_autoplaced no)
-    (uuid aa0e2792-7c77-44c0-b1d2-e3657bf9433e)
+    (uuid 84f4c446-6c86-4c50-8cc6-970b9b33f7a6)
     (property "Reference" "#GND04"
       (at 53.34 106.68 0)
       (effects (font (size 1.27 1.27)) (hide yes)))
@@ -1128,7 +1128,7 @@
       (at 53.34 106.68 0)
       (effects (font (size 1.27 1.27)) (hide yes)))
     (pin "1"
-      (uuid d89ab534-098b-4ace-98bf-deebca3b978f))
+      (uuid 98de1b8a-91bb-4866-a244-00bc801878c1))
     (instances
       (project "GrowMate"
         (path "/216fdad8-4006-4d85-8157-93191bd90b6a/a38d173b-c688-50e9-8ed6-b7feae1549e5"
@@ -1140,9 +1140,9 @@
       (xy 53.34 106.68)
     )
     (stroke (width 0.1524) (type default))
-    (uuid 128a6915-5496-464b-8904-0d99c6a330de))
+    (uuid cc30cd1a-551c-441c-b26e-206e3db2e47c))
   (junction (at 53.34 96.52) (diameter 0) (color 0 0 0 0)
-    (uuid 48359a4b-3348-4184-a2d1-1a5c01f89de5))
+    (uuid d2680303-9aae-4c76-a481-89766cc3245b))
   (symbol
     (lib_id "power:PWR_FLAG")
     (at 60.96 96.52 0)
@@ -1152,12 +1152,12 @@
     (on_board yes)
     (dnp no)
     (fields_autoplaced no)
-    (uuid 5aafc332-3d8d-4cc3-9aab-29873c745706)
+    (uuid 5544cf21-d20f-4049-bae5-9d6d5306c7cf)
     (property "Reference" "#PWR05"
       (at 60.96 96.52 0)
       (effects (font (size 1.27 1.27)) (hide yes)))
     (pin "1"
-      (uuid 68279b0d-b748-49e3-a936-51d15269ac75))
+      (uuid 9d7205cd-1aff-4c89-9969-7a98522cf467))
     (instances
       (project "GrowMate"
         (path "/216fdad8-4006-4d85-8157-93191bd90b6a/a38d173b-c688-50e9-8ed6-b7feae1549e5"
@@ -1169,21 +1169,21 @@
       (xy 106.68 59.69)
     )
     (stroke (width 0.1524) (type default))
-    (uuid 4596dcb0-6af3-4dd4-a7da-b6509f1b9e4d))
+    (uuid 3c53b63f-00b1-4f64-b2ec-43e3810b256c))
   (wire
     (pts
       (xy 106.68 59.69)
       (xy 81.28 59.69)
     )
     (stroke (width 0.1524) (type default))
-    (uuid ac09c58e-6055-45f2-8e37-12081833eb0c))
+    (uuid 1ace5b07-ec0e-4315-92d2-8eca48506c30))
   (wire
     (pts
       (xy 106.68 87.63)
       (xy 106.68 101.6)
     )
     (stroke (width 0.1524) (type default))
-    (uuid 6c71b2ef-791c-4166-b5b4-7f218950345d))
+    (uuid 44962fe2-0646-4366-90cd-ac3cc9d3890b))
   (symbol
     (lib_id "power:GND")
     (at 106.68 111.76 0)
@@ -1193,7 +1193,7 @@
     (on_board yes)
     (dnp no)
     (fields_autoplaced no)
-    (uuid 2af85bc7-d5bf-49c5-9e01-893004ab4ce9)
+    (uuid ffbccbac-6010-49da-8b51-a2e62e06a483)
     (property "Reference" "#GND06"
       (at 106.68 111.76 0)
       (effects (font (size 1.27 1.27)) (hide yes)))
@@ -1201,7 +1201,7 @@
       (at 106.68 111.76 0)
       (effects (font (size 1.27 1.27)) (hide yes)))
     (pin "1"
-      (uuid 1f6db576-0c26-4058-a02f-b5a2d3e7035b))
+      (uuid 1d13f3e2-c320-4377-8ba4-31dc6a843de3))
     (instances
       (project "GrowMate"
         (path "/216fdad8-4006-4d85-8157-93191bd90b6a/a38d173b-c688-50e9-8ed6-b7feae1549e5"
@@ -1213,13 +1213,13 @@
       (xy 106.68 111.76)
     )
     (stroke (width 0.1524) (type default))
-    (uuid be82a1f8-76a8-44b6-b292-312db356d3bd))
+    (uuid b517650f-d0ad-428f-ac90-efbdad105f52))
   (text "DHT polled with 2 attempts >= 2s apart; failures omit"
     (at 25.4 139.7 0)
     (effects (font (size 1.0 1.0)) (justify left))
-    (uuid ac2f9a46-5d26-4776-8bb3-e774c3ba85e0))
+    (uuid 8cac63e4-69c3-44a3-b960-c7a75eb67016))
   (text "temperature/air rather than blocking."
     (at 25.4 141.9 0)
     (effects (font (size 1.0 1.0)) (justify left))
-    (uuid 22a9943d-77e1-4b97-aecd-7839ee473f61))
+    (uuid 01f5aabd-ab7f-4d65-a885-517bd9be8fab))
 )

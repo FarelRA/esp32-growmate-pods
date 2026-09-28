@@ -2,7 +2,7 @@
 <export version="D">
   <design>
     <source>/home/farel/projects/iot/esp32-growmate-pods/schematic/pods.py</source>
-    <date>09/27/2026 10:47 PM</date>
+    <date>09/28/2026 01:01 PM</date>
     <tool>SKiDL (2.3.0)</tool>
   </design>
   <components>
@@ -182,7 +182,7 @@
       <libsource lib="Connector_Generic" part=""Conn_01x02""/>
     </comp>
     <comp ref="D1">
-      <value>"1N5819"</value>
+      <value>"1N5822"</value>
       <footprint>Diode_THT:D_DO-41_SOD81_P7.62mm_Horizontal</footprint>
       <libsource lib="Diode" part=""1N5819""/>
     </comp>
