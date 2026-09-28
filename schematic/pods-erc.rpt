@@ -1,161 +1,161 @@
-ERC report (2026-09-28T16:57:42, Encoding UTF8)
+ERC report (2026-09-28T17:52:02, Encoding UTF8)
 Report includes: Errors, Warnings
 
 ***** Sheet /
-[power_pin_not_driven]: Input Power pin not driven by any Output Power pins
-    ; error
-    @(109.22 mm, 104.14 mm): Symbol #PWR001 Pin 1 [Power input, Line]
 [pin_not_driven]: Input pin not driven by any Output pins
     ; error
-    @(142.24 mm, 168.91 mm): Symbol Q1 Pin 1 [G, Input, Line]
+    @(31.75 mm, 119.38 mm): Symbol Q1 Pin 1 [G, Input, Line]
 [power_pin_not_driven]: Input Power pin not driven by any Output Power pins
     ; error
-    @(226.06 mm, 133.35 mm): Symbol #PWR003 Pin 1 [Power input, Line]
+    @(71.12 mm, 92.71 mm): Symbol #PWR013 Pin 1 [Power input, Line]
 [power_pin_not_driven]: Input Power pin not driven by any Output Power pins
     ; error
-    @(261.62 mm, 148.59 mm): Symbol #PWR013 Pin 1 [Power input, Line]
-[lib_symbol_mismatch]: Symbol 'C' doesn't match copy in library 'Device'
-    ; warning
-    @(27.94 mm, 92.71 mm): Symbol C7 [C]
-[lib_symbol_mismatch]: Symbol 'C' doesn't match copy in library 'Device'
-    ; warning
-    @(35.56 mm, 92.71 mm): Symbol C9 [C]
-[lib_symbol_mismatch]: Symbol 'R' doesn't match copy in library 'Device'
-    ; warning
-    @(43.18 mm, 92.71 mm): Symbol R10 [R]
-[lib_symbol_mismatch]: Symbol 'C' doesn't match copy in library 'Device'
-    ; warning
-    @(48.26 mm, 129.54 mm): Symbol C4 [C]
-[lib_symbol_mismatch]: Symbol 'C' doesn't match copy in library 'Device'
-    ; warning
-    @(48.26 mm, 137.16 mm): Symbol C5 [C]
-[lib_symbol_mismatch]: Symbol 'R' doesn't match copy in library 'Device'
-    ; warning
-    @(48.26 mm, 137.16 mm): Symbol R1 [R]
-[lib_symbol_mismatch]: Symbol 'DHT11' doesn't match copy in library 'Sensor'
-    ; warning
-    @(48.26 mm, 148.59 mm): Symbol U2 [DHT11]
-[lib_symbol_mismatch]: Symbol 'Conn_01x03' doesn't match copy in library 'Connector_Generic'
-    ; warning
-    @(52.07 mm, 92.71 mm): Symbol J2 [Conn_01x03]
-[lib_symbol_mismatch]: Symbol 'C' doesn't match copy in library 'Device'
-    ; warning
-    @(80.01 mm, 142.24 mm): Symbol C8 [C]
-[lib_symbol_mismatch]: Symbol 'C' doesn't match copy in library 'Device'
-    ; warning
-    @(87.63 mm, 142.24 mm): Symbol C1 [C]
-[lib_symbol_mismatch]: Symbol 'R' doesn't match copy in library 'Device'
-    ; warning
-    @(95.25 mm, 142.24 mm): Symbol R6 [R]
-[lib_symbol_mismatch]: Symbol 'Conn_01x03' doesn't match copy in library 'Connector_Generic'
-    ; warning
-    @(104.14 mm, 142.24 mm): Symbol J3 [Conn_01x03]
+    @(132.08 mm, 97.79 mm): Symbol #PWR003 Pin 1 [Power input, Line]
+[power_pin_not_driven]: Input Power pin not driven by any Output Power pins
+    ; error
+    @(190.50 mm, 88.90 mm): Symbol #PWR001 Pin 1 [Power input, Line]
 [lib_symbol_mismatch]: Symbol 'Conn_01x02' doesn't match copy in library 'Connector_Generic'
     ; warning
-    @(109.22 mm, 101.60 mm): Symbol BT1 [Conn_01x02]
-[multiple_net_names]: Both DHT_DATA and GND are attached to the same items; DHT_DATA will be used in the netlist
-    ; warning
-    @(284.48 mm, 148.59 mm): Global Label 'DHT_DATA'
-    @(109.22 mm, 104.14 mm): Symbol #PWR001 Pin 1 [Power input, Line]
-[lib_symbol_mismatch]: Symbol 'Conn_01x04' doesn't match copy in library 'Connector_Generic'
-    ; warning
-    @(114.30 mm, 99.06 mm): Symbol CHG1 [Conn_01x04]
-[lib_symbol_mismatch]: Symbol 'Conn_01x02' doesn't match copy in library 'Connector_Generic'
-    ; warning
-    @(134.62 mm, 156.21 mm): Symbol M1 [Conn_01x02]
+    @(24.13 mm, 106.68 mm): Symbol M1 [Conn_01x02]
 [lib_symbol_mismatch]: Symbol '1N5819' doesn't match copy in library 'Diode'
     ; warning
-    @(134.62 mm, 165.10 mm): Symbol D1 [1N5819]
+    @(24.13 mm, 115.57 mm): Symbol D1 [1N5819]
 [lib_symbol_mismatch]: Symbol 'C' doesn't match copy in library 'Device'
     ; warning
-    @(137.16 mm, 165.10 mm): Symbol C11 [C]
+    @(26.67 mm, 115.57 mm): Symbol C11 [C]
 [lib_symbol_mismatch]: Symbol 'R' doesn't match copy in library 'Device'
     ; warning
-    @(138.43 mm, 144.78 mm): Symbol R2 [R]
+    @(27.94 mm, 95.25 mm): Symbol R2 [R]
 [lib_symbol_mismatch]: Symbol 'IRLZ44N' doesn't match copy in library 'Transistor_FET'
     ; warning
-    @(142.24 mm, 163.83 mm): Symbol Q1 [IRLZ44N]
+    @(31.75 mm, 114.30 mm): Symbol Q1 [IRLZ44N]
 [isolated_pin_label]: Label connected to only one pin
     ; warning
-    @(142.24 mm, 168.91 mm): Global Label 'PUMP_GATE_Q'
-[lib_symbol_mismatch]: Symbol 'Polyfuse' doesn't match copy in library 'Device'
-    ; warning
-    @(143.51 mm, 86.36 mm): Symbol F3 [Polyfuse]
-[lib_symbol_mismatch]: Symbol 'Polyfuse' doesn't match copy in library 'Device'
-    ; warning
-    @(146.05 mm, 106.68 mm): Symbol F1 [Polyfuse]
+    @(31.75 mm, 119.38 mm): Global Label 'PUMP_GATE_Q'
 [lib_symbol_mismatch]: Symbol 'R' doesn't match copy in library 'Device'
     ; warning
-    @(146.05 mm, 144.78 mm): Symbol R3 [R]
-[lib_symbol_mismatch]: Symbol 'C' doesn't match copy in library 'Device'
-    ; warning
-    @(147.32 mm, 38.10 mm): Symbol C6 [C]
+    @(35.56 mm, 95.25 mm): Symbol R3 [R]
 [lib_symbol_mismatch]: Symbol 'R' doesn't match copy in library 'Device'
     ; warning
-    @(147.32 mm, 45.72 mm): Symbol R7 [R]
-[lib_symbol_mismatch]: Symbol 'R' doesn't match copy in library 'Device'
-    ; warning
-    @(156.21 mm, 40.64 mm): Symbol R11 [R]
-[lib_symbol_mismatch]: Symbol 'R' doesn't match copy in library 'Device'
-    ; warning
-    @(156.21 mm, 48.26 mm): Symbol R9 [R]
-[lib_symbol_mismatch]: Symbol 'Polyfuse' doesn't match copy in library 'Device'
-    ; warning
-    @(163.83 mm, 86.36 mm): Symbol F2 [Polyfuse]
-[isolated_pin_label]: Label connected to only one pin
-    ; warning
-    @(176.53 mm, 41.91 mm): Global Label 'TANK_VCC'
-[isolated_pin_label]: Label connected to only one pin
-    ; warning
-    @(176.53 mm, 44.45 mm): Global Label 'WATER_AO'
-[lib_symbol_mismatch]: Symbol 'Conn_01x03' doesn't match copy in library 'Connector_Generic'
-    ; warning
-    @(181.61 mm, 44.45 mm): Symbol J1 [Conn_01x03]
-[lib_symbol_mismatch]: Symbol 'Conn_01x02' doesn't match copy in library 'Connector_Generic'
-    ; warning
-    @(182.88 mm, 140.97 mm): Symbol D2 [Conn_01x02]
-[lib_symbol_mismatch]: Symbol 'C' doesn't match copy in library 'Device'
-    ; warning
-    @(187.96 mm, 44.45 mm): Symbol C10 [C]
-[lib_symbol_mismatch]: Symbol 'IRLZ44N' doesn't match copy in library 'Transistor_FET'
-    ; warning
-    @(190.50 mm, 148.59 mm): Symbol Q2 [IRLZ44N]
-[lib_symbol_mismatch]: Symbol 'R' doesn't match copy in library 'Device'
-    ; warning
-    @(190.50 mm, 149.86 mm): Symbol R5 [R]
-[lib_symbol_mismatch]: Symbol 'R' doesn't match copy in library 'Device'
-    ; warning
-    @(190.50 mm, 157.48 mm): Symbol R4 [R]
-[lib_symbol_mismatch]: Symbol 'C' doesn't match copy in library 'Device'
-    ; warning
-    @(226.06 mm, 114.30 mm): Symbol C2 [C]
-[lib_symbol_mismatch]: Symbol 'C' doesn't match copy in library 'Device'
-    ; warning
-    @(226.06 mm, 120.65 mm): Symbol C3 [C]
-[lib_symbol_mismatch]: Symbol 'Conn_01x04' doesn't match copy in library 'Connector_Generic'
-    ; warning
-    @(231.14 mm, 130.81 mm): Symbol BST1 [Conn_01x04]
-[lib_symbol_mismatch]: Symbol 'R' doesn't match copy in library 'Device'
-    ; warning
-    @(238.76 mm, 142.24 mm): Symbol R8 [R]
+    @(48.26 mm, 86.36 mm): Symbol R8 [R]
 [lib_symbol_mismatch]: Symbol 'SW_Push' doesn't match copy in library 'Switch'
     ; warning
-    @(238.76 mm, 151.13 mm): Symbol SW1 [SW_Push]
+    @(48.26 mm, 95.25 mm): Symbol SW1 [SW_Push]
 [isolated_pin_label]: Label connected to only one pin
     ; warning
-    @(261.62 mm, 146.05 mm): Global Label 'BOOT_IO0'
+    @(71.12 mm, 90.17 mm): Global Label 'BOOT_IO0'
 [lib_symbol_mismatch]: Symbol 'Conn_01x08' doesn't match copy in library 'Connector_Generic'
     ; warning
-    @(266.70 mm, 143.51 mm): Symbol U1A [Conn_01x08]
+    @(76.20 mm, 87.63 mm): Symbol U1A [Conn_01x08]
 [lib_symbol_mismatch]: Symbol 'Conn_01x04' doesn't match copy in library 'Connector_Generic'
     ; warning
-    @(273.05 mm, 123.19 mm): Symbol J4 [Conn_01x04]
+    @(82.55 mm, 67.31 mm): Symbol J4 [Conn_01x04]
 [isolated_pin_label]: Label connected to only one pin
     ; warning
-    @(284.48 mm, 140.97 mm): Global Label 'GPIO12_NC'
+    @(93.98 mm, 85.09 mm): Global Label 'GPIO12_NC'
 [lib_symbol_mismatch]: Symbol 'Conn_01x08' doesn't match copy in library 'Connector_Generic'
     ; warning
-    @(289.56 mm, 143.51 mm): Symbol U1B [Conn_01x08]
+    @(99.06 mm, 87.63 mm): Symbol U1B [Conn_01x08]
+[lib_symbol_mismatch]: Symbol 'C' doesn't match copy in library 'Device'
+    ; warning
+    @(101.60 mm, 129.54 mm): Symbol C6 [C]
+[lib_symbol_mismatch]: Symbol 'R' doesn't match copy in library 'Device'
+    ; warning
+    @(101.60 mm, 137.16 mm): Symbol R7 [R]
+[lib_symbol_mismatch]: Symbol 'R' doesn't match copy in library 'Device'
+    ; warning
+    @(110.49 mm, 132.08 mm): Symbol R11 [R]
+[lib_symbol_mismatch]: Symbol 'R' doesn't match copy in library 'Device'
+    ; warning
+    @(110.49 mm, 139.70 mm): Symbol R9 [R]
+[lib_symbol_mismatch]: Symbol 'Polyfuse' doesn't match copy in library 'Device'
+    ; warning
+    @(119.38 mm, 176.53 mm): Symbol F3 [Polyfuse]
+[lib_symbol_mismatch]: Symbol 'Polyfuse' doesn't match copy in library 'Device'
+    ; warning
+    @(119.38 mm, 184.15 mm): Symbol F2 [Polyfuse]
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(130.81 mm, 133.35 mm): Global Label 'TANK_VCC'
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(130.81 mm, 135.89 mm): Global Label 'WATER_AO'
+[lib_symbol_mismatch]: Symbol 'C' doesn't match copy in library 'Device'
+    ; warning
+    @(132.08 mm, 78.74 mm): Symbol C2 [C]
+[lib_symbol_mismatch]: Symbol 'C' doesn't match copy in library 'Device'
+    ; warning
+    @(132.08 mm, 85.09 mm): Symbol C3 [C]
+[lib_symbol_mismatch]: Symbol 'Conn_01x03' doesn't match copy in library 'Connector_Generic'
+    ; warning
+    @(135.89 mm, 135.89 mm): Symbol J1 [Conn_01x03]
+[lib_symbol_mismatch]: Symbol 'Conn_01x04' doesn't match copy in library 'Connector_Generic'
+    ; warning
+    @(137.16 mm, 95.25 mm): Symbol BST1 [Conn_01x04]
+[lib_symbol_mismatch]: Symbol 'C' doesn't match copy in library 'Device'
+    ; warning
+    @(142.24 mm, 135.89 mm): Symbol C10 [C]
+[lib_symbol_mismatch]: Symbol 'C' doesn't match copy in library 'Device'
+    ; warning
+    @(151.13 mm, 33.02 mm): Symbol C4 [C]
+[lib_symbol_mismatch]: Symbol 'R' doesn't match copy in library 'Device'
+    ; warning
+    @(151.13 mm, 40.64 mm): Symbol R1 [R]
+[lib_symbol_mismatch]: Symbol 'C' doesn't match copy in library 'Device'
+    ; warning
+    @(151.13 mm, 40.64 mm): Symbol C5 [C]
+[lib_symbol_mismatch]: Symbol 'DHT11' doesn't match copy in library 'Sensor'
+    ; warning
+    @(151.13 mm, 52.07 mm): Symbol U2 [DHT11]
+[lib_symbol_mismatch]: Symbol 'Polyfuse' doesn't match copy in library 'Device'
+    ; warning
+    @(163.83 mm, 176.53 mm): Symbol F1 [Polyfuse]
+[lib_symbol_mismatch]: Symbol 'Conn_01x02' doesn't match copy in library 'Connector_Generic'
+    ; warning
+    @(167.64 mm, 123.19 mm): Symbol D2 [Conn_01x02]
+[lib_symbol_mismatch]: Symbol 'IRLZ44N' doesn't match copy in library 'Transistor_FET'
+    ; warning
+    @(175.26 mm, 130.81 mm): Symbol Q2 [IRLZ44N]
+[lib_symbol_mismatch]: Symbol 'R' doesn't match copy in library 'Device'
+    ; warning
+    @(175.26 mm, 132.08 mm): Symbol R5 [R]
+[lib_symbol_mismatch]: Symbol 'R' doesn't match copy in library 'Device'
+    ; warning
+    @(175.26 mm, 139.70 mm): Symbol R4 [R]
+[lib_symbol_mismatch]: Symbol 'Conn_01x02' doesn't match copy in library 'Connector_Generic'
+    ; warning
+    @(190.50 mm, 86.36 mm): Symbol BT1 [Conn_01x02]
+[multiple_net_names]: Both DHT_DATA and GND are attached to the same items; DHT_DATA will be used in the netlist
+    ; warning
+    @(93.98 mm, 92.71 mm): Global Label 'DHT_DATA'
+    @(190.50 mm, 88.90 mm): Symbol #PWR001 Pin 1 [Power input, Line]
+[lib_symbol_mismatch]: Symbol 'Conn_01x04' doesn't match copy in library 'Connector_Generic'
+    ; warning
+    @(195.58 mm, 83.82 mm): Symbol CHG1 [Conn_01x04]
+[lib_symbol_mismatch]: Symbol 'C' doesn't match copy in library 'Device'
+    ; warning
+    @(215.90 mm, 102.87 mm): Symbol C8 [C]
+[lib_symbol_mismatch]: Symbol 'C' doesn't match copy in library 'Device'
+    ; warning
+    @(223.52 mm, 102.87 mm): Symbol C1 [C]
+[lib_symbol_mismatch]: Symbol 'R' doesn't match copy in library 'Device'
+    ; warning
+    @(231.14 mm, 102.87 mm): Symbol R6 [R]
+[lib_symbol_mismatch]: Symbol 'Conn_01x03' doesn't match copy in library 'Connector_Generic'
+    ; warning
+    @(240.03 mm, 102.87 mm): Symbol J3 [Conn_01x03]
+[lib_symbol_mismatch]: Symbol 'C' doesn't match copy in library 'Device'
+    ; warning
+    @(254.00 mm, 115.57 mm): Symbol C7 [C]
+[lib_symbol_mismatch]: Symbol 'C' doesn't match copy in library 'Device'
+    ; warning
+    @(261.62 mm, 115.57 mm): Symbol C9 [C]
+[lib_symbol_mismatch]: Symbol 'R' doesn't match copy in library 'Device'
+    ; warning
+    @(269.24 mm, 115.57 mm): Symbol R10 [R]
+[lib_symbol_mismatch]: Symbol 'Conn_01x03' doesn't match copy in library 'Connector_Generic'
+    ; warning
+    @(278.13 mm, 115.57 mm): Symbol J2 [Conn_01x03]
 
  ** ERC messages: 51  Errors 4  Warnings 47
 

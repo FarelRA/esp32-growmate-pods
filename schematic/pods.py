@@ -349,14 +349,14 @@ s_led()
 
 # ---------------------------------------------------------------- out
 ERC()
-generate_netlist()
-generate_xml()
+generate_netlist(file_="mfg/pods.net", do_backup=False)
+generate_xml(file_="mfg/pods.xml")
 generate_schematic(title="GrowMate Pods carrier rev A", auto_stub=True,
-                    flatness=1.0)  # flat draft: hierarchical mode would
-# clobber the placed pods_s_*.kicad_sch sheets (same filenames).
+                    flatness=1.0, filepath="sheets")  # flat single-file
+# draft; placed sheets live in sheets/ too but with distinct names.
 
-with open("bom.csv", "w") as f:
+with open("mfg/bom.csv", "w") as f:
     f.write("ref,value,footprint,function\n")
     for ref, value, fp, fn in sorted(BOM):
         f.write(f'{ref},"{value}","{fp}","{fn}"\n')
-print(f"BOM: {len(BOM)} line items -> bom.csv")
+print(f"BOM: {len(BOM)} line items -> mfg/bom.csv")

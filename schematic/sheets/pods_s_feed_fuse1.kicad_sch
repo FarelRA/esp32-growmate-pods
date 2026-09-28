@@ -189,7 +189,7 @@
     (on_board yes)
     (dnp no)
     (fields_autoplaced no)
-    (uuid 9828f913-3341-4008-a5e8-9cc8085de6ec)
+    (uuid 4996c9b9-ce0e-42f8-a5a9-38f9be1fa212)
     (property "Reference" "F1"
       (at 106.1 75.0 0)
       (effects (font (size 1.27 1.27)) (justify left)))
@@ -200,9 +200,9 @@
       (at 101.6 76.2 0)
       (effects (font (size 1.27 1.27)) (hide yes)))
     (pin "1"
-      (uuid d7f24e65-ff2c-44f4-b6ae-7f700c2f7ead))
+      (uuid ac1817f9-7a65-4402-8849-2f1e24a790e4))
     (pin "2"
-      (uuid a21113f8-bc5e-4ddf-8ac3-89353ba26cbe))
+      (uuid 1f0997fb-e592-44f3-9aa9-100a91046662))
     (instances
       (project "GrowMate"
         (path "/216fdad8-4006-4d85-8157-93191bd90b6a/fccbde66-8e32-5424-b7f2-b5a5a2578910"
@@ -214,37 +214,37 @@
       (xy 101.6 72.39)
     )
     (stroke (width 0.1524) (type default))
-    (uuid 50b1cf6d-8c69-4830-9b75-a3580218afb0))
+    (uuid 21551ddb-7ae4-4824-ab10-851746e6275b))
   (global_label "SYS_PACK"
     (shape bidirectional)
     (at 78.74 72.39 0)
     (effects (font (size 1.27 1.27)) (justify left))
-    (uuid a6c298a4-b9f1-4a68-a9f5-41444d407429))
+    (uuid 83385d55-24a5-4b4f-9a6e-faf39afcb218))
   (wire
     (pts
       (xy 101.6 80.01)
       (xy 101.6 93.98)
     )
     (stroke (width 0.1524) (type default))
-    (uuid de3b7f84-f731-484f-b5f3-5d7784669e73))
+    (uuid f7a38555-527c-4d07-b9d2-36580738d3e2))
   (wire
     (pts
       (xy 101.6 93.98)
       (xy 119.38 93.98)
     )
     (stroke (width 0.1524) (type default))
-    (uuid d92367e1-eca8-460d-9f41-8a97a3b5e54e))
+    (uuid 24f9b7e2-414f-4f54-8d73-c30ef965c359))
   (global_label "BST_IN"
     (shape bidirectional)
     (at 119.38 93.98 0)
     (effects (font (size 1.27 1.27)) (justify left))
-    (uuid 5b43c192-7795-47f8-b093-35c0d292989e))
+    (uuid fe7e8a23-27e0-42b2-a1eb-4d8dcb03a6c8))
   (text "F1 5A hold: interlocked max ~5.5A in at 3.0V pack;"
     (at 25.4 139.7 0)
     (effects (font (size 1.0 1.0)) (justify left))
-    (uuid cc7ceaa0-58e1-45a8-8181-3ccabf296d80))
+    (uuid ba34a6d6-e88a-4291-9b7d-db4e8de821a7))
   (text "trips on dead short only."
     (at 25.4 141.9 0)
     (effects (font (size 1.0 1.0)) (justify left))
-    (uuid 79db4d64-4fb7-46e7-92e5-f8e64d264865))
+    (uuid d5609dba-329d-4407-b87d-25359cf88efe))
 )

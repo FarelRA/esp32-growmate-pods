@@ -2,7 +2,7 @@
   (version 20230409)
   (generator "skidl")
   (generator_version "2.3.0")
-  (uuid 91ef9dad-ef34-5895-821c-1f97dfd4b1f0)
+  (uuid a38d173b-c688-50e9-8ed6-b7feae1549e5)
   (paper "A4")
   (title_block
     (title "GrowMate Pods carrier rev A")
@@ -13,193 +13,6 @@
     (comment 3 "")
     (comment 4 ""))
   (lib_symbols
-  (symbol "Connector_Generic:Conn_01x03"
-  		(pin_names
-  			(offset 1.016)
-  			(hide yes)
-  		)
-  		(exclude_from_sim no)
-  		(in_bom yes)
-  		(on_board yes)
-  		(in_pos_files yes)
-  		(duplicate_pin_numbers_are_jumpers no)
-  		(property "Reference" "J"
-  			(at 0 5.08 0)
-  			(show_name no)
-  			(do_not_autoplace no)
-  			(effects
-  				(font
-  					(size 1.27 1.27)
-  				)
-  			)
-  		)
-  		(property "Value" "Conn_01x03"
-  			(at 0 -5.08 0)
-  			(show_name no)
-  			(do_not_autoplace no)
-  			(effects
-  				(font
-  					(size 1.27 1.27)
-  				)
-  			)
-  		)
-  		(property "Footprint" ""
-  			(at 0 0 0)
-  			(show_name no)
-  			(do_not_autoplace no)
-  			(hide yes)
-  			(effects
-  				(font
-  					(size 1.27 1.27)
-  				)
-  			)
-  		)
-  		(property "Datasheet" ""
-  			(at 0 0 0)
-  			(show_name no)
-  			(do_not_autoplace no)
-  			(hide yes)
-  			(effects
-  				(font
-  					(size 1.27 1.27)
-  				)
-  			)
-  		)
-  		(property "Description" "Generic connector, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)"
-  			(at 0 0 0)
-  			(show_name no)
-  			(do_not_autoplace no)
-  			(hide yes)
-  			(effects
-  				(font
-  					(size 1.27 1.27)
-  				)
-  			)
-  		)
-  		(property "ki_keywords" "connector"
-  			(at 0 0 0)
-  			(show_name no)
-  			(do_not_autoplace no)
-  			(hide yes)
-  			(effects
-  				(font
-  					(size 1.27 1.27)
-  				)
-  			)
-  		)
-  		(property "ki_fp_filters" "Connector*:*_1x??_*"
-  			(at 0 0 0)
-  			(show_name no)
-  			(do_not_autoplace no)
-  			(hide yes)
-  			(effects
-  				(font
-  					(size 1.27 1.27)
-  				)
-  			)
-  		)
-  		
-  		(embedded_fonts no)
-  	(symbol "Conn_01x03_1_1"
-  			(rectangle
-  				(start -1.27 3.81)
-  				(end 1.27 -3.81)
-  				(stroke
-  					(width 0.254)
-  					(type default)
-  				)
-  				(fill
-  					(type background)
-  				)
-  			)
-  			(rectangle
-  				(start -1.27 2.667)
-  				(end 0 2.413)
-  				(stroke
-  					(width 0.1524)
-  					(type default)
-  				)
-  				(fill
-  					(type none)
-  				)
-  			)
-  			(rectangle
-  				(start -1.27 0.127)
-  				(end 0 -0.127)
-  				(stroke
-  					(width 0.1524)
-  					(type default)
-  				)
-  				(fill
-  					(type none)
-  				)
-  			)
-  			(rectangle
-  				(start -1.27 -2.413)
-  				(end 0 -2.667)
-  				(stroke
-  					(width 0.1524)
-  					(type default)
-  				)
-  				(fill
-  					(type none)
-  				)
-  			)
-  			(pin passive line
-  				(at -5.08 2.54 0)
-  				(length 3.81)
-  				(name "Pin_1"
-  					(effects
-  						(font
-  							(size 1.27 1.27)
-  						)
-  					)
-  				)
-  				(number "1"
-  					(effects
-  						(font
-  							(size 1.27 1.27)
-  						)
-  					)
-  				)
-  			)
-  			(pin passive line
-  				(at -5.08 0 0)
-  				(length 3.81)
-  				(name "Pin_2"
-  					(effects
-  						(font
-  							(size 1.27 1.27)
-  						)
-  					)
-  				)
-  				(number "2"
-  					(effects
-  						(font
-  							(size 1.27 1.27)
-  						)
-  					)
-  				)
-  			)
-  			(pin passive line
-  				(at -5.08 -2.54 0)
-  				(length 3.81)
-  				(name "Pin_3"
-  					(effects
-  						(font
-  							(size 1.27 1.27)
-  						)
-  					)
-  				)
-  				(number "3"
-  					(effects
-  						(font
-  							(size 1.27 1.27)
-  						)
-  					)
-  				)
-  			)
-  		))
   (symbol "Device:C"
   		(pin_numbers
   			(hide yes)
@@ -487,6 +300,177 @@
   					)
   				)
   				(number "2"
+  					(effects
+  						(font
+  							(size 1.27 1.27)
+  						)
+  					)
+  				)
+  			)
+  		))
+  (symbol "Sensor:DHT11"
+  		(exclude_from_sim no)
+  		(in_bom yes)
+  		(on_board yes)
+  		(in_pos_files yes)
+  		(duplicate_pin_numbers_are_jumpers no)
+  		(property "Reference" "U"
+  			(at -3.81 6.35 0)
+  			(show_name no)
+  			(do_not_autoplace no)
+  			(effects
+  				(font
+  					(size 1.27 1.27)
+  				)
+  			)
+  		)
+  		(property "Value" "DHT11"
+  			(at 3.81 6.35 0)
+  			(show_name no)
+  			(do_not_autoplace no)
+  			(effects
+  				(font
+  					(size 1.27 1.27)
+  				)
+  			)
+  		)
+  		(property "Footprint" "Sensor:Aosong_DHT11_5.5x12.0_P2.54mm"
+  			(at 0 -10.16 0)
+  			(show_name no)
+  			(do_not_autoplace no)
+  			(hide yes)
+  			(effects
+  				(font
+  					(size 1.27 1.27)
+  				)
+  			)
+  		)
+  		(property "Datasheet" "http://akizukidenshi.com/download/ds/aosong/DHT11.pdf"
+  			(at 3.81 6.35 0)
+  			(show_name no)
+  			(do_not_autoplace no)
+  			(hide yes)
+  			(effects
+  				(font
+  					(size 1.27 1.27)
+  				)
+  			)
+  		)
+  		(property "Description" "3.3V to 5.5V, temperature and humidity module, DHT11"
+  			(at 0 0 0)
+  			(show_name no)
+  			(do_not_autoplace no)
+  			(hide yes)
+  			(effects
+  				(font
+  					(size 1.27 1.27)
+  				)
+  			)
+  		)
+  		(property "ki_keywords" "digital sensor"
+  			(at 0 0 0)
+  			(show_name no)
+  			(do_not_autoplace no)
+  			(hide yes)
+  			(effects
+  				(font
+  					(size 1.27 1.27)
+  				)
+  			)
+  		)
+  		(property "ki_fp_filters" "Aosong*DHT11*5.5x12.0*P2.54mm*"
+  			(at 0 0 0)
+  			(show_name no)
+  			(do_not_autoplace no)
+  			(hide yes)
+  			(effects
+  				(font
+  					(size 1.27 1.27)
+  				)
+  			)
+  		)
+  		
+  		
+  		(embedded_fonts no)
+  	(symbol "DHT11_0_1"
+  			(rectangle
+  				(start -5.08 5.08)
+  				(end 5.08 -5.08)
+  				(stroke
+  					(width 0.254)
+  					(type default)
+  				)
+  				(fill
+  					(type background)
+  				)
+  			)
+  		)(symbol "DHT11_1_1"
+  			(pin power_in line
+  				(at 0 7.62 270)
+  				(length 2.54)
+  				(name "VDD"
+  					(effects
+  						(font
+  							(size 1.27 1.27)
+  						)
+  					)
+  				)
+  				(number "1"
+  					(effects
+  						(font
+  							(size 1.27 1.27)
+  						)
+  					)
+  				)
+  			)
+  			(pin bidirectional line
+  				(at 7.62 0 180)
+  				(length 2.54)
+  				(name "DATA"
+  					(effects
+  						(font
+  							(size 1.27 1.27)
+  						)
+  					)
+  				)
+  				(number "2"
+  					(effects
+  						(font
+  							(size 1.27 1.27)
+  						)
+  					)
+  				)
+  			)
+  			(pin no_connect line
+  				(at -5.08 0 0)
+  				(length 2.54)
+  				(hide yes)
+  				(name "NC"
+  					(effects
+  						(font
+  							(size 1.27 1.27)
+  						)
+  					)
+  				)
+  				(number "3"
+  					(effects
+  						(font
+  							(size 1.27 1.27)
+  						)
+  					)
+  				)
+  			)
+  			(pin power_in line
+  				(at 0 -7.62 90)
+  				(length 2.54)
+  				(name "GND"
+  					(effects
+  						(font
+  							(size 1.27 1.27)
+  						)
+  					)
+  				)
+  				(number "4"
   					(effects
   						(font
   							(size 1.27 1.27)
@@ -867,322 +851,375 @@
   )
 
   (symbol
-    (lib_id "Connector_Generic:Conn_01x03")
-    (at 35.56 73.66 180)
+    (lib_id "Sensor:DHT11")
+    (at 60.96 76.2 0)
     (unit 1)
     (exclude_from_sim no)
     (in_bom yes)
     (on_board yes)
     (dnp no)
     (fields_autoplaced no)
-    (uuid adaa13b5-f5c3-44e4-8e2f-514b3021392a)
-    (property "Reference" "J3"
-      (at 31.06 72.46 0)
-      (effects (font (size 1.27 1.27)) (justify right)))
-    (property "Value" "LIGHT-SENS-1x03"
-      (at 31.06 76.26 0)
-      (effects (font (size 1.27 1.27)) (justify right)))
-    (property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical"
-      (at 35.56 73.66 0)
+    (uuid 5e5be9a1-cc59-4c6b-a187-eaab64ab0a47)
+    (property "Reference" "U2"
+      (at 60.96 98.34 0)
+      (effects (font (size 1.27 1.27)) (justify left)))
+    (property "Value" "DHT22"
+      (at 60.96 101.88 0)
+      (effects (font (size 1.27 1.27)) (justify left)))
+    (property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Vertical"
+      (at 60.96 76.2 0)
       (effects (font (size 1.27 1.27)) (hide yes)))
     (pin "1"
-      (uuid da6b4f73-4c06-4967-8c23-28007bf45cfd))
+      (uuid 64f021b0-72c8-44ed-b9f8-065d68caf162))
     (pin "2"
-      (uuid b0000d8b-e55c-4ed6-bd45-79f197e2f52e))
-    (pin "3"
-      (uuid 0754a919-6647-45f9-adb2-d08c409f9e05))
+      (uuid 06c67c62-44f1-4f38-9482-50f158d9d0e1))
+    (pin "4"
+      (uuid bfab3d4e-13a1-4d1d-8869-0e0c668fcdc3))
     (instances
       (project "GrowMate"
-        (path "/216fdad8-4006-4d85-8157-93191bd90b6a/91ef9dad-ef34-5895-821c-1f97dfd4b1f0"
-          (reference "J3")
+        (path "/216fdad8-4006-4d85-8157-93191bd90b6a/a38d173b-c688-50e9-8ed6-b7feae1549e5"
+          (reference "U2")
           (unit 1)))))
   (symbol
     (lib_id "Device:R")
-    (at 68.58 73.66 90)
+    (at 81.28 63.5 0)
     (unit 1)
     (exclude_from_sim no)
     (in_bom yes)
     (on_board yes)
     (dnp no)
     (fields_autoplaced no)
-    (uuid ca6c0abd-f970-46eb-bfa1-60b81608852c)
-    (property "Reference" "R6"
-      (at 73.08 72.46 0)
+    (uuid 3886723e-d0fd-4b17-984a-9f0a1ee6ce3d)
+    (property "Reference" "R1"
+      (at 85.78 62.3 0)
       (effects (font (size 1.27 1.27)) (justify left)))
-    (property "Value" "1K"
-      (at 73.08 76.26 0)
+    (property "Value" "4.7K"
+      (at 85.78 66.1 0)
       (effects (font (size 1.27 1.27)) (justify left)))
     (property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-      (at 68.58 73.66 0)
+      (at 81.28 63.5 0)
       (effects (font (size 1.27 1.27)) (hide yes)))
     (pin "1"
-      (uuid c39f9607-9612-47c1-acd8-117b5b75d0bf))
+      (uuid e8cb4103-c98e-49b3-8e41-c40dd29cdb9a))
     (pin "2"
-      (uuid 2b582dbe-5310-4ecd-9a73-d2aec78e64f1))
+      (uuid 2a78b77a-c74f-42a5-8cf1-842c9051b9e5))
     (instances
       (project "GrowMate"
-        (path "/216fdad8-4006-4d85-8157-93191bd90b6a/91ef9dad-ef34-5895-821c-1f97dfd4b1f0"
-          (reference "R6")
+        (path "/216fdad8-4006-4d85-8157-93191bd90b6a/a38d173b-c688-50e9-8ed6-b7feae1549e5"
+          (reference "R1")
           (unit 1)))))
   (symbol
     (lib_id "Device:C")
-    (at 88.9 88.9 0)
+    (at 48.26 83.82 0)
     (unit 1)
     (exclude_from_sim no)
     (in_bom yes)
     (on_board yes)
     (dnp no)
     (fields_autoplaced no)
-    (uuid d5e49fb8-aa8e-41ba-bb27-d6f3be00471a)
-    (property "Reference" "C1"
-      (at 93.4 87.7 0)
+    (uuid 3142db3e-0f6c-497a-96ac-f4e69ebfb74e)
+    (property "Reference" "C4"
+      (at 52.76 82.62 0)
       (effects (font (size 1.27 1.27)) (justify left)))
     (property "Value" "100n-50V"
-      (at 93.4 91.5 0)
+      (at 52.76 86.42 0)
       (effects (font (size 1.27 1.27)) (justify left)))
     (property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
-      (at 88.9 88.9 0)
+      (at 48.26 83.82 0)
       (effects (font (size 1.27 1.27)) (hide yes)))
     (pin "1"
-      (uuid e71fd029-c9b0-49ef-8afb-98c5974857c2))
+      (uuid 285e7d72-1f9d-4b30-832f-aa10072a4062))
     (pin "2"
-      (uuid 8eab2a30-ac60-4a2b-8da0-822893665371))
+      (uuid e029fbb7-b74b-47af-9e7d-8381f679bd98))
     (instances
       (project "GrowMate"
-        (path "/216fdad8-4006-4d85-8157-93191bd90b6a/91ef9dad-ef34-5895-821c-1f97dfd4b1f0"
-          (reference "C1")
+        (path "/216fdad8-4006-4d85-8157-93191bd90b6a/a38d173b-c688-50e9-8ed6-b7feae1549e5"
+          (reference "C4")
           (unit 1)))))
   (symbol
     (lib_id "Device:C")
-    (at 53.34 83.82 0)
+    (at 106.68 83.82 0)
     (unit 1)
     (exclude_from_sim no)
     (in_bom yes)
     (on_board yes)
     (dnp no)
     (fields_autoplaced no)
-    (uuid dde8f0ff-a3d7-4b60-8c9c-72f10d262b4d)
-    (property "Reference" "C8"
-      (at 57.84 82.62 0)
+    (uuid 6053ca64-b8dd-47f1-82b8-3362e74cb3b5)
+    (property "Reference" "C5"
+      (at 111.18 82.62 0)
       (effects (font (size 1.27 1.27)) (justify left)))
-    (property "Value" "100n-50V"
-      (at 57.84 86.42 0)
+    (property "Value" "10u-6V3"
+      (at 111.18 86.42 0)
       (effects (font (size 1.27 1.27)) (justify left)))
     (property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
-      (at 53.34 83.82 0)
+      (at 106.68 83.82 0)
       (effects (font (size 1.27 1.27)) (hide yes)))
     (pin "1"
-      (uuid 53a9891e-e5d8-4e3d-b57e-191085dc96a9))
+      (uuid 408a1686-e186-4418-ad2b-0e078e084164))
     (pin "2"
-      (uuid f8ed2f9c-b209-4d4e-a65a-59bcc32ef1f4))
+      (uuid 41980ce5-02e6-49c4-afa2-f6df52c9bd19))
     (instances
       (project "GrowMate"
-        (path "/216fdad8-4006-4d85-8157-93191bd90b6a/91ef9dad-ef34-5895-821c-1f97dfd4b1f0"
-          (reference "C8")
+        (path "/216fdad8-4006-4d85-8157-93191bd90b6a/a38d173b-c688-50e9-8ed6-b7feae1549e5"
+          (reference "C5")
           (unit 1)))))
   (symbol
     (lib_id "power:+3V3")
-    (at 40.64 86.36 0)
+    (at 60.96 58.42 0)
     (unit 1)
     (exclude_from_sim no)
     (in_bom no)
     (on_board yes)
     (dnp no)
     (fields_autoplaced no)
-    (uuid 568f607b-ab43-4725-84c4-97c9a51e1c86)
+    (uuid 3b9e67f9-01a3-4ae7-a8a2-8721118998b6)
     (property "Reference" "#+3V301"
-      (at 40.64 86.36 0)
+      (at 60.96 58.42 0)
       (effects (font (size 1.27 1.27)) (hide yes)))
     (property "Value" "+3V3"
-      (at 40.64 86.36 0)
+      (at 60.96 58.42 0)
       (effects (font (size 1.27 1.27)) (hide yes)))
     (pin "1"
-      (uuid ce83ada8-3d91-4c73-a763-e08d6952f0ed))
+      (uuid 3833ddfb-0d1b-4aa3-bb64-2e364b3967a6))
     (instances
       (project "GrowMate"
-        (path "/216fdad8-4006-4d85-8157-93191bd90b6a/91ef9dad-ef34-5895-821c-1f97dfd4b1f0"
+        (path "/216fdad8-4006-4d85-8157-93191bd90b6a/a38d173b-c688-50e9-8ed6-b7feae1549e5"
           (reference "#+3V301")
           (unit 1)))))
   (wire
     (pts
-      (xy 40.64 76.2)
-      (xy 40.64 86.36)
+      (xy 60.96 58.42)
+      (xy 60.96 68.58)
     )
     (stroke (width 0.1524) (type default))
-    (uuid 149cec18-45c9-437e-82fd-6c564aeea063))
-  (wire
-    (pts
-      (xy 40.64 80.01)
-      (xy 53.34 80.01)
-    )
-    (stroke (width 0.1524) (type default))
-    (uuid d1ad54ec-83f9-413a-a133-41f992ef03d1))
-  (junction (at 40.64 80.01) (diameter 0) (color 0 0 0 0)
-    (uuid 540c2c7e-adad-4d09-862a-69cd062c1a3c))
+    (uuid 57bfaf9d-8823-4978-a6b5-03d3500ce8bd))
   (symbol
     (lib_id "power:PWR_FLAG")
-    (at 45.72 80.01 0)
+    (at 66.04 63.5 0)
     (unit 1)
     (exclude_from_sim no)
     (in_bom no)
     (on_board yes)
     (dnp no)
     (fields_autoplaced no)
-    (uuid 4a95b107-b6c0-4b83-b6b4-1ab82a414ca2)
+    (uuid cffd97df-8e0e-4ef0-a401-ba1a631ef3da)
     (property "Reference" "#PWR02"
-      (at 45.72 80.01 0)
+      (at 66.04 63.5 0)
       (effects (font (size 1.27 1.27)) (hide yes)))
     (pin "1"
-      (uuid b566dd49-3d55-4254-a850-1590e1d83f52))
+      (uuid 17c8cb66-715f-490f-8eff-7f3454800e76))
     (instances
       (project "GrowMate"
-        (path "/216fdad8-4006-4d85-8157-93191bd90b6a/91ef9dad-ef34-5895-821c-1f97dfd4b1f0"
+        (path "/216fdad8-4006-4d85-8157-93191bd90b6a/a38d173b-c688-50e9-8ed6-b7feae1549e5"
           (reference "#PWR02")
           (unit 1)))))
-  (junction (at 45.72 80.01) (diameter 0) (color 0 0 0 0)
-    (uuid 3ca28769-cf14-4595-ad33-c426ad70ac1a))
   (wire
     (pts
-      (xy 40.64 73.66)
-      (xy 64.77 73.66)
+      (xy 60.96 63.5)
+      (xy 66.04 63.5)
     )
     (stroke (width 0.1524) (type default))
-    (uuid b140acd3-7465-4229-9d4b-2e60fcc9bd64))
+    (uuid 180888c9-c92c-4f11-abca-2e7592197500))
+  (junction (at 60.96 63.5) (diameter 0) (color 0 0 0 0)
+    (uuid 777d252c-0313-4f73-8a91-e34a479b8887))
   (wire
     (pts
-      (xy 72.39 73.66)
-      (xy 80.01 73.66)
+      (xy 48.26 80.01)
+      (xy 48.26 68.58)
     )
     (stroke (width 0.1524) (type default))
-    (uuid e67d19ad-3167-42c5-a6af-8ae72d56a28d))
+    (uuid 532d23e0-0352-4cca-b132-beb6fec38b90))
   (wire
     (pts
-      (xy 80.01 73.66)
-      (xy 80.01 85.09)
+      (xy 48.26 68.58)
+      (xy 60.96 68.58)
     )
     (stroke (width 0.1524) (type default))
-    (uuid 975a65f1-9447-45af-a67f-e5ede31f8481))
+    (uuid 70f0e79f-8f14-4c69-9483-337d3bddd52a))
   (wire
     (pts
-      (xy 80.01 85.09)
-      (xy 88.9 85.09)
+      (xy 68.58 76.2)
+      (xy 83.82 76.2)
     )
     (stroke (width 0.1524) (type default))
-    (uuid 6d1e28bb-360f-4060-93f9-3c9699e24c85))
-  (wire
-    (pts
-      (xy 88.9 85.09)
-      (xy 101.6 85.09)
-    )
-    (stroke (width 0.1524) (type default))
-    (uuid 841732fd-4ff2-4ad7-81f1-4f4d62d4977d))
-  (global_label "LIGHT_AO"
+    (uuid ca258091-d9f4-4cb3-9157-0c5ad7ca89c8))
+  (global_label "DHT_DATA"
     (shape bidirectional)
-    (at 101.6 85.09 0)
+    (at 83.82 76.2 0)
     (effects (font (size 1.27 1.27)) (justify left))
-    (uuid 3927f33f-7a2b-4ca1-b9b0-a30a5acdc122))
+    (uuid 9e3b67fe-9200-4eff-87ab-f6be78ca3640))
   (wire
     (pts
-      (xy 40.64 71.12)
-      (xy 35.56 71.12)
+      (xy 81.28 67.31)
+      (xy 81.28 76.2)
     )
     (stroke (width 0.1524) (type default))
-    (uuid cd01cd26-812d-4b21-a202-6f3eb36451f5))
+    (uuid 39a9c206-2cf9-4d8b-b24c-3737c536ee3d))
+  (junction (at 81.28 76.2) (diameter 0) (color 0 0 0 0)
+    (uuid 952fef3a-4a94-429b-a33a-f390c48f6d57))
+  (symbol
+    (lib_id "power:+3V3")
+    (at 81.28 50.8 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom no)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced no)
+    (uuid 322567cd-4888-48f9-bcb3-efda81260f72)
+    (property "Reference" "#+3V303"
+      (at 81.28 50.8 0)
+      (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Value" "+3V3"
+      (at 81.28 50.8 0)
+      (effects (font (size 1.27 1.27)) (hide yes)))
+    (pin "1"
+      (uuid 4417786a-bd7d-48e1-829d-b41ebe551fc0))
+    (instances
+      (project "GrowMate"
+        (path "/216fdad8-4006-4d85-8157-93191bd90b6a/a38d173b-c688-50e9-8ed6-b7feae1549e5"
+          (reference "#+3V303")
+          (unit 1)))))
   (wire
     (pts
-      (xy 35.56 71.12)
-      (xy 35.56 96.52)
+      (xy 81.28 50.8)
+      (xy 81.28 59.69)
     )
     (stroke (width 0.1524) (type default))
-    (uuid 8568bb5b-f6dc-4e80-acdc-4399d54c92ae))
+    (uuid 5abbd95f-3fdc-4d31-9e46-b67ed22d9132))
   (wire
     (pts
-      (xy 35.56 96.52)
-      (xy 88.9 96.52)
+      (xy 60.96 83.82)
+      (xy 60.96 96.52)
     )
     (stroke (width 0.1524) (type default))
-    (uuid 74eceb01-a1fa-4591-bd67-44dd768e3ec4))
-  (junction (at 88.9 96.52) (diameter 0) (color 0 0 0 0)
-    (uuid 573af3ac-15ce-4b1f-8c07-02e636152170))
+    (uuid 3af2ab01-158f-4e66-b763-7d63b9504941))
   (wire
     (pts
-      (xy 88.9 92.71)
-      (xy 88.9 101.6)
+      (xy 48.26 87.63)
+      (xy 48.26 96.52)
     )
     (stroke (width 0.1524) (type default))
-    (uuid 382f98ec-93f7-41d7-9f23-a077c87da4b6))
+    (uuid ced1d960-0ea2-4779-9c1c-f0302d10c2e9))
+  (wire
+    (pts
+      (xy 48.26 96.52)
+      (xy 60.96 96.52)
+    )
+    (stroke (width 0.1524) (type default))
+    (uuid 7ea3cd46-789b-41e2-8fff-a41822d9e02b))
+  (junction (at 60.96 96.52) (diameter 0) (color 0 0 0 0)
+    (uuid 4f4e8975-05d8-4fa7-bb88-a52ef8a2cde6))
   (symbol
     (lib_id "power:GND")
-    (at 88.9 111.76 0)
+    (at 53.34 106.68 0)
     (unit 1)
     (exclude_from_sim no)
     (in_bom no)
     (on_board yes)
     (dnp no)
     (fields_autoplaced no)
-    (uuid c90d4a57-6fb3-4f00-a2ec-747104ec966e)
-    (property "Reference" "#GND03"
-      (at 88.9 111.76 0)
+    (uuid 0ed27564-aad9-4508-b9e2-b35ef44a2ac5)
+    (property "Reference" "#GND04"
+      (at 53.34 106.68 0)
       (effects (font (size 1.27 1.27)) (hide yes)))
     (property "Value" "GND"
-      (at 88.9 111.76 0)
+      (at 53.34 106.68 0)
       (effects (font (size 1.27 1.27)) (hide yes)))
     (pin "1"
-      (uuid 5dec8f9e-163e-4738-8577-874b8544a502))
+      (uuid 9966a56d-e024-4a05-8396-0eacb93a2d0b))
     (instances
       (project "GrowMate"
-        (path "/216fdad8-4006-4d85-8157-93191bd90b6a/91ef9dad-ef34-5895-821c-1f97dfd4b1f0"
-          (reference "#GND03")
+        (path "/216fdad8-4006-4d85-8157-93191bd90b6a/a38d173b-c688-50e9-8ed6-b7feae1549e5"
+          (reference "#GND04")
           (unit 1)))))
   (wire
     (pts
-      (xy 88.9 101.6)
-      (xy 88.9 111.76)
+      (xy 53.34 96.52)
+      (xy 53.34 106.68)
     )
     (stroke (width 0.1524) (type default))
-    (uuid 1abb815a-9ed4-4bef-b56d-3377935f54f1))
+    (uuid 7bab5296-e11d-418d-86cb-f83c431004f0))
+  (junction (at 53.34 96.52) (diameter 0) (color 0 0 0 0)
+    (uuid fda655b3-517c-40a4-af5c-62da04d82b8b))
   (symbol
     (lib_id "power:PWR_FLAG")
-    (at 93.98 96.52 0)
+    (at 60.96 96.52 0)
     (unit 1)
     (exclude_from_sim no)
     (in_bom no)
     (on_board yes)
     (dnp no)
     (fields_autoplaced no)
-    (uuid 844ac3e3-f197-41c6-9ea3-7de93862c403)
-    (property "Reference" "#PWR04"
-      (at 93.98 96.52 0)
+    (uuid a3e67a08-c946-4395-ba6f-fa986ced7e81)
+    (property "Reference" "#PWR05"
+      (at 60.96 96.52 0)
       (effects (font (size 1.27 1.27)) (hide yes)))
     (pin "1"
-      (uuid 8fea067a-04ed-424b-b287-bcf8dca4b2bd))
+      (uuid abb51cb7-b819-4c8c-ad3f-25dfedd80273))
     (instances
       (project "GrowMate"
-        (path "/216fdad8-4006-4d85-8157-93191bd90b6a/91ef9dad-ef34-5895-821c-1f97dfd4b1f0"
-          (reference "#PWR04")
+        (path "/216fdad8-4006-4d85-8157-93191bd90b6a/a38d173b-c688-50e9-8ed6-b7feae1549e5"
+          (reference "#PWR05")
           (unit 1)))))
   (wire
     (pts
-      (xy 88.9 96.52)
-      (xy 93.98 96.52)
+      (xy 106.68 80.01)
+      (xy 106.68 59.69)
     )
     (stroke (width 0.1524) (type default))
-    (uuid 01d20829-7f9b-4834-ab1c-fa0c6d039e93))
+    (uuid 81485264-4a2a-4b34-b727-be5c63d7a895))
   (wire
     (pts
-      (xy 53.34 87.63)
-      (xy 53.34 96.52)
+      (xy 106.68 59.69)
+      (xy 81.28 59.69)
     )
     (stroke (width 0.1524) (type default))
-    (uuid 70757bfd-024a-4886-9f4b-d07524bd6730))
-  (junction (at 53.34 96.52) (diameter 0) (color 0 0 0 0)
-    (uuid dd993619-59eb-417c-940e-6675141ba438))
-  (text "Light scale INVERTED (dark ~= full-scale). R6 tames"
+    (uuid 7398d210-175d-47cb-8163-27d6c9cde47f))
+  (wire
+    (pts
+      (xy 106.68 87.63)
+      (xy 106.68 101.6)
+    )
+    (stroke (width 0.1524) (type default))
+    (uuid 3935a926-ac8d-4d67-96d3-a91fade8fc1b))
+  (symbol
+    (lib_id "power:GND")
+    (at 106.68 111.76 0)
+    (unit 1)
+    (exclude_from_sim no)
+    (in_bom no)
+    (on_board yes)
+    (dnp no)
+    (fields_autoplaced no)
+    (uuid 46487acf-3f92-47ae-a25c-264f7e25dcd6)
+    (property "Reference" "#GND06"
+      (at 106.68 111.76 0)
+      (effects (font (size 1.27 1.27)) (hide yes)))
+    (property "Value" "GND"
+      (at 106.68 111.76 0)
+      (effects (font (size 1.27 1.27)) (hide yes)))
+    (pin "1"
+      (uuid 94c2cf1b-4c51-48b9-8b82-aadb129d688e))
+    (instances
+      (project "GrowMate"
+        (path "/216fdad8-4006-4d85-8157-93191bd90b6a/a38d173b-c688-50e9-8ed6-b7feae1549e5"
+          (reference "#GND06")
+          (unit 1)))))
+  (wire
+    (pts
+      (xy 106.68 101.6)
+      (xy 106.68 111.76)
+    )
+    (stroke (width 0.1524) (type default))
+    (uuid aee375fb-e0a2-4a24-ad07-cf00d25ce979))
+  (text "DHT polled with 2 attempts >= 2s apart; failures omit"
     (at 25.4 139.7 0)
     (effects (font (size 1.0 1.0)) (justify left))
-    (uuid 628c5ff5-29c8-42c5-8a1c-1db07a586277))
-  (text "GPIO14 boot-PWM contention. DARK vs BRIGHT ends server-side."
+    (uuid cd1b0045-1b28-4242-826e-88e5604e5b2b))
+  (text "temperature/air rather than blocking."
     (at 25.4 141.9 0)
     (effects (font (size 1.0 1.0)) (justify left))
-    (uuid cd918407-7658-4c52-a3e6-d55dc003ae75))
+    (uuid 9ab3a3b9-ff17-4973-a131-25470b089602))
 )

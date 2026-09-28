@@ -2,7 +2,7 @@
 <export version="D">
   <design>
     <source>/home/farel/projects/iot/esp32-growmate-pods/schematic/pods.py</source>
-    <date>09/28/2026 04:57 PM</date>
+    <date>09/28/2026 05:51 PM</date>
     <tool>SKiDL (2.3.0)</tool>
   </design>
   <components>
@@ -243,8 +243,8 @@
       <node ref="C2" pin="2"/>
     </net>
     <net code="1" name="CELL_NEG">
-      <node ref="BT1" pin="2"/>
       <node ref="CHG1" pin="2"/>
+      <node ref="BT1" pin="2"/>
     </net>
     <net code="2" name="+5V">
       <node ref="F3" pin="1"/>

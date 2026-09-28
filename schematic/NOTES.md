@@ -16,16 +16,18 @@
 
 ## Files
 - `pods.py` — SKiDL source of truth (netlist/BOM/ERC). Pin `skidl==2.3.0`.
-- `pods.net` — PCB import. `pods.xml` — BOM input. `bom.csv` — 41 items.
-- `pods.kicad_sch` + `pods_s_*.kicad_sch` — hierarchy (root + 11 sheets).
+- `mfg/pods.net` — PCB import. `mfg/pods.xml` — BOM input.
+  `mfg/bom.csv` — 41 items.
+- `sheets/pods.kicad_sch` + `sheets/pods_s_*.kicad_sch` — hierarchy
+  (root + 11 sheets).
 - `render.py` + `layout_pods.py` + `pinmap.json` — deterministic
   placement pass (no hand edits in KiCad without back-annotating here).
-- `pods.pdf` — plotted release drawing.
+- `mfg/pods.pdf` — plotted release drawing.
 
 ## Manual review checklist (signed per release)
 - [ ] No wire/wire, wire/text, or refdes/symbol overlaps on any sheet.
 - [ ] Power top, GND bottom, signal left->right on every sheet.
 - [ ] Every fuse/diode/MOSFET orientation matches 04-wiring (K faces
       the fused branch; low-side drains face loads).
-- [ ] `bom.csv` refs/values/footprints match the placed schematic.
+- [ ] `mfg/bom.csv` refs/values/footprints match the placed schematic.
 - [ ] ERC log matches ERC-REVIEW.md waiver classes only.

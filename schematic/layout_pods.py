@@ -32,7 +32,7 @@ def stub_gnd(sh, x, y_pin):
 # ================================================================ charge
 # CHG1 pins (rot 0, left side x=71.12): 1 B+ (78.74), 2 B- (76.2),
 # 3 OUT+ (73.66), 4 OUT- (71.12). BT1 rot 180 at x=35.56, pins right.
-sh = Sheet("pods_s_charge1.kicad_sch", PM)
+sh = Sheet("sheets/pods_s_charge1.kicad_sch", PM)
 sh.place("CHG1", "Connector_Generic:Conn_01x04", "TP4056-TypeC-DW01A", H4,
          76.2, 76.2, rot=0)
 sh.place("BT1", "Connector_Generic:Conn_01x02", "BLP673-4.2Ah", H2,
@@ -71,12 +71,12 @@ sh.glabel("SYS_PACK", 111.76, o[1])
 sh.note(["CHG1: 5V enters via on-module USB-C.",
          "Load hangs on OUT+-, never B+- (02-power idle-charge rule)."],
         25.4, 139.7)
-sh.write("pods_s_charge1.kicad_sch")
+sh.write("sheets/pods_s_charge1.kicad_sch")
 print("s_charge written")
 
 # ============================================================= feed fuse
 # F1 rot 0: pin1 top (72.39), pin2 bottom (80.01). No rails on sheet.
-sh = Sheet("pods_s_feed_fuse1.kicad_sch", PM)
+sh = Sheet("sheets/pods_s_feed_fuse1.kicad_sch", PM)
 sh.place("F1", "Device:Polyfuse", "Polyfuse-5A-hold",
          "Fuse:Fuse_2920_7451Metric", 101.6, 76.2, rot=0)
 sh.emit_symbol("F1", lab="side")
@@ -88,13 +88,13 @@ sh.wire([b, (b[0], 93.98), (119.38, 93.98)])
 sh.glabel("BST_IN", 119.38, 93.98)
 sh.note(["F1 5A hold: interlocked max ~5.5A in at 3.0V pack;",
          "trips on dead short only."], 25.4, 139.7)
-sh.write("pods_s_feed_fuse1.kicad_sch")
+sh.write("sheets/pods_s_feed_fuse1.kicad_sch")
 print("s_feed_fuse written")
 
 # ================================================================== boost
 # BST1 rot 0 pins left x=55.88: 1 IN+ (73.66), 2 IN- (76.2),
 # 3 OUT+ (78.74), 4 OUT- (81.28).
-sh = Sheet("pods_s_boost1.kicad_sch", PM)
+sh = Sheet("sheets/pods_s_boost1.kicad_sch", PM)
 sh.place("BST1", "Connector_Generic:Conn_01x04", "XL6009-5V-4A", H4,
          60.96, 76.2, rot=0)
 sh.place("C2", "Device:C", "1000u-10V",
@@ -137,12 +137,12 @@ sh.wire([sh.pin_xy("C3", 2), (c3t[0], 96.52)])
 sh.note(["BST1 XL6009 4A (heatsink on): pump XOR LED server-paced,",
          "2.8A worst allowed state. F1 5A rides 30s stall transients."],
         25.4, 139.7)
-sh.write("pods_s_boost1.kicad_sch")
+sh.write("sheets/pods_s_boost1.kicad_sch")
 print("s_boost written")
 
 # =============================================================== branches
 # F2/F3 rot 0: pin1 top (72.39), pin2 bottom (80.01).
-sh = Sheet("pods_s_branches1.kicad_sch", PM)
+sh = Sheet("sheets/pods_s_branches1.kicad_sch", PM)
 sh.place("F2", "Device:Polyfuse", "Polyfuse-1.5A-hold",
          "Fuse:Fuse_1812_4532Metric", 88.9, 76.2, rot=0)
 sh.place("F3", "Device:Polyfuse", "Polyfuse-2.5A-hold",
@@ -166,7 +166,7 @@ sh.wire([f3b, (f3b[0], 93.98), (154.94, 93.98)])
 sh.glabel("LED_5V", 154.94, 93.98)
 sh.note(["F2 1.5A: pump 1A run / 2A stall. F3 2.5A: 2A strip x1.25."],
         25.4, 139.7)
-sh.write("pods_s_branches1.kicad_sch")
+sh.write("sheets/pods_s_branches1.kicad_sch")
 print("s_branches written")
 
 # ==================================================================== mcu
@@ -176,7 +176,7 @@ print("s_branches written")
 # U1B pins left x=129.54: 1:PUMP(68.58) 2:LIGHT(71.12) 3:NC(73.66)
 # 4:SOIL(76.2) 5:LIGHT_AO(78.74) 6:DHT(81.28) 7:WATER(83.82) 8:+5V(86.36).
 # J4 rot180 pins right x=180.34: 1:RX(78.74) 2:TX(76.2) 3:GND(73.66) 4:+5V(71.12).
-sh = Sheet("pods_s_mcu1.kicad_sch", PM)
+sh = Sheet("sheets/pods_s_mcu1.kicad_sch", PM)
 sh.place("U1A", "Connector_Generic:Conn_01x08", "ESP32-CAM-ODD", H8,
          48.26, 76.2, rot=0)
 sh.place("U1B", "Connector_Generic:Conn_01x08", "ESP32-CAM-EVEN", H8,
@@ -256,12 +256,12 @@ sh.noconn(nc[0] + 5.08, nc[1])
 sh.note(["U1-6 GPIO12 stays unconnected (MTDI strapping LOW).",
          "J4: adapter TX->RX, RX<-TX. SW1 = download mode."],
         25.4, 139.7)
-sh.write("pods_s_mcu1.kicad_sch")
+sh.write("sheets/pods_s_mcu1.kicad_sch")
 print("s_mcu written")
 
 # ================================================================== water
 # J1 rot 180 at x=35.56, pins right: 1 VCC(76.2) 2 AO(73.66) 3 GND(71.12).
-sh = Sheet("pods_s_water1.kicad_sch", PM)
+sh = Sheet("sheets/pods_s_water1.kicad_sch", PM)
 sh.place("J1", "Connector_Generic:Conn_01x03", "WATER-1x03", H3,
          35.56, 73.66, rot=180)
 sh.place("R7", "Device:R", "330",
@@ -318,13 +318,13 @@ sh.note(["R7 330R: tank-probe VCC series (dead-short -> 10mA).",
          "R9 10K: open probe reads ~0 = EMPTY. Continuous-DC probe",
          "is a consumable (rinses + spares, see 02-power)."],
         25.4, 139.7)
-sh.write("pods_s_water1.kicad_sch")
+sh.write("sheets/pods_s_water1.kicad_sch")
 print("s_water written")
 
 # ================================================================== soil
 # J2 rot180 pins right x=40.64: 1:VCC BOTTOM (76.20), 2:AO (73.66),
 # 3:GND TOP (71.12). Y-flip verified: rot180 (x,y)->(-x,+y).
-sh = Sheet("pods_s_soil1.kicad_sch", PM)
+sh = Sheet("sheets/pods_s_soil1.kicad_sch", PM)
 sh.place("J2", "Connector_Generic:Conn_01x03", "SOIL-1x03", H3,
          35.56, 73.66, rot=180)
 sh.place("R10", "Device:R", "1K",
@@ -361,12 +361,12 @@ sh.wire([(53.34, 87.63), (53.34, 96.52)])
 sh.junction(53.34, 96.52)
 sh.note(["Soil: DRY (air) vs WET (saturated) raw ends, server-side."],
         25.4, 139.7)
-sh.write("pods_s_soil1.kicad_sch")
+sh.write("sheets/pods_s_soil1.kicad_sch")
 print("s_soil written")
 
 # ============================================================= lightsens
 # J3 rot180 pins right x=40.64: 1:+3V3 (76.20), 2:AO (73.66), 3:GND (71.12).
-sh = Sheet("pods_s_lightsens1.kicad_sch", PM)
+sh = Sheet("sheets/pods_s_lightsens1.kicad_sch", PM)
 sh.place("J3", "Connector_Generic:Conn_01x03", "LIGHT-SENS-1x03", H3,
          35.56, 73.66, rot=180)
 sh.place("R6", "Device:R", "1K",
@@ -400,13 +400,13 @@ sh.junction(53.34, 96.52)
 sh.note(["Light scale INVERTED (dark ~= full-scale). R6 tames",
          "GPIO14 boot-PWM contention. DARK vs BRIGHT ends server-side."],
         25.4, 139.7)
-sh.write("pods_s_lightsens1.kicad_sch")
+sh.write("sheets/pods_s_lightsens1.kicad_sch")
 print("s_lightsens written")
 
 # ================================================================== dht
 # U2 DHT11-symbol rot0 at (60.96,76.2): VDD top (60.96,68.58),
 # DATA right (68.58,76.2), GND bottom (60.96,83.82). Pin 3 NC open.
-sh = Sheet("pods_s_dht1.kicad_sch", PM)
+sh = Sheet("sheets/pods_s_dht1.kicad_sch", PM)
 sh.place("U2", "Sensor:DHT11", "DHT22",
          "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Vertical",
          60.96, 76.2, rot=0)
@@ -451,7 +451,7 @@ sh.wire([(106.68, 101.6), (106.68, 111.76)])
 sh.note(["DHT polled with 2 attempts >= 2s apart; failures omit",
          "temperature/air rather than blocking."],
         25.4, 139.7)
-sh.write("pods_s_dht1.kicad_sch")
+sh.write("sheets/pods_s_dht1.kicad_sch")
 print("s_dht written")
 
 # ================================================================== pump
@@ -461,7 +461,7 @@ print("s_dht written")
 # M1 rot0 at (129.54,73.66): pins (124.46,73.66)=+5V,(124.46,76.2)=LO.
 # D1 rot270 at (139.7,71.12): K top (139.7,67.31), A (139.7,74.93).
 # C11 rot0 at (154.94,71.12): pins (154.94,67.31),(154.94,74.93).
-sh = Sheet("pods_s_pump1.kicad_sch", PM)
+sh = Sheet("sheets/pods_s_pump1.kicad_sch", PM)
 sh.place("R2", "Device:R", "220",
          "Resistor_SMD:R_0603_1608Metric", 73.66, 73.66, rot=90)
 sh.place("R3", "Device:R", "10K",
@@ -515,13 +515,13 @@ sh.junction(139.7, 76.2)
 sh.note(["Pump XOR LED interlock (server-paced): combined 3.8A run",
          "browns out any single boost. D1 K faces the fused branch."],
         25.4, 139.7)
-sh.write("pods_s_pump1.kicad_sch")
+sh.write("sheets/pods_s_pump1.kicad_sch")
 print("s_pump written")
 
 # ================================================================== led
 # R4 (73.66,73.66) rot90; R5 (86.36,88.9) rot0; Q2 (96.52,73.66) rot0;
 # D2 strip rot0 at (129.54,73.66): A(124.46,73.66)=LED_5V, K(124.46,76.2).
-sh = Sheet("pods_s_led1.kicad_sch", PM)
+sh = Sheet("sheets/pods_s_led1.kicad_sch", PM)
 sh.place("R4", "Device:R", "220",
          "Resistor_SMD:R_0603_1608Metric", 73.66, 73.66, rot=90)
 sh.place("R5", "Device:R", "10K",
@@ -559,5 +559,5 @@ sh.wire([(99.06, 68.58), (114.3, 68.58), (114.3, 76.2), (124.46, 76.2)])
 sh.note(["20cm 2A strip on F3 2.5A branch. 24h light failsafe",
          "refreshes on every server ON (see 05-firmware)."],
         25.4, 139.7)
-sh.write("pods_s_led1.kicad_sch")
+sh.write("sheets/pods_s_led1.kicad_sch")
 print("s_led written")

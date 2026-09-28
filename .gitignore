@@ -31,10 +31,8 @@ __pycache__/
 
 # Test outputs
 /tmp/
-# Scratch inspection workdir + intermediate per-sheet ERC reports
-# (the record lives in ERC-REVIEW.md, not in these files).
 schematic/insp/
-schematic/pods_s_*-erc.rpt
+schematic/sheets/*-erc.rpt
 
 # ESP-IDF managed deps (re-downloaded by the component manager on build)
 managed_components/
