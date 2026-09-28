@@ -31,12 +31,8 @@ __pycache__/
 
 # Test outputs
 /tmp/
-*.jpg
-*.jpeg
-*.png
-*.svg
-# Inspection renders are local-only (regenerate via kicad-cli when
-# inspecting); the versioned deliverables are sources + PDFs.
+# Scratch inspection workdir + intermediate per-sheet ERC reports
+# (the record lives in ERC-REVIEW.md, not in these files).
 schematic/insp/
 schematic/pods_s_*-erc.rpt
 
