@@ -1,7 +1,7 @@
 # Power chain
 
 ```
-USB-C 5V ──┬──► MT3608 boost ──► +5V rail ──► ESP 5V, M1 pump, D2 LED strip
+USB-C 5V ──┬──► XL6009 boost ──► +5V rail ──► ESP 5V, M1 pump, D2 LED strip
            │
 BLP673 3.85V 4230mAh ──► TP4056 (Type-C, DW01A) ── charge path ──► pack
            │
@@ -15,13 +15,17 @@ BLP673 3.85V 4230mAh ──► TP4056 (Type-C, DW01A) ── charge path ──�
   verify the load hangs on OUT± (never B±, or DW01A discharge
   protection is bypassed too). Rev2: real power-path (MCP73871 or
   P-FET load-share).
-- Boost: MT3608 5 V / 2 A setting from pack voltage (3.0–4.2 V).
+- Boost: XL6009 5 V / 4 A from pack voltage (3.0–4.2 V), heatsink
+  fitted for 3 A+ sustained (LED 24 h failsafe).
   Budget (measured loads): ESP peak ~800 mA (WiFi + camera) + pump
   1 A run / 2 A stall + LED strip 20 cm 2 A. Pump and LED are NEVER
   on together (server-paced interlock — combined 3.8 A run / 4.8 A
-  stall exceeds the 2 A setting; rev2 upsize to >= 5 A boost).
-  Interlocked worst case (ESP + LED) is 2.8 A @ 5 V ≈ 5.5 A in at a
-  3.0 V pack: F1 is 5 A hold (2920) and the pack→boost run is 1.5 mm².
+  stall browns out any single boost; the firmware obeys whatever the
+  server sends, so the API example shows pump alone).
+  Interlocked worst case (ESP + LED) is 2.8 A @ 5 V ≈ 5.3 A in at a
+  3.0 V pack (sustained worst 2.3 A out ≈ 4.4 A in — inside F1 5 A hold;
+  30 s pump stall transient rides the slow PTC): F1 is 5 A hold (2920)
+  and the pack→boost run is 1.5 mm².
 - Rails: sensors from module 3V3 **only** (AMS1117). Never 5 V into a GPIO
   or a 3V3 sensor header. Pump and LED strip on +5V only.
 - Decoupling: C2 1000 µ bulk + C3 100 n ceramic at the module 5V entry;

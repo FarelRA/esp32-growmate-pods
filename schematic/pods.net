@@ -2,7 +2,7 @@
   (version "D")
   (design
     (source "pods.py")
-    (date "09/28/2026 01:01 PM")
+    (date "09/28/2026 04:57 PM")
     (tool "SKiDL (2.3.0)")
     (sheet
       (number 1)
@@ -451,7 +451,7 @@
   (components
     (comp
       (ref "BST1")
-      (value "MT3608-5V-2A")
+      (value "XL6009-5V-4A")
       (description "Generic connector, single row, 01x04, script generated (kicad-library-utils/schlib/autogen/connector/)")
       (footprint "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Vertical")
       (fields
@@ -462,9 +462,9 @@
         (field
           (name "Datasheet"))
         (field
-          (name "SKiDL Tag") "_jfgfPwImh")
+          (name "SKiDL Tag") "8NhehLu96w")
         (field
-          (name "SKiDL Line") "pods.py:120"))
+          (name "SKiDL Line") "pods.py:124"))
       (libsource
         (lib "Connector_Generic")
         (part "Conn_01x04"))
@@ -472,7 +472,7 @@
         (names "/s_boost1/")
         (tstamps "/02de597c-7a48-5d4b-8431-da7278adccd1/"))
       (component_classes)
-      (tstamps "587edbbd-a225-5894-aeb7-e837330a754f"))
+      (tstamps "5646e2c5-ab39-585d-88d8-5d9e04b211a5"))
     (comp
       (ref "BT1")
       (value "BLP673-4.2Ah")
@@ -486,9 +486,9 @@
         (field
           (name "Datasheet"))
         (field
-          (name "SKiDL Tag") "erWbT5ZH9c")
+          (name "SKiDL Tag") "LEEC19ER23")
         (field
-          (name "SKiDL Line") "pods.py:101"))
+          (name "SKiDL Line") "pods.py:105"))
       (libsource
         (lib "Connector_Generic")
         (part "Conn_01x02"))
@@ -496,7 +496,7 @@
         (names "/s_charge1/")
         (tstamps "/43380034-0dfa-50f8-bd3a-d134ca89f3bb/"))
       (component_classes)
-      (tstamps "cc7b3f74-5b85-5397-9f89-578d9e03772b"))
+      (tstamps "4dbc4205-99d2-5672-b698-68907982a405"))
     (comp
       (ref "C1")
       (value "100n-50V")
@@ -510,9 +510,9 @@
         (field
           (name "Datasheet"))
         (field
-          (name "SKiDL Tag") "e7AIBHvDQ_")
+          (name "SKiDL Tag") "gIMqeF5sJc")
         (field
-          (name "SKiDL Line") "pods.py:82"))
+          (name "SKiDL Line") "pods.py:86"))
       (libsource
         (lib "Device")
         (part "C"))
@@ -520,7 +520,7 @@
         (names "/s_lightsens1/")
         (tstamps "/ca60fd78-38b3-5a15-a43c-62e1458387a2/"))
       (component_classes)
-      (tstamps "3f1e7b25-fd28-5822-a415-d5c6a835776c"))
+      (tstamps "4e79a764-0a2c-5887-aa77-56372a53fad8"))
     (comp
       (ref "C10")
       (value "100n-50V")
@@ -534,9 +534,9 @@
         (field
           (name "Datasheet"))
         (field
-          (name "SKiDL Tag") "YAi8seOUfS")
+          (name "SKiDL Tag") "jkZzI3agBO")
         (field
-          (name "SKiDL Line") "pods.py:82"))
+          (name "SKiDL Line") "pods.py:86"))
       (libsource
         (lib "Device")
         (part "C"))
@@ -544,7 +544,7 @@
         (names "/s_water1/")
         (tstamps "/c67acc7b-aec9-5fdc-a00e-ecb48894a4ad/"))
       (component_classes)
-      (tstamps "8c656170-a89e-513c-bb62-d38138d3633d"))
+      (tstamps "bd426082-a450-5fbd-8174-221ae1ed2a89"))
     (comp
       (ref "C11")
       (value "100n-50V")
@@ -558,9 +558,9 @@
         (field
           (name "Datasheet"))
         (field
-          (name "SKiDL Tag") "bH6ftoGJ99")
+          (name "SKiDL Tag") "bPKrmZgUOq")
         (field
-          (name "SKiDL Line") "pods.py:82"))
+          (name "SKiDL Line") "pods.py:86"))
       (libsource
         (lib "Device")
         (part "C"))
@@ -568,7 +568,7 @@
         (names "/s_pump1/")
         (tstamps "/df3afffd-21c6-5bad-8181-5667fb3b706e/"))
       (component_classes)
-      (tstamps "7b516648-daca-5f5c-8e7e-ceff8affa94c"))
+      (tstamps "ede7d21c-933c-5884-b348-331b3634bfc4"))
     (comp
       (ref "C2")
       (value "1000u-10V")
@@ -582,9 +582,9 @@
         (field
           (name "Datasheet"))
         (field
-          (name "SKiDL Tag") "fLxA8rMBVZ")
+          (name "SKiDL Tag") "CweeywgvTW")
         (field
-          (name "SKiDL Line") "pods.py:128"))
+          (name "SKiDL Line") "pods.py:132"))
       (libsource
         (lib "Device")
         (part "C"))
@@ -592,7 +592,7 @@
         (names "/s_boost1/")
         (tstamps "/02de597c-7a48-5d4b-8431-da7278adccd1/"))
       (component_classes)
-      (tstamps "b70b0a4d-d0f1-5ffc-9b97-bfc6e413c906"))
+      (tstamps "c06a55a1-6558-5443-8ff3-9793f81bfbbf"))
     (comp
       (ref "C3")
       (value "100n-50V")
@@ -606,9 +606,9 @@
         (field
           (name "Datasheet"))
         (field
-          (name "SKiDL Tag") "scXdGukiVe")
+          (name "SKiDL Tag") "VK56TuT1br")
         (field
-          (name "SKiDL Line") "pods.py:82"))
+          (name "SKiDL Line") "pods.py:86"))
       (libsource
         (lib "Device")
         (part "C"))
@@ -616,7 +616,7 @@
         (names "/s_boost1/")
         (tstamps "/02de597c-7a48-5d4b-8431-da7278adccd1/"))
       (component_classes)
-      (tstamps "c61cfdd8-5456-5cca-9794-1330210c56e7"))
+      (tstamps "e885c8d6-962e-54e7-b6db-c51bac0c38da"))
     (comp
       (ref "C4")
       (value "100n-50V")
@@ -630,9 +630,9 @@
         (field
           (name "Datasheet"))
         (field
-          (name "SKiDL Tag") "bBfGIXLTrk")
+          (name "SKiDL Tag") "AgM64FikXA")
         (field
-          (name "SKiDL Line") "pods.py:82"))
+          (name "SKiDL Line") "pods.py:86"))
       (libsource
         (lib "Device")
         (part "C"))
@@ -640,7 +640,7 @@
         (names "/s_dht1/")
         (tstamps "/054554dd-eb36-51d4-92d9-97ed0e0b2a6f/"))
       (component_classes)
-      (tstamps "fa97a3aa-bb88-57f9-a59f-60e08db359b4"))
+      (tstamps "df59c8c6-e6f1-531f-b979-eb63e364d3b5"))
     (comp
       (ref "C5")
       (value "10u-6V3")
@@ -654,9 +654,9 @@
         (field
           (name "Datasheet"))
         (field
-          (name "SKiDL Tag") "mHCWzFmw5y")
+          (name "SKiDL Tag") "aD5fFjI29_")
         (field
-          (name "SKiDL Line") "pods.py:82"))
+          (name "SKiDL Line") "pods.py:86"))
       (libsource
         (lib "Device")
         (part "C"))
@@ -664,7 +664,7 @@
         (names "/s_dht1/")
         (tstamps "/054554dd-eb36-51d4-92d9-97ed0e0b2a6f/"))
       (component_classes)
-      (tstamps "4fd366f8-ac6f-5080-a221-847514a78c17"))
+      (tstamps "5d084cd4-a208-5696-a207-c2db69c87383"))
     (comp
       (ref "C6")
       (value "100n-50V")
@@ -678,9 +678,9 @@
         (field
           (name "Datasheet"))
         (field
-          (name "SKiDL Tag") "Ihz4qcWmi_")
+          (name "SKiDL Tag") "GG82ezotZp")
         (field
-          (name "SKiDL Line") "pods.py:82"))
+          (name "SKiDL Line") "pods.py:86"))
       (libsource
         (lib "Device")
         (part "C"))
@@ -688,7 +688,7 @@
         (names "/s_water1/")
         (tstamps "/c67acc7b-aec9-5fdc-a00e-ecb48894a4ad/"))
       (component_classes)
-      (tstamps "469685c6-ee55-5469-8e2c-d90e7850940a"))
+      (tstamps "4acbcf14-5b7b-531e-aca3-73fc8e093ee3"))
     (comp
       (ref "C7")
       (value "100n-50V")
@@ -702,9 +702,9 @@
         (field
           (name "Datasheet"))
         (field
-          (name "SKiDL Tag") "UbJa0DQpv3")
+          (name "SKiDL Tag") "QWmeTAwY2I")
         (field
-          (name "SKiDL Line") "pods.py:82"))
+          (name "SKiDL Line") "pods.py:86"))
       (libsource
         (lib "Device")
         (part "C"))
@@ -712,7 +712,7 @@
         (names "/s_soil1/")
         (tstamps "/c54bb80f-64c4-5c92-8d75-6a5ca1406591/"))
       (component_classes)
-      (tstamps "adb57533-316d-5fc3-adf3-10b07898b54e"))
+      (tstamps "37f73ab1-bf72-50e9-b1ee-99acd1eae012"))
     (comp
       (ref "C8")
       (value "100n-50V")
@@ -726,9 +726,9 @@
         (field
           (name "Datasheet"))
         (field
-          (name "SKiDL Tag") "Bi2kDmSjcc")
+          (name "SKiDL Tag") "cfKd3Cc_l1")
         (field
-          (name "SKiDL Line") "pods.py:82"))
+          (name "SKiDL Line") "pods.py:86"))
       (libsource
         (lib "Device")
         (part "C"))
@@ -736,7 +736,7 @@
         (names "/s_lightsens1/")
         (tstamps "/ca60fd78-38b3-5a15-a43c-62e1458387a2/"))
       (component_classes)
-      (tstamps "06df9e01-4cf9-5983-a8f6-80e1f4df783d"))
+      (tstamps "4c5d74a6-650a-5db1-a031-0f354c7f356f"))
     (comp
       (ref "C9")
       (value "100n-50V")
@@ -750,9 +750,9 @@
         (field
           (name "Datasheet"))
         (field
-          (name "SKiDL Tag") "2B4tRi_Y5T")
+          (name "SKiDL Tag") "SB35dP2GTq")
         (field
-          (name "SKiDL Line") "pods.py:82"))
+          (name "SKiDL Line") "pods.py:86"))
       (libsource
         (lib "Device")
         (part "C"))
@@ -760,7 +760,7 @@
         (names "/s_soil1/")
         (tstamps "/c54bb80f-64c4-5c92-8d75-6a5ca1406591/"))
       (component_classes)
-      (tstamps "d325a3eb-a6c1-5aa2-8548-505151644e7b"))
+      (tstamps "c6ad8bb2-31aa-5146-8928-d79ce7c73efb"))
     (comp
       (ref "CHG1")
       (value "TP4056-TypeC-DW01A")
@@ -774,9 +774,9 @@
         (field
           (name "Datasheet"))
         (field
-          (name "SKiDL Tag") "m_Y01F1Hrt")
+          (name "SKiDL Tag") "8WM5UHrGeM")
         (field
-          (name "SKiDL Line") "pods.py:93"))
+          (name "SKiDL Line") "pods.py:97"))
       (libsource
         (lib "Connector_Generic")
         (part "Conn_01x04"))
@@ -784,7 +784,7 @@
         (names "/s_charge1/")
         (tstamps "/43380034-0dfa-50f8-bd3a-d134ca89f3bb/"))
       (component_classes)
-      (tstamps "1ff0a51d-0e8d-5372-91bc-80ad377a8a31"))
+      (tstamps "68310052-72c4-57f1-a13a-88e62fdeee0a"))
     (comp
       (ref "D1")
       (value "1N5822")
@@ -798,9 +798,9 @@
         (field
           (name "Datasheet") "http://www.vishay.com/docs/88525/1n5817.pdf")
         (field
-          (name "SKiDL Tag") "MXVXvrvJml")
+          (name "SKiDL Tag") "RFYjmNYcdp")
         (field
-          (name "SKiDL Line") "pods.py:299"))
+          (name "SKiDL Line") "pods.py:303"))
       (libsource
         (lib "Diode")
         (part "1N5819"))
@@ -808,7 +808,7 @@
         (names "/s_pump1/")
         (tstamps "/df3afffd-21c6-5bad-8181-5667fb3b706e/"))
       (component_classes)
-      (tstamps "6cce4437-084f-5428-8561-9238ec0a9574"))
+      (tstamps "22f0b73a-3506-5b6a-8ceb-0661dcc46ff2"))
     (comp
       (ref "D2")
       (value "GROW-LED-5V-20CM-2A")
@@ -822,9 +822,9 @@
         (field
           (name "Datasheet"))
         (field
-          (name "SKiDL Tag") "ITqF1qsbip")
+          (name "SKiDL Tag") "M0DB6OYhcy")
         (field
-          (name "SKiDL Line") "pods.py:327"))
+          (name "SKiDL Line") "pods.py:331"))
       (libsource
         (lib "Connector_Generic")
         (part "Conn_01x02"))
@@ -832,7 +832,7 @@
         (names "/s_led1/")
         (tstamps "/20a38695-d6e1-5c26-8823-1f90910af770/"))
       (component_classes)
-      (tstamps "2230e833-d217-5a4e-9a78-15407ab0dc8e"))
+      (tstamps "7c5847b6-86a1-5262-8d40-44e4552206cc"))
     (comp
       (ref "F1")
       (value "Polyfuse-5A-hold")
@@ -846,9 +846,9 @@
         (field
           (name "Datasheet"))
         (field
-          (name "SKiDL Tag") "MSEIDJIfwt")
+          (name "SKiDL Tag") "HwUA3Ce0vU")
         (field
-          (name "SKiDL Line") "pods.py:110"))
+          (name "SKiDL Line") "pods.py:114"))
       (libsource
         (lib "Device")
         (part "Polyfuse"))
@@ -856,7 +856,7 @@
         (names "/s_feed_fuse1/")
         (tstamps "/611b5bda-c9a3-5ced-b8aa-c25b5f47ac2b/"))
       (component_classes)
-      (tstamps "6b23616a-c6ae-5d87-b007-c18d041ee82a"))
+      (tstamps "73b182fc-f376-52dd-9243-73583a2ee929"))
     (comp
       (ref "F2")
       (value "Polyfuse-1.5A-hold")
@@ -870,9 +870,9 @@
         (field
           (name "Datasheet"))
         (field
-          (name "SKiDL Tag") "EBnSlWzlNk")
+          (name "SKiDL Tag") "oAUxr80aQf")
         (field
-          (name "SKiDL Line") "pods.py:141"))
+          (name "SKiDL Line") "pods.py:145"))
       (libsource
         (lib "Device")
         (part "Polyfuse"))
@@ -880,7 +880,7 @@
         (names "/s_branches1/")
         (tstamps "/52fd67fb-4f05-592e-b2ad-f32cd65b79e2/"))
       (component_classes)
-      (tstamps "e70c6346-7ef5-5f4b-a15e-b387d62dc9ca"))
+      (tstamps "8ec67729-3554-5cab-84be-a30f2140475c"))
     (comp
       (ref "F3")
       (value "Polyfuse-2.5A-hold")
@@ -894,9 +894,9 @@
         (field
           (name "Datasheet"))
         (field
-          (name "SKiDL Tag") "YyA1DZNL3A")
+          (name "SKiDL Tag") "7zX8gKy0M0")
         (field
-          (name "SKiDL Line") "pods.py:147"))
+          (name "SKiDL Line") "pods.py:151"))
       (libsource
         (lib "Device")
         (part "Polyfuse"))
@@ -904,7 +904,7 @@
         (names "/s_branches1/")
         (tstamps "/52fd67fb-4f05-592e-b2ad-f32cd65b79e2/"))
       (component_classes)
-      (tstamps "cdb81f60-b995-594a-b215-1b1f3b21e775"))
+      (tstamps "ae588557-7856-53df-bec0-6a5890034858"))
     (comp
       (ref "J1")
       (value "WATER-1x03")
@@ -918,9 +918,9 @@
         (field
           (name "Datasheet"))
         (field
-          (name "SKiDL Tag") "GuRJiYq_Fk")
+          (name "SKiDL Tag") "UsXVbEl5y8")
         (field
-          (name "SKiDL Line") "pods.py:201"))
+          (name "SKiDL Line") "pods.py:205"))
       (libsource
         (lib "Connector_Generic")
         (part "Conn_01x03"))
@@ -928,7 +928,7 @@
         (names "/s_water1/")
         (tstamps "/c67acc7b-aec9-5fdc-a00e-ecb48894a4ad/"))
       (component_classes)
-      (tstamps "5591f863-caf9-5e9e-ba68-ea84f5f7829e"))
+      (tstamps "90fc3bb5-7c52-5d78-8ee8-beb870bd8660"))
     (comp
       (ref "J2")
       (value "SOIL-1x03")
@@ -942,9 +942,9 @@
         (field
           (name "Datasheet"))
         (field
-          (name "SKiDL Tag") "ZfGcl3NEf0")
+          (name "SKiDL Tag") "IyrxH9yi7y")
         (field
-          (name "SKiDL Line") "pods.py:225"))
+          (name "SKiDL Line") "pods.py:229"))
       (libsource
         (lib "Connector_Generic")
         (part "Conn_01x03"))
@@ -952,7 +952,7 @@
         (names "/s_soil1/")
         (tstamps "/c54bb80f-64c4-5c92-8d75-6a5ca1406591/"))
       (component_classes)
-      (tstamps "c1dc685f-a05b-513d-b687-175943471f20"))
+      (tstamps "6e009541-b460-5fc0-805b-d41d61c86670"))
     (comp
       (ref "J3")
       (value "LIGHT-SENS-1x03")
@@ -966,9 +966,9 @@
         (field
           (name "Datasheet"))
         (field
-          (name "SKiDL Tag") "ZsHQEhLRCC")
+          (name "SKiDL Tag") "Wd0AdxjvrS")
         (field
-          (name "SKiDL Line") "pods.py:243"))
+          (name "SKiDL Line") "pods.py:247"))
       (libsource
         (lib "Connector_Generic")
         (part "Conn_01x03"))
@@ -976,7 +976,7 @@
         (names "/s_lightsens1/")
         (tstamps "/ca60fd78-38b3-5a15-a43c-62e1458387a2/"))
       (component_classes)
-      (tstamps "1623d93a-1c00-5ffe-8a14-f7feef58fc89"))
+      (tstamps "2dc4463c-907f-52be-ba9c-c8e9a43a4f0d"))
     (comp
       (ref "J4")
       (value "PROG-1x04")
@@ -990,9 +990,9 @@
         (field
           (name "Datasheet"))
         (field
-          (name "SKiDL Tag") "hTjHJ0J9Vy")
+          (name "SKiDL Tag") "n1rrCH43wD")
         (field
-          (name "SKiDL Line") "pods.py:190"))
+          (name "SKiDL Line") "pods.py:194"))
       (libsource
         (lib "Connector_Generic")
         (part "Conn_01x04"))
@@ -1000,7 +1000,7 @@
         (names "/s_mcu1/")
         (tstamps "/1c65058c-824d-514b-b394-b08f1d4e0c10/"))
       (component_classes)
-      (tstamps "36dc80da-37b5-5fb0-806f-5ddf3862e30f"))
+      (tstamps "7dc1a011-333e-5954-bc42-3cf63a893f7c"))
     (comp
       (ref "M1")
       (value "PUMP-5V-1A")
@@ -1014,9 +1014,9 @@
         (field
           (name "Datasheet"))
         (field
-          (name "SKiDL Tag") "7KWNKd2sHy")
+          (name "SKiDL Tag") "cfTv1gwgbY")
         (field
-          (name "SKiDL Line") "pods.py:294"))
+          (name "SKiDL Line") "pods.py:298"))
       (libsource
         (lib "Connector_Generic")
         (part "Conn_01x02"))
@@ -1024,7 +1024,7 @@
         (names "/s_pump1/")
         (tstamps "/df3afffd-21c6-5bad-8181-5667fb3b706e/"))
       (component_classes)
-      (tstamps "e440edbb-a948-5eb5-bf59-cba08490f7cd"))
+      (tstamps "b3bfe243-5ebf-5406-86c8-cce70b3e1f9c"))
     (comp
       (ref "Q1")
       (value "IRLZ44N")
@@ -1038,9 +1038,9 @@
         (field
           (name "Datasheet") "http://www.irf.com/product-info/datasheets/data/irlz44n.pdf")
         (field
-          (name "SKiDL Tag") "mNiRDqbuip")
+          (name "SKiDL Tag") "kol8Z_tljN")
         (field
-          (name "SKiDL Line") "pods.py:286"))
+          (name "SKiDL Line") "pods.py:290"))
       (libsource
         (lib "Transistor_FET")
         (part "IRLZ44N"))
@@ -1048,7 +1048,7 @@
         (names "/s_pump1/")
         (tstamps "/df3afffd-21c6-5bad-8181-5667fb3b706e/"))
       (component_classes)
-      (tstamps "ddb43e18-78e3-5197-bb4d-b2f6cad88b5f"))
+      (tstamps "56803e43-2f3f-5c3c-937d-6f2957a803d7"))
     (comp
       (ref "Q2")
       (value "IRLZ44N")
@@ -1062,9 +1062,9 @@
         (field
           (name "Datasheet") "http://www.irf.com/product-info/datasheets/data/irlz44n.pdf")
         (field
-          (name "SKiDL Tag") "Jfxb6LGWET")
+          (name "SKiDL Tag") "ygd6WLLAnu")
         (field
-          (name "SKiDL Line") "pods.py:319"))
+          (name "SKiDL Line") "pods.py:323"))
       (libsource
         (lib "Transistor_FET")
         (part "IRLZ44N"))
@@ -1072,7 +1072,7 @@
         (names "/s_led1/")
         (tstamps "/20a38695-d6e1-5c26-8823-1f90910af770/"))
       (component_classes)
-      (tstamps "ce275c20-7f9c-52d8-b1b5-cae5beb3525e"))
+      (tstamps "656db2cb-4eda-55fd-a5b6-ff4a570e4518"))
     (comp
       (ref "R1")
       (value "4.7K")
@@ -1086,9 +1086,9 @@
         (field
           (name "Datasheet"))
         (field
-          (name "SKiDL Tag") "W0onN1fx6E")
+          (name "SKiDL Tag") "uQ9UOTYP8j")
         (field
-          (name "SKiDL Line") "pods.py:73"))
+          (name "SKiDL Line") "pods.py:77"))
       (libsource
         (lib "Device")
         (part "R"))
@@ -1096,7 +1096,7 @@
         (names "/s_dht1/")
         (tstamps "/054554dd-eb36-51d4-92d9-97ed0e0b2a6f/"))
       (component_classes)
-      (tstamps "cefe37be-5fb1-5cca-826a-77b152407dfe"))
+      (tstamps "e0fe95f7-9f8a-58db-ab8e-49ebdf321a36"))
     (comp
       (ref "R10")
       (value "1K")
@@ -1110,9 +1110,9 @@
         (field
           (name "Datasheet"))
         (field
-          (name "SKiDL Tag") "6FbTx2DBBz")
+          (name "SKiDL Tag") "PMkUFMvPe0")
         (field
-          (name "SKiDL Line") "pods.py:73"))
+          (name "SKiDL Line") "pods.py:77"))
       (libsource
         (lib "Device")
         (part "R"))
@@ -1120,7 +1120,7 @@
         (names "/s_soil1/")
         (tstamps "/c54bb80f-64c4-5c92-8d75-6a5ca1406591/"))
       (component_classes)
-      (tstamps "66da4782-beb0-5f36-8e32-64d4e2c9f776"))
+      (tstamps "fcdac0c1-4eb0-52e4-8f29-54e6250eba79"))
     (comp
       (ref "R11")
       (value "1K")
@@ -1134,9 +1134,9 @@
         (field
           (name "Datasheet"))
         (field
-          (name "SKiDL Tag") "3tV9YVokjz")
+          (name "SKiDL Tag") "353B7lx1Yu")
         (field
-          (name "SKiDL Line") "pods.py:73"))
+          (name "SKiDL Line") "pods.py:77"))
       (libsource
         (lib "Device")
         (part "R"))
@@ -1144,7 +1144,7 @@
         (names "/s_water1/")
         (tstamps "/c67acc7b-aec9-5fdc-a00e-ecb48894a4ad/"))
       (component_classes)
-      (tstamps "94908d72-2504-55e3-8100-6e1709625370"))
+      (tstamps "a41c89af-fa65-526b-b78f-e28f0aeb2abc"))
     (comp
       (ref "R2")
       (value "220")
@@ -1158,9 +1158,9 @@
         (field
           (name "Datasheet"))
         (field
-          (name "SKiDL Tag") "ODVXWoU1ZH")
+          (name "SKiDL Tag") "Prl63YLxfI")
         (field
-          (name "SKiDL Line") "pods.py:73"))
+          (name "SKiDL Line") "pods.py:77"))
       (libsource
         (lib "Device")
         (part "R"))
@@ -1168,7 +1168,7 @@
         (names "/s_pump1/")
         (tstamps "/df3afffd-21c6-5bad-8181-5667fb3b706e/"))
       (component_classes)
-      (tstamps "e0f4495a-27ca-595c-85cc-8df308b069b5"))
+      (tstamps "572fcc9e-191d-5795-96b8-ac93099057ad"))
     (comp
       (ref "R3")
       (value "10K")
@@ -1182,9 +1182,9 @@
         (field
           (name "Datasheet"))
         (field
-          (name "SKiDL Tag") "1XlRnzr8dc")
+          (name "SKiDL Tag") "znq1UlvHys")
         (field
-          (name "SKiDL Line") "pods.py:73"))
+          (name "SKiDL Line") "pods.py:77"))
       (libsource
         (lib "Device")
         (part "R"))
@@ -1192,7 +1192,7 @@
         (names "/s_pump1/")
         (tstamps "/df3afffd-21c6-5bad-8181-5667fb3b706e/"))
       (component_classes)
-      (tstamps "428ba15c-3931-5c62-a345-5e51b2b424e6"))
+      (tstamps "e7e1e3ad-9331-5d32-9974-eb19b82b7e81"))
     (comp
       (ref "R4")
       (value "220")
@@ -1206,9 +1206,9 @@
         (field
           (name "Datasheet"))
         (field
-          (name "SKiDL Tag") "s883BW_R48")
+          (name "SKiDL Tag") "AXr0m1wQAH")
         (field
-          (name "SKiDL Line") "pods.py:73"))
+          (name "SKiDL Line") "pods.py:77"))
       (libsource
         (lib "Device")
         (part "R"))
@@ -1216,7 +1216,7 @@
         (names "/s_led1/")
         (tstamps "/20a38695-d6e1-5c26-8823-1f90910af770/"))
       (component_classes)
-      (tstamps "04bad8c4-8a4c-5cf5-9590-151def8453e9"))
+      (tstamps "5d89a39d-e960-5523-9a11-375398cc1efd"))
     (comp
       (ref "R5")
       (value "10K")
@@ -1230,9 +1230,9 @@
         (field
           (name "Datasheet"))
         (field
-          (name "SKiDL Tag") "cRSrGwDHID")
+          (name "SKiDL Tag") "B8jE2hoxa_")
         (field
-          (name "SKiDL Line") "pods.py:73"))
+          (name "SKiDL Line") "pods.py:77"))
       (libsource
         (lib "Device")
         (part "R"))
@@ -1240,7 +1240,7 @@
         (names "/s_led1/")
         (tstamps "/20a38695-d6e1-5c26-8823-1f90910af770/"))
       (component_classes)
-      (tstamps "63d448a2-15d9-5281-88aa-15eb6aa9e363"))
+      (tstamps "3cf30f1d-eb1e-5d06-a61f-56f6e51bb58f"))
     (comp
       (ref "R6")
       (value "1K")
@@ -1254,9 +1254,9 @@
         (field
           (name "Datasheet"))
         (field
-          (name "SKiDL Tag") "H56VQBToyN")
+          (name "SKiDL Tag") "LLR8zxHp5D")
         (field
-          (name "SKiDL Line") "pods.py:73"))
+          (name "SKiDL Line") "pods.py:77"))
       (libsource
         (lib "Device")
         (part "R"))
@@ -1264,7 +1264,7 @@
         (names "/s_lightsens1/")
         (tstamps "/ca60fd78-38b3-5a15-a43c-62e1458387a2/"))
       (component_classes)
-      (tstamps "179b8bdf-670f-58d0-90fc-ceefae215976"))
+      (tstamps "40552cde-201f-5019-a4b6-199a2cc508e5"))
     (comp
       (ref "R7")
       (value "330")
@@ -1278,9 +1278,9 @@
         (field
           (name "Datasheet"))
         (field
-          (name "SKiDL Tag") "zFhh6eJL2U")
+          (name "SKiDL Tag") "XXf8rAyI4i")
         (field
-          (name "SKiDL Line") "pods.py:73"))
+          (name "SKiDL Line") "pods.py:77"))
       (libsource
         (lib "Device")
         (part "R"))
@@ -1288,7 +1288,7 @@
         (names "/s_water1/")
         (tstamps "/c67acc7b-aec9-5fdc-a00e-ecb48894a4ad/"))
       (component_classes)
-      (tstamps "3c0dfce2-87b9-5559-a85a-d34b1a2093e4"))
+      (tstamps "e404e2e0-0859-5173-b56a-8daa80301668"))
     (comp
       (ref "R8")
       (value "10K")
@@ -1302,9 +1302,9 @@
         (field
           (name "Datasheet"))
         (field
-          (name "SKiDL Tag") "lGE6AaZ9S2")
+          (name "SKiDL Tag") "gwMIPpUWpa")
         (field
-          (name "SKiDL Line") "pods.py:73"))
+          (name "SKiDL Line") "pods.py:77"))
       (libsource
         (lib "Device")
         (part "R"))
@@ -1312,7 +1312,7 @@
         (names "/s_mcu1/")
         (tstamps "/1c65058c-824d-514b-b394-b08f1d4e0c10/"))
       (component_classes)
-      (tstamps "e8bca392-4239-51b9-89aa-c814fe43ea8d"))
+      (tstamps "d8fb2f46-5fa6-57f6-8d52-37199ee67e79"))
     (comp
       (ref "R9")
       (value "10K")
@@ -1326,9 +1326,9 @@
         (field
           (name "Datasheet"))
         (field
-          (name "SKiDL Tag") "AYqKRBWn1A")
+          (name "SKiDL Tag") "flFe_DOlEQ")
         (field
-          (name "SKiDL Line") "pods.py:73"))
+          (name "SKiDL Line") "pods.py:77"))
       (libsource
         (lib "Device")
         (part "R"))
@@ -1336,7 +1336,7 @@
         (names "/s_water1/")
         (tstamps "/c67acc7b-aec9-5fdc-a00e-ecb48894a4ad/"))
       (component_classes)
-      (tstamps "d9b3ac56-b5fc-5666-bb14-da80c2e62b6e"))
+      (tstamps "b8808da1-3100-5b6c-a090-00f1db832b13"))
     (comp
       (ref "SW1")
       (value "BOOT-TACT")
@@ -1350,9 +1350,9 @@
         (field
           (name "Datasheet"))
         (field
-          (name "SKiDL Tag") "1tssDQgmxJ")
+          (name "SKiDL Tag") "zg2u6PZwpz")
         (field
-          (name "SKiDL Line") "pods.py:184"))
+          (name "SKiDL Line") "pods.py:188"))
       (libsource
         (lib "Switch")
         (part "SW_Push"))
@@ -1360,7 +1360,7 @@
         (names "/s_mcu1/")
         (tstamps "/1c65058c-824d-514b-b394-b08f1d4e0c10/"))
       (component_classes)
-      (tstamps "e33abc77-ab02-5582-8ce8-49abd20444c9"))
+      (tstamps "bc77c2fc-f386-535f-8669-9f0da09c70dc"))
     (comp
       (ref "U1A")
       (value "ESP32-CAM-ODD")
@@ -1374,9 +1374,9 @@
         (field
           (name "Datasheet"))
         (field
-          (name "SKiDL Tag") "U0KHJvo7PZ")
+          (name "SKiDL Tag") "g6bQHyAJ8I")
         (field
-          (name "SKiDL Line") "pods.py:157"))
+          (name "SKiDL Line") "pods.py:161"))
       (libsource
         (lib "Connector_Generic")
         (part "Conn_01x08"))
@@ -1384,7 +1384,7 @@
         (names "/s_mcu1/")
         (tstamps "/1c65058c-824d-514b-b394-b08f1d4e0c10/"))
       (component_classes)
-      (tstamps "0dc07b4d-a733-5062-bf55-72adf9a948fa"))
+      (tstamps "7f8af092-8da9-53b7-80ac-c85630975d95"))
     (comp
       (ref "U1B")
       (value "ESP32-CAM-EVEN")
@@ -1398,9 +1398,9 @@
         (field
           (name "Datasheet"))
         (field
-          (name "SKiDL Tag") "ndvXRuhvDW")
+          (name "SKiDL Tag") "tBO8O3iKFL")
         (field
-          (name "SKiDL Line") "pods.py:169"))
+          (name "SKiDL Line") "pods.py:173"))
       (libsource
         (lib "Connector_Generic")
         (part "Conn_01x08"))
@@ -1408,7 +1408,7 @@
         (names "/s_mcu1/")
         (tstamps "/1c65058c-824d-514b-b394-b08f1d4e0c10/"))
       (component_classes)
-      (tstamps "6a185536-c4c5-5e82-b516-608a5a632ca9"))
+      (tstamps "9bbac23a-ab7e-5229-9a7e-669428ba66a8"))
     (comp
       (ref "U2")
       (value "DHT22")
@@ -1422,9 +1422,9 @@
         (field
           (name "Datasheet") "http://akizukidenshi.com/download/ds/aosong/DHT11.pdf")
         (field
-          (name "SKiDL Tag") "GwArgcMrtK")
+          (name "SKiDL Tag") "B7uQ0TFmpa")
         (field
-          (name "SKiDL Line") "pods.py:261"))
+          (name "SKiDL Line") "pods.py:265"))
       (libsource
         (lib "Sensor")
         (part "DHT11"))
@@ -1432,7 +1432,7 @@
         (names "/s_dht1/")
         (tstamps "/054554dd-eb36-51d4-92d9-97ed0e0b2a6f/"))
       (component_classes)
-      (tstamps "1aea5b0c-911b-59e8-8cd6-da7ac0ad3111")))
+      (tstamps "67d20bea-da50-51ec-8355-8ddb6571a69f")))
   (nets
     (net
       (code 1)
@@ -1548,6 +1548,18 @@
         (pintype "PASSIVE")))
     (net
       (code 5)
+      (name "CELL_NEG")
+      (class "Default")
+      (node
+        (ref "BT1")
+        (pin "2")
+        (pintype "PASSIVE"))
+      (node
+        (ref "CHG1")
+        (pin "2")
+        (pintype "PASSIVE")))
+    (net
+      (code 6)
       (name "DHT_DATA")
       (class "Default")
       (node
@@ -1563,7 +1575,7 @@
         (pin "2")
         (pintype "BIDIRECTIONAL")))
     (net
-      (code 6)
+      (code 7)
       (name "GND")
       (class "Default")
       (node
@@ -1573,10 +1585,6 @@
       (node
         (ref "BST1")
         (pin "4")
-        (pintype "PASSIVE"))
-      (node
-        (ref "BT1")
-        (pin "2")
         (pintype "PASSIVE"))
       (node
         (ref "C1")
@@ -1616,10 +1624,6 @@
         (pintype "PASSIVE"))
       (node
         (ref "C9")
-        (pin "2")
-        (pintype "PASSIVE"))
-      (node
-        (ref "CHG1")
         (pin "2")
         (pintype "PASSIVE"))
       (node
@@ -1683,7 +1687,7 @@
         (pin "4")
         (pintype "POWER-IN")))
     (net
-      (code 7)
+      (code 8)
       (name "GPIO12_NC")
       (class "Default")
       (node
@@ -1691,7 +1695,7 @@
         (pin "3")
         (pintype "PASSIVE")))
     (net
-      (code 8)
+      (code 9)
       (name "LED_5V")
       (class "Default")
       (node
@@ -1703,7 +1707,7 @@
         (pin "2")
         (pintype "PASSIVE")))
     (net
-      (code 9)
+      (code 10)
       (name "LED_LO")
       (class "Default")
       (node
@@ -1715,7 +1719,7 @@
         (pin "2")
         (pintype "PASSIVE")))
     (net
-      (code 10)
+      (code 11)
       (name "LIGHT_AO")
       (class "Default")
       (node
@@ -1731,7 +1735,7 @@
         (pin "5")
         (pintype "PASSIVE")))
     (net
-      (code 11)
+      (code 12)
       (name "LIGHT_GATE")
       (class "Default")
       (node
@@ -1743,7 +1747,7 @@
         (pin "2")
         (pintype "PASSIVE")))
     (net
-      (code 12)
+      (code 13)
       (name "LIGHT_GATE_Q")
       (class "Default")
       (node
@@ -1759,7 +1763,7 @@
         (pin "1")
         (pintype "PASSIVE")))
     (net
-      (code 13)
+      (code 14)
       (name "LIGHT_MOD_AO")
       (class "Default")
       (node
@@ -1771,7 +1775,7 @@
         (pin "1")
         (pintype "PASSIVE")))
     (net
-      (code 14)
+      (code 15)
       (name "PACK_P")
       (class "Default")
       (node
@@ -1783,7 +1787,7 @@
         (pin "1")
         (pintype "PASSIVE")))
     (net
-      (code 15)
+      (code 16)
       (name "PUMP_5V")
       (class "Default")
       (node
@@ -1803,7 +1807,7 @@
         (pin "1")
         (pintype "PASSIVE")))
     (net
-      (code 16)
+      (code 17)
       (name "PUMP_GATE")
       (class "Default")
       (node
@@ -1815,7 +1819,7 @@
         (pin "1")
         (pintype "PASSIVE")))
     (net
-      (code 17)
+      (code 18)
       (name "PUMP_GATE_Q")
       (class "Default")
       (node
@@ -1831,7 +1835,7 @@
         (pin "1")
         (pintype "PASSIVE")))
     (net
-      (code 18)
+      (code 19)
       (name "PUMP_LO")
       (class "Default")
       (node
@@ -1851,7 +1855,7 @@
         (pin "2")
         (pintype "PASSIVE")))
     (net
-      (code 19)
+      (code 20)
       (name "SOIL_ADC")
       (class "Default")
       (node
@@ -1867,7 +1871,7 @@
         (pin "4")
         (pintype "PASSIVE")))
     (net
-      (code 20)
+      (code 21)
       (name "SOIL_AO")
       (class "Default")
       (node
@@ -1879,7 +1883,7 @@
         (pin "1")
         (pintype "PASSIVE")))
     (net
-      (code 21)
+      (code 22)
       (name "SYS_PACK")
       (class "Default")
       (node
@@ -1891,7 +1895,7 @@
         (pin "1")
         (pintype "PASSIVE")))
     (net
-      (code 22)
+      (code 23)
       (name "TANK_VCC")
       (class "Default")
       (node
@@ -1907,7 +1911,7 @@
         (pin "2")
         (pintype "PASSIVE")))
     (net
-      (code 23)
+      (code 24)
       (name "U0RXD")
       (class "Default")
       (node
@@ -1919,7 +1923,7 @@
         (pin "3")
         (pintype "PASSIVE")))
     (net
-      (code 24)
+      (code 25)
       (name "U0TXD")
       (class "Default")
       (node
@@ -1931,7 +1935,7 @@
         (pin "4")
         (pintype "PASSIVE")))
     (net
-      (code 25)
+      (code 26)
       (name "WATER_ADC")
       (class "Default")
       (node
@@ -1947,7 +1951,7 @@
         (pin "7")
         (pintype "PASSIVE")))
     (net
-      (code 26)
+      (code 27)
       (name "WATER_AO")
       (class "Default")
       (node

@@ -67,10 +67,13 @@ Sensor kinds:
 ## POST sensors — response
 
 ```json
-{"commands": [{"kind": "pump", "durationMs": 5000, "id": "cmd-9f3"},
-              {"kind": "light", "enabled": true, "id": "cmd-9f4"}],
+{"commands": [{"kind": "pump", "durationMs": 5000, "id": "cmd-9f3"}],
  "config": {"rev": 8, "reportIntervalSec": 30}}
 ```
+
+Pump XOR light is SERVER-PACED: never send both in one response
+(combined 3.8 A run exceeds the 2 A boost — the rail browns out and
+the pod reboot-loops). The device applies whatever it receives.
 
 Both keys optional; either may be absent. Unknown command `kind`
 values are ignored.

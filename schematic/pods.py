@@ -13,8 +13,8 @@ Build truth: docs/04-wiring.md. Fuses for measured loads (pump 1 A /
 2 A stall, LED 20 cm 2 A): F1 5 A (2920), F2 1.5 A, F3 2.5 A (1812).
 
 OPERATING RULE (on-sheet note + 02-power): pump and LED NEVER on
-together (server paces; combined load exceeds the MT3608 2 A setting).
-Rev2: >=5 A boost. Charge idle/low-duty (TP4056 no load-share).
+together (server paces; combined load exceeds any single-boost budget
+and browns out the rail). Charge idle/low-duty (TP4056 no load-share).
 
 Run:  KICAD10_SYMBOL_DIR=/usr/share/kicad/symbols \
        /tmp/opencode/venv/bin/python pods.py
@@ -28,6 +28,10 @@ lib_search_paths[KICAD10].append("/usr/share/kicad/symbols")
 # ---------------------------------------------------------------- nets
 gnd = Net("GND")
 gnd.drive = POWER
+# Cell return: BT1-2 + CHG1 B- ONLY. This net must never touch the GND
+# star: the DW01A/FS8205A low-side FET sits between B- and OUT-, and
+# commoning them defeats over-discharge protection. GND star = OUT-.
+cell_neg = Net("CELL_NEG")
 p5v = Net("+5V")
 p5v.drive = POWER
 p3v3 = Net("+3V3")
@@ -95,14 +99,14 @@ def s_charge():
               "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Vertical",
               "charger module (5 V in via on-board USB-C; load on OUT)")
     chg1[1] += pack_p
-    chg1[2] += gnd
+    chg1[2] += cell_neg
     chg1[3] += sys_pack
     chg1[4] += gnd
     bt1 = mk(Part("Connector_Generic", "Conn_01x02"), "BT1",
              "BLP673-4.2Ah", HDR2,
-             "LiPo pouch BLP673 3.85 V 4230 mAh (pack return = GND star)")
+             "LiPo pouch BLP673 3.85 V 4230 mAh (cell return = CELL_NEG)")
     bt1[1] += pack_p
-    bt1[2] += gnd
+    bt1[2] += cell_neg
 
 
 @subcircuit
@@ -118,9 +122,9 @@ def s_feed_fuse():
 @subcircuit
 def s_boost():
     bst1 = mk(Part("Connector_Generic", "Conn_01x04"), "BST1",
-              "MT3608-5V-2A",
+              "XL6009-5V-4A",
               "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Vertical",
-              "boost module (3.0-4.2 V in; rev2: >=5 A)")
+              "boost module 4 A (3.0-4.2 V in; heatsink on for 3 A+ sustained)")
     bst1[1] += bst_in
     bst1[2] += gnd
     bst1[3] += p5v

@@ -2,7 +2,9 @@
 
 ## Operating rules (binding)
 - Pump and LED NEVER on together (server paces). Combined 3.8 A run /
-  4.8 A stall exceeds the MT3608 2 A setting. Rev2: >=5 A boost.
+  4.8 A stall browns out the rail; the firmware obeys whatever the
+  server sends. Boost XL6009 4 A (heatsink on) covers the 2.8 A
+  worst allowed state.
 - Charge idle / low-duty only (TP4056 has no load-share; cell floats
   at 4.20 V under load — see docs/02-power.md).
 - F1 5 A hold (2920): interlocked max ~5.5 A in at 3.0 V pack; trips

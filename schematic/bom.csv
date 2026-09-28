@@ -1,6 +1,6 @@
 ref,value,footprint,function
-BST1,"MT3608-5V-2A","Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Vertical","boost module (3.0-4.2 V in; rev2: >=5 A)"
-BT1,"BLP673-4.2Ah","Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical","LiPo pouch BLP673 3.85 V 4230 mAh (pack return = GND star)"
+BST1,"XL6009-5V-4A","Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Vertical","boost module 4 A (3.0-4.2 V in; heatsink on for 3 A+ sustained)"
+BT1,"BLP673-4.2Ah","Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical","LiPo pouch BLP673 3.85 V 4230 mAh (cell return = CELL_NEG)"
 C1,"100n-50V","Capacitor_SMD:C_0603_1608Metric","light-AO filter"
 C10,"100n-50V","Capacitor_SMD:C_0603_1608Metric","water input filter"
 C11,"100n-50V","Capacitor_SMD:C_0603_1608Metric","pump terminal RF shunt"

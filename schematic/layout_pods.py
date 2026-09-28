@@ -43,17 +43,23 @@ sh.emit_symbol("BT1", lab="left")
 p = sh.pin_xy("CHG1", 1)
 b1 = sh.pin_xy("BT1", 1)
 sh.wire([p, (55.88, p[1]), (55.88, 68.58), (40.64, 68.58), (40.64, b1[1]), b1])
-# GND return: CHG1.2 + CHG1.4 + BT1.2 share a rail at y=96.52.
+# Returns split: CHG1.4 (OUT-) joins the GND star rail at y=96.52;
+# CHG1.2 (B-) + BT1.2 ride a dedicated CELL_NEG rail at y=91.44 so the
+# DW01A low-side FET is never shorted. Header order B+/B-/OUT+/OUT-
+# (pin1 = cell+ shared with BT1.1, pin3 = load+ to F1): VERIFY on the
+# physical module before soldering, clones vary.
 # (BT1.2 routes via x=48.26: the PACK_P vertical at x=40.64 must not
-# touch it — that would short PACK_P to GND in the netlist.)
+# touch it — that would short PACK_P to CELL_NEG in the netlist.)
 g1 = sh.pin_xy("CHG1", 2)
 g2 = sh.pin_xy("CHG1", 4)
 b2 = sh.pin_xy("BT1", 2)
-sh.wire([g1, (63.5, g1[1]), (63.5, 96.52)])
+sh.wire([g1, (63.5, g1[1]), (63.5, 91.44)])
+sh.junction(63.5, 91.44)
+sh.wire([b2, (48.26, b2[1]), (48.26, 91.44)])
+sh.junction(48.26, 91.44)
+sh.wire([(48.26, 91.44), (63.5, 91.44)])
 sh.wire([g2, (68.58, g2[1]), (68.58, 96.52)])
-sh.wire([b2, (48.26, b2[1]), (48.26, 96.52)])
-sh.wire([(48.26, 96.52), (73.66, 96.52)])
-sh.junction(63.5, 96.52)
+sh.wire([(55.88, 96.52), (73.66, 96.52)])
 sh.junction(68.58, 96.52)
 stub_gnd(sh, 55.88, 96.52)
 sh.junction(55.88, 96.52)
@@ -89,7 +95,7 @@ print("s_feed_fuse written")
 # BST1 rot 0 pins left x=55.88: 1 IN+ (73.66), 2 IN- (76.2),
 # 3 OUT+ (78.74), 4 OUT- (81.28).
 sh = Sheet("pods_s_boost1.kicad_sch", PM)
-sh.place("BST1", "Connector_Generic:Conn_01x04", "MT3608-5V-2A", H4,
+sh.place("BST1", "Connector_Generic:Conn_01x04", "XL6009-5V-4A", H4,
          60.96, 76.2, rot=0)
 sh.place("C2", "Device:C", "1000u-10V",
          "Capacitor_THT:CP_Radial_D8.0mm_P3.50mm", 129.54, 73.66, rot=0)
@@ -128,7 +134,8 @@ c3t = sh.pin_xy("C3", 1)
 sh.wire([(c3t[0], 63.5), c3t])
 sh.junction(c3t[0], 63.5)
 sh.wire([sh.pin_xy("C3", 2), (c3t[0], 96.52)])
-sh.note(["BST1 rev2: >=5A boost (pump+LED interlocked for 2A setting)."],
+sh.note(["BST1 XL6009 4A (heatsink on): pump XOR LED server-paced,",
+         "2.8A worst allowed state. F1 5A rides 30s stall transients."],
         25.4, 139.7)
 sh.write("pods_s_boost1.kicad_sch")
 print("s_boost written")
@@ -506,7 +513,7 @@ sh.wire([(99.06, 68.58), (114.3, 68.58), (114.3, 76.2), (124.46, 76.2),
 sh.wire([(154.94, 74.93), (154.94, 76.2), (139.7, 76.2)])
 sh.junction(139.7, 76.2)
 sh.note(["Pump XOR LED interlock (server-paced): combined 3.8A run",
-         "exceeds the MT3608 2A setting. D1 K faces the fused branch."],
+         "browns out any single boost. D1 K faces the fused branch."],
         25.4, 139.7)
 sh.write("pods_s_pump1.kicad_sch")
 print("s_pump written")

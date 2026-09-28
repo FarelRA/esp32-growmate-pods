@@ -4,7 +4,7 @@
 
 | U1 | Goes to | Wire |
 |---|---|---|
-| 5V (1, 16) | MT3608 5V out, pump +, LED strip + | red, star at U1 |
+| 5V (1, 16) | XL6009 5V out, pump +, LED strip + | red, star at U1 |
 | GND (3, 13, 15) | common ground star | black |
 | 3V3 (11) | J1-1, J2-1, J3-1, U2-VDD | orange |
 | GPIO13 (8) | J2-2 soil AO | yellow |
@@ -36,10 +36,11 @@ Notation: `U1-5` = carrier header U1 pin 5. `Q1-G/D/S` = gate/drain/source.
 
 | Net | Nodes |
 |---|---|
-| PACK+ | BLP673+ → F1-1; F1-2 → MT3608 IN+ (F1 = pack overcurrent, 5 A hold polyfuse, 2920) |
-| +5V | MT3608 5V out → U1-1, U1-16, J4-4, C2-1, C3-1; pump branch via F2 (PUMP_5V) → M1-1 + D1-K; LED branch via F3 (LED_5V) → D2-A |
+| PACK+ | BLP673+ → CHG1 B+ (pin1); CHG1 OUT+ (pin3) → F1-1; F1-2 → XL6009 IN+ (F1 = pack overcurrent, 5 A hold polyfuse, 2920). Header order B+/B-/OUT+/OUT- — verify on module, clones vary |
+| +5V | XL6009 5V out → U1-1, U1-16, J4-4, C2-1, C3-1; pump branch via F2 (PUMP_5V) → M1-1 + D1-K; LED branch via F3 (LED_5V) → D2-A |
 | +3V3 | U1-11 (module AMS1117 out) → R7-1, J2-1, J3-1, U2-VDD, C4-1 (at U2), C5-1, R1-1, R8-1 |
-| GND | star → U1-3, U1-13, U1-15, J4-3, J1-3, J2-3, J3-3, U2-GND, C4-2 (at U2), C5-2, C6-2, C7-2, C8-2, C9-2, C10-2, Q1-S, Q2-S, R3-2, R5-2, R9-2, SW1-2, C1-2, C2-2, C3-2 |
+| GND | star = OUT- → U1-3, U1-13, U1-15, J4-3, J1-3, J2-3, J3-3, U2-GND, C4-2 (at U2), C5-2, C6-2, C7-2, C8-2, C9-2, C10-2, Q1-S, Q2-S, R3-2, R5-2, R9-2, SW1-2, C1-2, C2-2, C3-2 |
+| CELL_NEG | BLP673- → CHG1 B- (pin2), dedicated net — NEVER the GND star, or DW01A discharge protection is shorted out |
 | U0RXD | U1-5 ↔ J4-1 (adapter TX) |
 | U0TXD | U1-7 ↔ J4-2 (adapter RX) |
 | BOOT_IO0 | U1-9 ↔ R8-2; U1-9 ↔ SW1-1 (SW1-2 → GND). R8-1 → +3V3 (10k PU = SPI boot HIGH) |
